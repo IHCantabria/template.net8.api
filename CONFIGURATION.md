@@ -1,11 +1,25 @@
 # PROJECT CONFIGURATION
 
+## RENAME .NET PROJECT
+	1. Manual rename the next files and folders with the SAME NAME:
+		- Solution file "template.net8.api.sln".
+		- Project file "template.net8.api.csproj".
+		- Project folder "template.net8.api".
+		- Project settings "template.net8.api.csproj.DotSettings".
+		- Http request file "template.net8.api.http".
+		Ex: "MiProject.Api.sln", "MiProject.Api.csproj", "MiProject.Api", "MiProject.Api.csproj.DotSettings", "MiProject.Api.http"
+	2. Open Solution With Visual Studio, ignore warning. Delete project "template.net8.api" from the solution.
+	3. Add to the solution a existing project, select the renamed file "template.net8.api.csproj"
+	4. Update namespace of the existing projects. 
+		- Right-click on the project in Solution Explorer
+		- Choose “Refactor” > “Rename” to rename the namespace across files.
+
 ## CUSTOMIZE .NET PROJECT
 	1. Replace {PROJECT_NAMESPACE} with the project namespace value. 
 		Ex: MiProject.Api
 	1. Create {PROJECT_GUID} with a new GUID. 
 		Ex: 9E4F3D66-752A-487C-80DE-EA733A0B111B
-	2. Replace all the .net namespaces "template.net8.Api" with the project namespace. 
+	2. Replace all the .net namespaces "template.net8.api" with the project namespace. 
 		Ex: MiProject.Api
 	3. Remove the unused envs config and/or add custom envs config( Development, Pre, Prod...)
 		- Envs.cs
