@@ -1,6 +1,6 @@
-﻿using template.net8.Api.Domain.Interfaces;
+﻿using template.net8.api.Domain.Interfaces;
 
-namespace template.net8.Api.Domain.DTOs;
+namespace template.net8.api.Domain.DTOs;
 
 /// <summary>
 ///     Command Dummy Create Params Dto

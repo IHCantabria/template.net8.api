@@ -1,7 +1,7 @@
-﻿using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Exceptions;
+﻿using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Exceptions;
 
-namespace template.net8.Api.Business.Exceptions;
+namespace template.net8.api.Business.Exceptions;
 
 //TODO: Improve this class. Important! Investigate How Log When This Exception is Created or Thrown
 [CoreLibrary]

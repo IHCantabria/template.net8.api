@@ -1,4 +1,4 @@
-﻿namespace template.net8.Api.Business;
+﻿namespace template.net8.api.Business;
 
 internal static class BusinessConstants
 {

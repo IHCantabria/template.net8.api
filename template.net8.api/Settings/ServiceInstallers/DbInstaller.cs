@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Domain.Persistence.Context;
-using template.net8.Api.Settings.Interfaces;
-using template.net8.Api.Settings.Options;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Domain.Persistence.Context;
+using template.net8.api.Settings.Interfaces;
+using template.net8.api.Settings.Options;
 
-namespace template.net8.Api.Settings.ServiceInstallers;
+namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
 ///     Db Context Installer

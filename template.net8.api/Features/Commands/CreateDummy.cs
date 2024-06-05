@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 using LanguageExt.Common;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
-using template.net8.Api.Domain.DTOs;
+using template.net8.api.Domain.DTOs;
 
-namespace template.net8.Api.Features.Commands;
+namespace template.net8.api.Features.Commands;
 
 /// <summary>
 ///     Create Dummy CQRS Command

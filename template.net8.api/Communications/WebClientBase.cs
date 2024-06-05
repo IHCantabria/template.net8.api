@@ -1,7 +1,7 @@
-﻿using template.net8.Api.Core.Attributes;
-using template.net8.Api.Logger;
+﻿using template.net8.api.Core.Attributes;
+using template.net8.api.Logger;
 
-namespace template.net8.Api.Communications;
+namespace template.net8.api.Communications;
 
 [CoreLibrary]
 internal class WebClientBase

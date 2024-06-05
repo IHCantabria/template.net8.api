@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Options;
-using template.net8.Api.Core.Attributes;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Settings.Options;
+namespace template.net8.api.Settings.Options;
 
 /// <summary>
 ///     ReDoc Options for the ReDoc Document Generator

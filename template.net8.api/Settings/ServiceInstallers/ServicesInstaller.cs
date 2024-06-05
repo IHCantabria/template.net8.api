@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Interfaces;
-using template.net8.Api.Settings.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Interfaces;
+using template.net8.api.Settings.Interfaces;
 
-namespace template.net8.Api.Settings.ServiceInstallers;
+namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
 ///     Business Services Installer

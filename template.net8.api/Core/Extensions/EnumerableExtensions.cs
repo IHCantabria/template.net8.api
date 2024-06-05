@@ -1,6 +1,6 @@
-﻿using template.net8.Api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Core.Extensions;
+namespace template.net8.api.Core.Extensions;
 
 [CoreLibrary]
 internal static class EnumerableExtensions

@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace template.net8.Api.Core.Attributes;
+namespace template.net8.api.Core.Attributes;
 
 /// <summary>
 ///     This attribute is intended to mark public API Contracts, which should not be removed and so is treated as used.

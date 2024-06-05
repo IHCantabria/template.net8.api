@@ -2,10 +2,10 @@
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.Api.Business.Exceptions;
-using template.net8.Api.Business.Messages;
+using template.net8.api.Business.Exceptions;
+using template.net8.api.Business.Messages;
 
-namespace template.net8.Api.Controllers.Extensions;
+namespace template.net8.api.Controllers.Extensions;
 
 internal static class ControllerExtensions
 {

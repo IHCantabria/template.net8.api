@@ -5,18 +5,18 @@ using AutoMapper.QueryableExtensions;
 using JetBrains.Annotations;
 using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Exceptions;
-using template.net8.Api.Core.Extensions;
-using template.net8.Api.Domain.Base;
-using template.net8.Api.Domain.Interfaces;
-using template.net8.Api.Domain.Persistence.Models.Interfaces;
-using template.net8.Api.Domain.Persistence.Repositories.Extensions;
-using template.net8.Api.Domain.Persistence.Repositories.Interfaces;
-using template.net8.Api.Domain.Specifications.Extensions;
-using template.net8.Api.Domain.Specifications.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Exceptions;
+using template.net8.api.Core.Extensions;
+using template.net8.api.Domain.Base;
+using template.net8.api.Domain.Interfaces;
+using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Domain.Persistence.Repositories.Extensions;
+using template.net8.api.Domain.Persistence.Repositories.Interfaces;
+using template.net8.api.Domain.Specifications.Extensions;
+using template.net8.api.Domain.Specifications.Interfaces;
 
-namespace template.net8.Api.Domain.Persistence.Repositories;
+namespace template.net8.api.Domain.Persistence.Repositories;
 
 /// <summary>
 /// </summary>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace template.net8.Api.Domain.Persistence.Context;
+namespace template.net8.api.Domain.Persistence.Context;
 
 /// <summary>
 ///     ProjectDbContextFactory class to get a new Context from the Pool

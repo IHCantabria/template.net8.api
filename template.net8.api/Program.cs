@@ -2,9 +2,9 @@ using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using NLog;
 using NLog.Web;
-using template.net8.Api.Business;
+using template.net8.api.Business;
 using template.net8.api.Logger;
-using template.net8.Api.Settings.Extensions;
+using template.net8.api.Settings.Extensions;
 
 [assembly: ComVisible(false), CLSCompliant(false)]
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -40,7 +40,7 @@ finally
     LogManager.Shutdown();
 }
 
-namespace template.net8.Api
+namespace template.net8.api
 {
     /// <summary>
     ///     Program class to start the template.net8.API. This class is used to configure the API and

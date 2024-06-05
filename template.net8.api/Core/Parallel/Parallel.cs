@@ -1,9 +1,9 @@
 ﻿using LanguageExt.Common;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Exceptions;
-using template.net8.Api.Core.Extensions;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Exceptions;
+using template.net8.api.Core.Extensions;
 
-namespace template.net8.Api.Core.Parallel;
+namespace template.net8.api.Core.Parallel;
 
 [CoreLibrary]
 internal static class ParallelUtils

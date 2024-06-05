@@ -1,11 +1,11 @@
 ﻿using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Domain.Interfaces;
-using template.net8.Api.Domain.Persistence.Models.Interfaces;
-using template.net8.Api.Domain.Specifications.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Domain.Interfaces;
+using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Domain.Specifications.Interfaces;
 
-namespace template.net8.Api.Domain.Persistence.Repositories.Interfaces;
+namespace template.net8.api.Domain.Persistence.Repositories.Interfaces;
 
 /// <summary>
 /// </summary>

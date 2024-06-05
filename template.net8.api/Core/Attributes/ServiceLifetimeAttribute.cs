@@ -1,4 +1,4 @@
-﻿namespace template.net8.Api.Core.Attributes;
+﻿namespace template.net8.api.Core.Attributes;
 
 /// <summary>
 ///     This attribute is used to define the lifetime of the service.

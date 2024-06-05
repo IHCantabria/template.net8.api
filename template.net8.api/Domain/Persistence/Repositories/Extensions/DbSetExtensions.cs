@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Domain.Persistence.Models.Interfaces;
 
-namespace template.net8.Api.Domain.Persistence.Repositories.Extensions;
+namespace template.net8.api.Domain.Persistence.Repositories.Extensions;
 
 [CoreLibrary]
 internal static class DbSetExtensions

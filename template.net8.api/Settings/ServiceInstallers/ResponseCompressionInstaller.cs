@@ -1,10 +1,10 @@
 ﻿using System.IO.Compression;
 using System.Net.Mime;
 using Microsoft.AspNetCore.ResponseCompression;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Settings.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Interfaces;
 
-namespace template.net8.Api.Settings.ServiceInstallers;
+namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
 ///     Response Compression Service Installer

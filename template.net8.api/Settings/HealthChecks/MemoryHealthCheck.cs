@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
-using template.net8.Api.Core.Attributes;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Settings.HealthChecks;
+namespace template.net8.api.Settings.HealthChecks;
 
 [CoreLibrary]
 internal sealed class MemoryHealthCheck : IHealthCheck

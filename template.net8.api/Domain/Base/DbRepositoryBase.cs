@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using template.net8.Api.Core.Attributes;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Domain.Base;
+namespace template.net8.api.Domain.Base;
 
 /// <summary>
 ///     Db Repository Base

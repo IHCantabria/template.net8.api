@@ -1,6 +1,6 @@
-﻿using template.net8.Api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Settings.Middlewares;
+namespace template.net8.api.Settings.Middlewares;
 
 /// <summary>
 ///     This middleware is used to reject HTTP requests.

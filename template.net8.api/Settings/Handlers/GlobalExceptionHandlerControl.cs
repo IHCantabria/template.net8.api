@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.Api.Business.Messages;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Logger;
+using template.net8.api.Business.Messages;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Logger;
 
-namespace template.net8.Api.Settings.Handlers;
+namespace template.net8.api.Settings.Handlers;
 
 [CoreLibrary]
 internal sealed class GlobalExceptionHandlerControl(

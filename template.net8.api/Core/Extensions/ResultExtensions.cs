@@ -1,8 +1,8 @@
 ﻿using LanguageExt.Common;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Exceptions;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Exceptions;
 
-namespace template.net8.Api.Core.Extensions;
+namespace template.net8.api.Core.Extensions;
 
 [CoreLibrary]
 internal static class ResultExtensions

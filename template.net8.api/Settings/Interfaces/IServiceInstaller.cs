@@ -1,6 +1,6 @@
-﻿using template.net8.Api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Settings.Interfaces;
+namespace template.net8.api.Settings.Interfaces;
 
 /// <summary>
 ///     Interface for Service Installer

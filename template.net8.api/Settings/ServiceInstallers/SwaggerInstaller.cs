@@ -1,10 +1,10 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Settings.Interfaces;
-using template.net8.Api.Settings.Options;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Interfaces;
+using template.net8.api.Settings.Options;
 
-namespace template.net8.Api.Settings.ServiceInstallers;
+namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
 ///     Swagger Service Installer

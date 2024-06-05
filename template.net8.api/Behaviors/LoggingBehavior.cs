@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using LanguageExt.Common;
 using MediatR;
-using template.net8.Api.Logger;
+using template.net8.api.Logger;
 
-namespace template.net8.Api.Behaviors;
+namespace template.net8.api.Behaviors;
 
 internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull

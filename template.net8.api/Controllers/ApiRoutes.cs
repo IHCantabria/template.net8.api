@@ -1,4 +1,4 @@
-﻿namespace template.net8.Api.Controllers;
+﻿namespace template.net8.api.Controllers;
 
 internal static class ApiRoutes
 {

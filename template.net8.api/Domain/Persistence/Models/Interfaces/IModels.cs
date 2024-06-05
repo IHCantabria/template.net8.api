@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
-using template.net8.Api.Core.Attributes;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Domain.Persistence.Models.Interfaces;
+namespace template.net8.api.Domain.Persistence.Models.Interfaces;
 
 /// <summary>
 ///     This interface is intended  to mark class models of the database context.

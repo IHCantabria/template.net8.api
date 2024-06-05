@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using template.net8.Api.Communications.Interfaces;
+using template.net8.api.Communications.Interfaces;
 
-namespace template.net8.Api.Contracts;
+namespace template.net8.api.Contracts;
 
 /// <summary>
 ///     Dummy Resource

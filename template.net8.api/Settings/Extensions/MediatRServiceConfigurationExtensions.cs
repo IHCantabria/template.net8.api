@@ -1,12 +1,11 @@
 ﻿using LanguageExt.Common;
 using MediatR;
 using template.net8.api.Behaviors;
-using template.net8.Api.Behaviors;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Domain.DTOs;
-using template.net8.Api.Features.Commands;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Domain.DTOs;
+using template.net8.api.Features.Commands;
 
-namespace template.net8.Api.Settings.Extensions;
+namespace template.net8.api.Settings.Extensions;
 
 [CoreLibrary]
 internal static class MediatRServiceConfigurationExtensions

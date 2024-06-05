@@ -1,9 +1,9 @@
 ﻿using JetBrains.Annotations;
 using LanguageExt.Common;
 using MediatR;
-using template.net8.Api.Domain.DTOs;
+using template.net8.api.Domain.DTOs;
 
-namespace template.net8.Api.Features.Querys;
+namespace template.net8.api.Features.Querys;
 
 /// <summary>
 ///     Get Dummies CQRS Query

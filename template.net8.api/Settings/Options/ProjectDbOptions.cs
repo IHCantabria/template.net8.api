@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web;
 using Microsoft.Extensions.Options;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Settings.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Interfaces;
 
-namespace template.net8.Api.Settings.Options;
+namespace template.net8.api.Settings.Options;
 
 /// <summary>
 ///     Project Database Options

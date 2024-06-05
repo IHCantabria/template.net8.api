@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using template.net8.Api.Settings.Options;
+using template.net8.api.Settings.Options;
 
-namespace template.net8.Api.Domain.Persistence.Context;
+namespace template.net8.api.Domain.Persistence.Context;
 
 /// <summary>
 ///     ProjectDbContext class to hold the Db Context

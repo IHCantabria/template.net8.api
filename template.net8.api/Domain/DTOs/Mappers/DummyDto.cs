@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
-using template.net8.Api.Contracts;
+using template.net8.api.Contracts;
 
-namespace template.net8.Api.Domain.DTOs;
+namespace template.net8.api.Domain.DTOs;
 
 /// <summary>
 ///     Dummy DTO

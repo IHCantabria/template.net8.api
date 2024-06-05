@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.Api.Core.Attributes;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Settings.Extensions;
+namespace template.net8.api.Settings.Extensions;
 
 [CoreLibrary]
 internal static class ProblemDetailsContextExtensions

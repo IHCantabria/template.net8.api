@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Domain.Interfaces;
-using template.net8.Api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Domain.Interfaces;
+using template.net8.api.Domain.Persistence.Models.Interfaces;
 
-namespace template.net8.Api.Domain.Specifications.Interfaces;
+namespace template.net8.api.Domain.Specifications.Interfaces;
 
 /// <summary>
 ///     Interface for Verification Pattern Implementation for Querying Data with EF Core Queryable Extensions.

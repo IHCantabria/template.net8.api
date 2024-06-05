@@ -3,9 +3,9 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.Api.Core.Attributes;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Business.Exceptions;
+namespace template.net8.api.Business.Exceptions;
 
 internal enum ExceptionType
 {

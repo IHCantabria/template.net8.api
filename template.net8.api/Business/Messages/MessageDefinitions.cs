@@ -1,6 +1,6 @@
-﻿using template.net8.Api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 
-namespace template.net8.Api.Business.Messages;
+namespace template.net8.api.Business.Messages;
 
 [CoreLibrary]
 //TODO IMPORTANT: REFACTOR ALL the hardcoded msg to use properties inside this class 

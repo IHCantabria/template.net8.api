@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using LanguageExt;
 using LanguageExt.Common;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Exceptions;
-using template.net8.Api.Core.Extensions;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Exceptions;
+using template.net8.api.Core.Extensions;
 
-namespace template.net8.Api.Core.Json;
+namespace template.net8.api.Core.Json;
 
 [CoreLibrary]
 internal static class Cloner

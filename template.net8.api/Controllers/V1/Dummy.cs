@@ -2,13 +2,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using template.net8.Api.Contracts;
-using template.net8.Api.Controllers.Extensions;
-using template.net8.Api.Domain.DTOs;
-using template.net8.Api.Features.Commands;
-using template.net8.Api.Features.Querys;
+using template.net8.api.Contracts;
+using template.net8.api.Controllers.Extensions;
+using template.net8.api.Domain.DTOs;
+using template.net8.api.Features.Commands;
+using template.net8.api.Features.Querys;
 
-namespace template.net8.Api.Controllers.V1;
+namespace template.net8.api.Controllers.V1;
 
 /// <summary>
 ///     Dummy Controller

@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Settings.Interfaces;
-using template.net8.Api.Settings.Options;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Interfaces;
+using template.net8.api.Settings.Options;
 
-namespace template.net8.Api.Settings.PipelineConfigurators;
+namespace template.net8.api.Settings.PipelineConfigurators;
 
 /// <summary>
 ///     UI Configurator

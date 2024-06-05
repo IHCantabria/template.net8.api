@@ -1,9 +1,9 @@
 ﻿using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Settings.Interfaces;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Interfaces;
 
-namespace template.net8.Api.Settings.PipelineConfigurators;
+namespace template.net8.api.Settings.PipelineConfigurators;
 
 /// <summary>
 ///     Health Configurator

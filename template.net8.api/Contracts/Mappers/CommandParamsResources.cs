@@ -1,6 +1,6 @@
-﻿using template.net8.Api.Domain.DTOs;
+﻿using template.net8.api.Domain.DTOs;
 
-namespace template.net8.Api.Contracts;
+namespace template.net8.api.Contracts;
 
 /// <summary>
 ///     Command Dummy Create Params Resource

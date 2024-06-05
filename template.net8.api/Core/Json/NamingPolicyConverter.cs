@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using JetBrains.Annotations;
-using template.net8.Api.Core.Attributes;
-using template.net8.Api.Core.Extensions;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Extensions;
 
-namespace template.net8.Api.Core.Json;
+namespace template.net8.api.Core.Json;
 
 /// <summary>
 ///     Naming Policy Converter for JSON Serialization and Deserialization based on the header value. Default to SnakeCase
