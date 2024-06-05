@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "name": "ciclope.management.api",
+  "private": true,
+  "scripts": {
+    "install-dotnet": "dotnet restore /p:PublishReadyToRun=true",
+    "build:dev": "dotnet build CICLOPE.Management.Api/CICLOPE.Management.Api.csproj /p:DeployOnBuild=true /p:PublishProfile=dev",
+    "build:prod": "dotnet build CICLOPE.Management.Api/CICLOPE.Management.Api.csproj /p:DeployOnBuild=true /p:PublishProfile=pre",
+    "deploy-patch": "npm version patch -m v%s",
+    "deploy-minor": "npm version minor -m v%s",
+    "deploy-major": "npm version major -m v%s",
+    "sonar": "powershell -File ./sonar.ps1",
+    "preversion": "npm run sonar",
+    "version": "git add -A",
+    "postversion": "git push origin && git push origin --tags"
+  }
+}
