@@ -14,7 +14,8 @@
 		- Properties/PublishProfiles/**
 		
 ## CUSTOMIZE .GITIGNORE using .gitignore_template
-	1. Replace {PROJECT_NAMESPACE} with the project namespace value.
+	1. Use the file gitignore_template. to configure the .gitignore for the project, this file will be added to the repository.
+	2. Replace {PROJECT_NAMESPACE} with the project namespace value.
 		Ex: MiProject.Api
 
 ## CUSTOMIZE PACKAGE.JSON FILE
@@ -25,7 +26,10 @@
 ## CONFIGURE SONARQUBE
 	1. Link repository with sonarqube server project.
 	2. Configure PROJECT_KEY y SONAR_TOKEN_KEY in the sonarqube server.
-	3. Create file sonar.ps1 using the template recursosIT/sonarqube/sonarqube-windows-net.ps1
+	3. Create file sonar.ps1 using the template recursosIT/sonarqube/sonarqube-windows-net.ps1, this file will be omitted from the repository.
+	
+## CONFIGURE appsettings.local.json
+	1. Use the file appsettings.local_template.json to configure a local env for the project, this file will be omitted from the repository.
 	
 ## COMPLETE DEPLOY REQUIREMENTS FILE
 	1. Replace {PROJECT_NAME} with the project name value.
