@@ -1,6 +1,14 @@
-@template.net8.api_HostAddress = http://localhost:5254
+###
 
-GET {{template.net8.api_HostAddress}}/weatherforecast/
-Accept: application/json
+GET {{HostAddress}}/v1/public/dummy
+
+###
+
+POST {{HostAddress}}/v1/public/dummy
+Content-Type: application/json
+
+{
+  "text" :"hola mundo"
+}
 
 ###
