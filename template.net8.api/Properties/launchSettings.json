@@ -37,7 +37,7 @@
         "ASPNETCORE_ENVIRONMENT": "local"
       }
     },
-    "CLIMPORT.Api (LOCAL)": {
+    "{PROJECT_NAME} (LOCAL)": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -47,7 +47,7 @@
         "ASPNETCORE_ENVIRONMENT": "local"
       }
     },
-    "CLIMPORT.Api (DEV)": {
+    "{PROJECT_NAME} (DEV)": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -57,7 +57,7 @@
         "ASPNETCORE_ENVIRONMENT": "dev"
       }
     },
-    "CLIMPORT.Api (PRE)": {
+    "{PROJECT_NAME} (PRE)": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -67,7 +67,7 @@
         "ASPNETCORE_ENVIRONMENT": "pre"
       }
     },
-    "CLIMPORT.Api (PROD)": {
+    "{PROJECT_NAME} (PROD)": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

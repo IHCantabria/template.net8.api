@@ -53,7 +53,7 @@ public sealed class HealthInstaller : IServiceInstaller
                 ServiceMemoryTags);
         if (connectionOptions is not null)
             healthChecksBuilder.AddNpgSql(connectionOptions.DecodedConnectionString, "select 1",
-                name: "PostgreSql Server CLIMPORT DB", failureStatus: HealthStatus.Unhealthy, tags: DbTags);
+                name: "PostgreSql Server PROJECT DB", failureStatus: HealthStatus.Unhealthy, tags: DbTags);
 
         //TODO: FIX, ONLY WORK IN LOCAL
         builder.Services.AddHealthChecksUI(opt =>

@@ -1,11 +1,11 @@
 {
   "version": "0.1.0",
-  "name": "ciclope.management.api",
+  "name": "{PROJECT_NAME_LOWERCASE}",
   "private": true,
   "scripts": {
     "install-dotnet": "dotnet restore /p:PublishReadyToRun=true",
-    "build:dev": "dotnet build CICLOPE.Management.Api/CICLOPE.Management.Api.csproj /p:DeployOnBuild=true /p:PublishProfile=dev",
-    "build:prod": "dotnet build CICLOPE.Management.Api/CICLOPE.Management.Api.csproj /p:DeployOnBuild=true /p:PublishProfile=pre",
+    "build:dev": "dotnet build {PROJECT_NAME}/{PROJECT_NAME}.csproj /p:DeployOnBuild=true /p:PublishProfile=dev",
+    "build:prod": "dotnet build {PROJECT_NAME}/{PROJECT_NAME}.csproj /p:DeployOnBuild=true /p:PublishProfile=pre",
     "deploy-patch": "npm version patch -m v%s",
     "deploy-minor": "npm version minor -m v%s",
     "deploy-major": "npm version major -m v%s",
