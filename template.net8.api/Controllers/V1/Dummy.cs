@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using template.net8.api.Contracts;
 using template.net8.api.Controllers.Extensions;
+using template.net8.api.Core.Contracts;
 using template.net8.api.Domain.DTOs;
 using template.net8.api.Features.Commands;
 using template.net8.api.Features.Querys;
@@ -13,7 +14,7 @@ namespace template.net8.api.Controllers.V1;
 /// <summary>
 ///     Dummy Controller
 /// </summary>
-[SwaggerTag("Dummy Controller")]
+[SwaggerTag(SwaggerDocumentation.Dummy.Tag)]
 [ApiController]
 public sealed class Dummy(
     IMediator mediator,
@@ -31,19 +32,13 @@ public sealed class Dummy(
     [HttpGet]
     [Route(ApiRoutes.Dummy.GetDummies)]
     [SwaggerOperation(
-        Summary = "Get the Dummies.",
+        Summary = SwaggerDocumentation.Dummy.GetDummies.Summary,
         Description =
-            "Get the dummies in the system.",
-        OperationId = "GetDummies"
+            SwaggerDocumentation.Dummy.GetDummies.Description,
+        OperationId = SwaggerDocumentation.Dummy.GetDummies.Id
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return the dummies in the system.",
+    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummy.GetDummies.Ok,
         typeof(IEnumerable<DummyResource>), MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status408RequestTimeout,
-        "Unable to get the dummies due to a request timeout issue, retry the request.",
-        typeof(RequestTimeoutProblemDetailsResource), MediaTypeNames.Application.ProblemJson)]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError,
-        "Unable to get the dummies due to a server error.",
-        typeof(InternalServerProblemDetailsResource), MediaTypeNames.Application.ProblemJson)]
     public async Task<IActionResult> GetDummies(CancellationToken cancellationToken)
     {
         var query = new GetDummiesQuery();
@@ -64,19 +59,16 @@ public sealed class Dummy(
     [HttpPost]
     [Route(ApiRoutes.Dummy.CreateDummy)]
     [SwaggerOperation(
-        Summary = "Create Dummy.",
+        Summary = SwaggerDocumentation.Dummy.CreateDummy.Summary,
         Description =
-            "Create a new Dummy in the system.",
-        OperationId = "CreateDummy"
+            SwaggerDocumentation.Dummy.CreateDummy.Description,
+        OperationId = SwaggerDocumentation.Dummy.CreateDummy.Id
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, "Return the dummy created in the system.",
+    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummy.CreateDummy.Ok,
         typeof(DummyResource), MediaTypeNames.Application.Json)]
-    [SwaggerResponse(StatusCodes.Status408RequestTimeout,
-        "Unable to create the dummy due to a request timeout issue, retry the request.",
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity,
+        SwaggerDocumentation.Dummy.CreateDummy.UnprocessableEntity,
         typeof(RequestTimeoutProblemDetailsResource), MediaTypeNames.Application.ProblemJson)]
-    [SwaggerResponse(StatusCodes.Status500InternalServerError,
-        "Unable to create the dummy due to a server error.",
-        typeof(InternalServerProblemDetailsResource), MediaTypeNames.Application.ProblemJson)]
     public async Task<IActionResult> CreateDummy(CommandDummyCreateParamsResource commandParams,
         CancellationToken cancellationToken)
     {

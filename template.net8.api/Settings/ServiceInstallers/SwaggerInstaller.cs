@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Filters;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
 
@@ -42,6 +43,7 @@ public sealed class SwaggerInstaller : IServiceInstaller
         builder.Services.AddSwaggerGen(c =>
         {
             AddSwaggerDoc(c, swaggerOptions, version);
+            c.OperationFilter<DocumentationOperationFilter>();
             AddSwaggeConfig(c, swaggerOptions);
         });
     }
