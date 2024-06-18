@@ -7,7 +7,7 @@ using template.net8.api.Domain.Persistence.Models.Interfaces;
 namespace template.net8.api.Domain.Specifications.Generic;
 
 [CoreLibrary]
-internal sealed class EntityByIdVerification<TEntity> : VerificationBase<TEntity> where TEntity : class, IEntity
+internal sealed class EntityByIdVerification<TEntity> : VerificationBase<TEntity> where TEntity : class, IEntityWithId
 {
     /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
     /// <exception cref="InvalidOperationException">
@@ -22,7 +22,8 @@ internal sealed class EntityByIdVerification<TEntity> : VerificationBase<TEntity
 
 /// <typeparam name="TEntity"></typeparam>
 [CoreLibrary]
-internal sealed class EntitiesByIdsVerification<TEntity> : VerificationBase<TEntity> where TEntity : class, IEntity
+internal sealed class EntitiesByIdsVerification<TEntity> : VerificationBase<TEntity>
+    where TEntity : class, IEntityWithId
 {
     /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
     /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
@@ -36,7 +37,7 @@ internal sealed class EntitiesByIdsVerification<TEntity> : VerificationBase<TEnt
 
 /// <typeparam name="TEntity"></typeparam>
 [CoreLibrary]
-internal sealed class EntityByIdSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
+internal sealed class EntityByIdSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntityWithId
 {
     /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
     internal EntityByIdSpecification(short entityId, bool trackData = false)
@@ -48,7 +49,8 @@ internal sealed class EntityByIdSpecification<TEntity> : SpecificationBase<TEnti
 
 /// <typeparam name="TEntity"></typeparam>
 [CoreLibrary]
-internal sealed class EntitiesByIdsSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
+internal sealed class EntitiesByIdsSpecification<TEntity> : SpecificationBase<TEntity>
+    where TEntity : class, IEntityWithId
 {
     /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
     /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
@@ -69,7 +71,7 @@ internal sealed class EntitiesByIdsSpecification<TEntity> : SpecificationBase<TE
 /// <typeparam name="TDto"></typeparam>
 [CoreLibrary]
 internal sealed class DtoByIdSpecification<TEntity, TDto> : SpecificationBase<TEntity, TDto>
-    where TEntity : class, IEntity where TDto : class, IDto
+    where TEntity : class, IEntityWithId where TDto : class, IDto
 {
     /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
     internal DtoByIdSpecification(short dtoId, bool trackData = false)
@@ -83,7 +85,7 @@ internal sealed class DtoByIdSpecification<TEntity, TDto> : SpecificationBase<TE
 /// <typeparam name="TDto"></typeparam>
 [CoreLibrary]
 internal sealed class DtosByIdsSpecification<TEntity, TDto> : SpecificationBase<TEntity, TDto>
-    where TEntity : class, IEntity where TDto : class, IDto
+    where TEntity : class, IEntityWithId where TDto : class, IDto
 {
     /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
     /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>

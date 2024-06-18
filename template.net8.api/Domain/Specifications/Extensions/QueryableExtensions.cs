@@ -21,8 +21,6 @@ internal static class QueryableExtensions
         // Modify the IQueryable
 
         query = query.ApplyFilters(verification.Filters);
-        if (verification.OrderBys.Count == 0)
-            query = query.OrderBy(x => x.Id); //Apply Default OrderBy to avoid Impredictable results
         return query;
     }
 

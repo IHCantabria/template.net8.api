@@ -12,6 +12,7 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
         logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <summary>
+    ///     Handle the request
     /// </summary>
     /// <param name="request"></param>
     /// <param name="next"></param>

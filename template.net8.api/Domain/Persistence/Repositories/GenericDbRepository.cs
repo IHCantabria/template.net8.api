@@ -19,6 +19,7 @@ using template.net8.api.Domain.Specifications.Interfaces;
 namespace template.net8.api.Domain.Persistence.Repositories;
 
 /// <summary>
+///     Generic Repository Scoped DbContext with specific DbSet
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 /// <typeparam name="TDbContext"></typeparam>
@@ -33,11 +34,46 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
 {
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
 
-    /// <summary>
-    /// </summary>
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     /// <summary>
+    ///     Asynchronously deletes the entity by its id and maps it to a DTO
+    /// </summary>
+    /// <param name="entityId"></param>
+    /// <param name="cancellationToken"></param>
+    /// <typeparam name="TDto"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<TDto>> DeleteAsync<TDto>(short entityId, CancellationToken cancellationToken)
+        where TDto : class, IDto
+    {
+        var entity = await _dbSet.FindItemAsync(entityId, cancellationToken).ConfigureAwait(false);
+        if (entity is null)
+            return new Result<TDto>(new CoreException("Entity with id:({entityId}) not found"));
+        var dtoResult = Delete<TDto>(entity);
+        return dtoResult;
+    }
+
+    /// <summary>
+    ///     Asynchronously executes the query procedure.
+    /// </summary>
+    /// <param name="procedureName"></param>
+    /// <param name="cancellationToken"></param>
+    /// <param name="parameters"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
+        CancellationToken cancellationToken, params object[] parameters)
+    {
+        ArgumentNullException.ThrowIfNull(parameters);
+        var queryable = PrepareProcedureQueryable(procedureName, parameters);
+        await queryable.ToListAsync(cancellationToken).ConfigureAwait(false);
+        return new Result<bool>(true);
+    }
+
+    /// <summary>
+    ///     Synchronously verifies the entity that satisfies the verification.
     /// </summary>
     /// <param name="verification"></param>
     /// <returns></returns>
@@ -51,6 +87,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously verifies the entity that satisfies the verification.
     /// </summary>
     /// <param name="verification"></param>
     /// <param name="cancellationToken"></param>
@@ -67,6 +104,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously verifies the unique entity that satisfies the verification.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <param name="verification"></param>
@@ -84,6 +122,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the entities that satisfy the specification.
     /// </summary>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
@@ -101,6 +140,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the entities that satisfy the specification and maps them to DTOs.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <param name="specification"></param>
@@ -123,6 +163,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the unique entity that satisfies the specification.
     /// </summary>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
@@ -141,6 +182,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the unique entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
@@ -164,6 +206,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously inserts the entity.
     /// </summary>
     /// <param name="entity"></param>
     /// <param name="cancellationToken"></param>
@@ -176,6 +219,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Synchronously deletes the entity
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
@@ -187,6 +231,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Synchronously deletes the entity and maps it to a DTO
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
@@ -199,6 +244,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously deletes the entity by its id
     /// </summary>
     /// <param name="entityId"></param>
     /// <param name="cancellationToken"></param>
@@ -213,23 +259,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
-    /// </summary>
-    /// <param name="entityId"></param>
-    /// <param name="cancellationToken"></param>
-    /// <typeparam name="TDto"></typeparam>
-    /// <returns></returns>
-    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TDto>> DeleteAsync<TDto>(short entityId, CancellationToken cancellationToken)
-        where TDto : class, IDto
-    {
-        var entity = await _dbSet.FindItemAsync(entityId, cancellationToken).ConfigureAwait(false);
-        if (entity is null)
-            return new Result<TDto>(new CoreException("Entity with id:({entityId}) not found"));
-        var dtoResult = Delete<TDto>(entity);
-        return dtoResult;
-    }
-
-    /// <summary>
+    ///     Synchronously updates the entity
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
@@ -247,6 +277,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Synchonously updates the entity and maps it to a DTO
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
@@ -262,24 +293,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
-    /// </summary>
-    /// <param name="procedureName"></param>
-    /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
-    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
-        CancellationToken cancellationToken,
-        params object[] parameters)
-    {
-        ArgumentNullException.ThrowIfNull(parameters);
-        var queryable = PrepareProcedureQueryable(procedureName, parameters);
-        await queryable.ToListAsync(cancellationToken).ConfigureAwait(false);
-        return new Result<bool>(true);
-    }
-
-    /// <summary>
+    ///     Asynchronously executes the query procedure and returns the entities.
     /// </summary>
     /// <param name="procedureName"></param>
     /// <param name="specification"></param>
@@ -302,6 +316,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously executes the query procedure and maps the entities to DTOs.
     /// </summary>
     /// <param name="procedureName"></param>
     /// <param name="specification"></param>
@@ -327,6 +342,47 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
         return result;
     }
 
+    /// <summary>
+    ///     Asynchronously gets the first entity that satisfies the specification.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken)
+    {
+        var queryable = _dbSet.AsQueryable();
+        var query = queryable.ApplySpecification(specification);
+        var entity = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        return entity ?? new Result<TEntity>(new CoreException("Query return empty result"));
+    }
+
+    /// <summary>
+    ///     Asynchronously gets the first entity that satisfies the specification and maps it to a DTO.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <param name="cancellationToken"></param>
+    /// <typeparam name="TDto"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+        CancellationToken cancellationToken)
+        where TDto : class, IDto
+    {
+        var queryable = _dbSet.AsQueryable();
+        var query = queryable.ApplySpecification(specification);
+        var projection = specification is null
+            ? query.ProjectTo<TDto>(_mapper.ConfigurationProvider)
+            : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
+                specification.MembersToExpand.ToArray());
+        var dto = await projection.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        return dto ?? new Result<TDto>(new CoreException("Query return empty result"));
+    }
+
     private IQueryable<TEntity> PrepareProcedureQueryable(string procedureName, params object[] parameters)
     {
         var queryable = Context.Set<TEntity>().FromSql($"{procedureName} {parameters}");
@@ -335,6 +391,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
 }
 
 /// <summary>
+///     Generic Repository Scoped DbContext
 /// </summary>
 [CoreLibrary]
 //TODO : Refactor this, not used and redundant
@@ -345,11 +402,10 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     context, logger), IGenericDbRepositoryScopedDbContext<TDbContext>
     where TDbContext : DbContext
 {
-    /// <summary>
-    /// </summary>
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     /// <summary>
+    ///     Asynchronously gets the composed DTOs.
     /// </summary>
     /// <param name="entitiesSpecifications"></param>
     /// <param name="cancellationToken"></param>
@@ -379,6 +435,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     }
 
     /// <summary>
+    ///     Asynchronously verifies the composed entities.
     /// </summary>
     /// <param name="entitiesVerifications"></param>
     /// <param name="cancellationToken"></param>
@@ -566,6 +623,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
 }
 
 /// <summary>
+///     Generic Repository Transient DbContext with specific DbSet
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
 /// <typeparam name="TDbContext"></typeparam>
@@ -578,16 +636,13 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
         IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     where TDbContext : DbContext where TEntity : class, IEntity
 {
-    /// <summary>
-    /// </summary>
     private readonly IDbContextFactory<TDbContext> _dbContextFactory =
         dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
-    /// <summary>
-    /// </summary>
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     /// <summary>
+    ///     Synchronously verifies the entity that satisfies the verification.
     /// </summary>
     /// <param name="verification"></param>
     /// <returns></returns>
@@ -602,6 +657,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously verifies the entity that satisfies the verification.
     /// </summary>
     /// <param name="verification"></param>
     /// <param name="cancellationToken"></param>
@@ -620,6 +676,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously verifies the unique entity that satisfies the verification.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <param name="verification"></param>
@@ -639,6 +696,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the entities that satisfy the specification.
     /// </summary>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
@@ -658,6 +716,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the entities that satisfy the specification and maps them to DTOs.
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <param name="specification"></param>
@@ -682,6 +741,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the unique entity that satisfies the specification.
     /// </summary>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
@@ -702,6 +762,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the unique entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
@@ -727,6 +788,52 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously gets the first entity that satisfies the specification.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
+        CancellationToken cancellationToken)
+    {
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
+        var queryable = context.Set<TEntity>().AsQueryable();
+        var query = queryable.ApplySpecification(specification);
+        var entity = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        return entity ?? new Result<TEntity>(new CoreException("Query return empty result"));
+    }
+
+    /// <summary>
+    ///     Asynchronously gets the first entity that satisfies the specification and maps it to a DTO.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <param name="cancellationToken"></param>
+    /// <typeparam name="TDto"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+        CancellationToken cancellationToken)
+        where TDto : class, IDto
+    {
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
+        var queryable = context.Set<TEntity>().AsQueryable();
+        var query = queryable.ApplySpecification(specification);
+        var projection = specification is null
+            ? query.ProjectTo<TDto>(_mapper.ConfigurationProvider)
+            : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
+                specification.MembersToExpand.ToArray());
+        var dto = await projection.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
+        return dto ?? new Result<TDto>(new CoreException("Query return empty result"));
+    }
+
+    /// <summary>
+    ///     Asynchronously executes the query procedure.
     /// </summary>
     /// <param name="procedureName"></param>
     /// <param name="cancellationToken"></param>
@@ -801,6 +908,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
 }
 
 /// <summary>
+///     Generic Repository Transient DbContext
 /// </summary>
 [CoreLibrary]
 //TODO : Refactor this, not used and redundant
@@ -811,16 +919,13 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     : DbRepositoryTransientDbContextBase(logger), IGenericDbRepositoryTransientDbContext<TDbContext>
     where TDbContext : DbContext
 {
-    /// <summary>
-    /// </summary>
     private readonly IDbContextFactory<TDbContext> _dbContextFactory =
         dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
 
-    /// <summary>
-    /// </summary>
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     /// <summary>
+    ///     Asynchronously gets the composed DTOs.
     /// </summary>
     /// <param name="entitiesSpecifications"></param>
     /// <param name="cancellationToken"></param>
@@ -850,6 +955,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     }
 
     /// <summary>
+    ///     Asynchronously verifies the composed entities.
     /// </summary>
     /// <param name="entitiesVerifications"></param>
     /// <param name="cancellationToken"></param>

@@ -41,7 +41,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValid
     private async Task<IEnumerable<ValidationResult>> ValidateValidatorsAsync(IValidationContext context,
         CancellationToken cancellationToken = default)
     {
-        //paralelized validation?
+        //TODO: paralelized validation?
         var validationTasks = _validators.Select(v => v.ValidateAsync(context, cancellationToken));
         return await Task.WhenAll(validationTasks).ConfigureAwait(false);
     }

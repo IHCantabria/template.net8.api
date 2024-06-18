@@ -16,7 +16,7 @@ public class MyControllerBase : ControllerBase
     internal readonly IMediator Mediator;
 
     /// <summary>
-    ///     MY Controller Base Constructor
+    ///     My Controller Base Constructor
     /// </summary>
     /// <param name="mediator"></param>
     /// <param name="logger"></param>

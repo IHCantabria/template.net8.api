@@ -25,13 +25,11 @@ public class VerificationBase<TEntity> : IVerification<TEntity> where TEntity : 
 
     /// <summary>
     /// </summary>
-    public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } =
-        new List<Expression<Func<TEntity, bool>>>();
+    public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } = [];
 
     /// <summary>
     /// </summary>
-    public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } =
-        new List<Tuple<Expression<Func<TEntity, object>>, OrderByType>>();
+    public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } = [];
 
     /// <summary>
     /// </summary>
@@ -78,18 +76,15 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     /// <summary>
     /// </summary>
     public ICollection<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>
-        Includes { get; } =
-        new List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>();
+        Includes { get; } = [];
 
     /// <summary>
     /// </summary>
-    public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } =
-        new List<Tuple<Expression<Func<TEntity, object>>, OrderByType>>();
+    public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } = [];
 
     /// <summary>
     /// </summary>
-    public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } =
-        new List<Expression<Func<TEntity, bool>>>();
+    public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } = [];
 
     /// <summary>
     /// </summary>
@@ -166,8 +161,7 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
 
     /// <summary>
     /// </summary>
-    public ICollection<Expression<Func<TEntity, object>>> Includes { get; } =
-        new List<Expression<Func<TEntity, object>>>();
+    public ICollection<Expression<Func<TEntity, object>>> Includes { get; } = [];
 
     /// <summary>
     /// </summary>
@@ -183,13 +177,11 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
 
     /// <summary>
     /// </summary>
-    public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } =
-        new List<Tuple<Expression<Func<TEntity, object>>, OrderByType>>();
+    public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } = [];
 
     /// <summary>
     /// </summary>
-    public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } =
-        new List<Expression<Func<TEntity, bool>>>();
+    public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } = [];
 
     /// <summary>
     /// </summary>

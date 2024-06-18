@@ -8,10 +8,10 @@ namespace template.net8.api.Domain.Persistence.Models.Interfaces;
 /// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithInheritors | ImplicitUseTargetFlags.WithMembers)]
 [CoreLibrary]
-public interface IDbModel
+public interface IEntity
 {
     /// <summary>
-    ///     Check if the model is valid.
+    ///     Check if the entity is valid.
     /// </summary>
     /// <returns></returns>
     public bool Check()
@@ -24,12 +24,24 @@ public interface IDbModel
 ///     This interface is intended  to mark class models of the database context that have a primary key Id.
 /// </summary>
 [CoreLibrary]
-public interface IEntity : IDbModel
+public interface IEntityWithId : IEntity
 {
     /// <summary>
-    ///     Id of the entity.
+    ///     Pk of the entity.
     /// </summary>
-    public short Id { get; set; }
+    public short Id { get; init; }
+}
+
+/// <summary>
+///     This interface is intended  to mark class models of the database context that have a primary key uuid.
+/// </summary>
+[CoreLibrary]
+public interface IEntityWithUuid : IEntity
+{
+    /// <summary>
+    ///     Pk of the entity.
+    /// </summary>
+    public string Uuid { get; init; }
 }
 
 /// <summary>
@@ -41,17 +53,17 @@ public interface INamedEntity : IEntity
     /// <summary>
     ///     Name of the entity.
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; init; }
 }
 
 /// <summary>
 ///     This interface is intended  to mark class models of the database context that have Name and Alias fields.
 /// </summary>
 [CoreLibrary]
-public interface IAliasEntity : INamedEntity
+public interface IAliasEntity : IEntity
 {
     /// <summary>
     ///     Alias of the entity.
     /// </summary>
-    public string AliasText { get; set; }
+    public string AliasText { get; init; }
 }

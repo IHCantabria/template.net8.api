@@ -9,7 +9,7 @@ using template.net8.api.Core.Contracts;
 namespace template.net8.api.Settings.Filters;
 
 /// <summary>
-///     Documentation Operation Filter to
+///     Documentation Operation Filter
 /// </summary>
 [UsedImplicitly]
 public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
@@ -21,6 +21,7 @@ public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
         "Unable to execute the requested operation due to a request timeout issue, please retry the request.";
 
     /// <summary>
+    ///     Default Constructor
     /// </summary>
     public DocumentationOperationFilter()
     {
@@ -28,6 +29,7 @@ public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
     }
 
     /// <summary>
+    ///     Apply the filter to the operation.
     /// </summary>
     /// <param name="operation"></param>
     /// <param name="context"></param>
