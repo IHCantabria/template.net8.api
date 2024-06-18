@@ -102,14 +102,17 @@ internal static class BusinessExceptionMapper
         return CreateDynamicResult(httpStatusCode, exception, features);
     }
 
-    /// <returns></returns>
     private static BadRequestResult CreateDynamicResult(HttpStatusCode httpStatusCode, Exception ex,
         IFeatureCollection features)
     {
         return httpStatusCode switch
         {
+            HttpStatusCode.BadRequest when ex is ValidationException vex => CreateBadRequestResult(vex, features),
+            HttpStatusCode.BadRequest => CreateBadRequestResult(ex, features),
             HttpStatusCode.NotFound when ex is ValidationException vex => CreateNotFoundResult(vex, features),
             HttpStatusCode.NotFound => CreateNotFoundResult(ex, features),
+            HttpStatusCode.Conflict when ex is ValidationException vex => CreateConflictResult(vex, features),
+            HttpStatusCode.Conflict => CreateConflictResult(ex, features),
             HttpStatusCode.Gone when ex is ValidationException vex => CreateGoneResult(vex, features),
             HttpStatusCode.Gone => CreateGoneResult(ex, features),
             HttpStatusCode.UnprocessableEntity when ex is ValidationException vex => CreateValidationErrorResult(vex,
