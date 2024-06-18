@@ -9,7 +9,9 @@ namespace template.net8.api.Business.Exceptions;
 
 internal enum ExceptionType
 {
+    BadRequest,
     NotFound,
+    Conflict,
     Gone,
     Validation,
     UnprocessableEntity,
@@ -24,7 +26,9 @@ internal static class BusinessExceptionMapper
     private static readonly Dictionary<ExceptionType, Func<Exception, IFeatureCollection, IActionResult>>
         ActionResultHandlers = new()
         {
+            { ExceptionType.BadRequest, (ex, features) => CreateBadRequestResult((BadRequestException)ex, features) },
             { ExceptionType.NotFound, (ex, features) => CreateNotFoundResult((NotFoundException)ex, features) },
+            { ExceptionType.Conflict, (ex, features) => CreateConflictResult((ConflictException)ex, features) },
             { ExceptionType.Gone, (ex, features) => CreateGoneResult((GoneException)ex, features) },
             {
                 ExceptionType.Validation,
@@ -44,7 +48,9 @@ internal static class BusinessExceptionMapper
     private static readonly Dictionary<ExceptionType, HttpStatusCode>
         HttpStatusCodetHandlers = new()
         {
+            { ExceptionType.BadRequest, HttpStatusCode.BadRequest },
             { ExceptionType.NotFound, HttpStatusCode.NotFound },
+            { ExceptionType.Conflict, HttpStatusCode.Conflict },
             { ExceptionType.Gone, HttpStatusCode.Gone },
             { ExceptionType.Validation, HttpStatusCode.BadRequest },
             { ExceptionType.UnprocessableEntity, HttpStatusCode.UnprocessableEntity }
@@ -113,6 +119,33 @@ internal static class BusinessExceptionMapper
         };
     }
 
+    private static BadRequestResult CreateBadRequestResult(Exception exception, IFeatureCollection features)
+    {
+        var clientProblemDetails = new ProblemDetails
+        {
+            Title = "Incorrect Inputs.",
+            Detail = exception.Message,
+            Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request",
+            Status = StatusCodes.Status400BadRequest
+        };
+        features.Set(clientProblemDetails);
+        return new BadRequestResult();
+    }
+
+    private static BadRequestResult CreateBadRequestResult(ValidationException exception, IFeatureCollection features)
+    {
+        var clientProblemDetails = new ProblemDetails
+        {
+            Title = "Incorrect Inputs.",
+            Detail = "Check the described errors and relaunch the request with the correct values.",
+            Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request",
+            Status = StatusCodes.Status400BadRequest
+        };
+        clientProblemDetails = AddErrors(clientProblemDetails, exception);
+        features.Set(clientProblemDetails);
+        return new BadRequestResult();
+    }
+
     private static BadRequestResult CreateNotFoundResult(Exception exception, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -134,6 +167,33 @@ internal static class BusinessExceptionMapper
             Detail = "Check the described errors and relaunch the request with the correct values.",
             Type = "https://tools.ietf.org/html/rfc9110#name-404-not-found",
             Status = StatusCodes.Status404NotFound
+        };
+        clientProblemDetails = AddErrors(clientProblemDetails, exception);
+        features.Set(clientProblemDetails);
+        return new BadRequestResult();
+    }
+
+    private static BadRequestResult CreateConflictResult(Exception exception, IFeatureCollection features)
+    {
+        var clientProblemDetails = new ProblemDetails
+        {
+            Title = "Operation Not Allowed",
+            Detail = exception.Message,
+            Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
+            Status = StatusCodes.Status409Conflict
+        };
+        features.Set(clientProblemDetails);
+        return new BadRequestResult();
+    }
+
+    private static BadRequestResult CreateConflictResult(ValidationException exception, IFeatureCollection features)
+    {
+        var clientProblemDetails = new ProblemDetails
+        {
+            Title = "Operation Not Allowed",
+            Detail = "Check the described errors and relaunch the request with the correct values.",
+            Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
+            Status = StatusCodes.Status409Conflict
         };
         clientProblemDetails = AddErrors(clientProblemDetails, exception);
         features.Set(clientProblemDetails);

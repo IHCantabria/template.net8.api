@@ -37,6 +37,38 @@ internal sealed class GoneException : BusinessException
 }
 
 [CoreLibrary]
+internal sealed class BadRequestException : BusinessException
+{
+    internal BadRequestException()
+    {
+    }
+
+    internal BadRequestException(string message) : base(message)
+    {
+    }
+
+    internal BadRequestException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class ConflictException : BusinessException
+{
+    internal ConflictException()
+    {
+    }
+
+    internal ConflictException(string message) : base(message)
+    {
+    }
+
+    internal ConflictException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
 internal sealed class NotFoundException : BusinessException
 {
     internal NotFoundException()
