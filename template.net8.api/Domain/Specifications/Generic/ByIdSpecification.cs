@@ -6,35 +6,6 @@ using template.net8.api.Domain.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Domain.Specifications.Generic;
 
-[CoreLibrary]
-internal sealed class EntityByIdVerification<TEntity> : VerificationBase<TEntity> where TEntity : class, IEntityWithId
-{
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
-    /// <exception cref="InvalidOperationException">
-    ///     The <see /> property is
-    ///     <see langword="false" />.
-    /// </exception>
-    internal EntityByIdVerification(short? entityId = null)
-    {
-        if (entityId.HasValue) AddFilter(e => e.Id == entityId.Value);
-    }
-}
-
-/// <typeparam name="TEntity"></typeparam>
-[CoreLibrary]
-internal sealed class EntitiesByIdsVerification<TEntity> : VerificationBase<TEntity>
-    where TEntity : class, IEntityWithId
-{
-    /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
-    internal EntitiesByIdsVerification(IEnumerable<short>? entityIds = null)
-    {
-        if (entityIds is null) return;
-        var enumerable = entityIds.ToList();
-        AddFilter(e => enumerable.Contains(e.Id));
-    }
-}
-
 /// <typeparam name="TEntity"></typeparam>
 [CoreLibrary]
 internal sealed class EntityByIdSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntityWithId
