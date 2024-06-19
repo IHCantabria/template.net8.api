@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http.Features;
@@ -323,12 +324,12 @@ internal static class BusinessExceptionMapper
 
     private sealed record ProblemDetailsValidationError
     {
-        internal required string Detail { get; init; }
+        [JsonRequired] public required string Detail { get; init; }
 
-        internal required string Pointer { get; init; }
+        [JsonRequired] public required string Pointer { get; init; }
 
-        internal required string? Value { get; init; }
+        [JsonRequired] public required string? Value { get; init; }
 
-        internal required string Code { get; init; }
+        [JsonRequired] public required string Code { get; init; }
     }
 }
