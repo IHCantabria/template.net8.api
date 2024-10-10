@@ -17,7 +17,7 @@ public class ServiceBase : IServiceImplementation
     ///     Service Base Constructor
     /// </summary>
     /// <param name="logger"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException">Condition.</exception>
     protected ServiceBase(ILogger<ServiceBase> logger)
     {
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));

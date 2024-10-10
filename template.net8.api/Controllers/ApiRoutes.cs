@@ -1,5 +1,8 @@
-﻿namespace template.net8.api.Controllers;
+﻿using template.net8.api.Core.Attributes;
 
+namespace template.net8.api.Controllers;
+
+[CoreLibrary]
 internal static class ApiRoutes
 {
     private const string Root = "";
@@ -12,14 +15,24 @@ internal static class ApiRoutes
 
     private const string PathAccess = $"{PathVersion}/{Access}";
 
-    internal static class Dummy
+    internal static class Dummies
     {
-        private const string ControllerDummy = "dummy";
+        private const string ControllerIdentity = "dummies";
 
-        private const string PathControllerDummy = $"{PathAccess}/{ControllerDummy}";
+        internal const string PathController = $"{PathAccess}/{ControllerIdentity}";
 
-        internal const string GetDummies = PathControllerDummy + "/";
+        internal const string GetDummies = "";
 
-        internal const string CreateDummy = PathControllerDummy + "/";
+        internal const string GetDummy = "{dummy-key}";
+
+        internal const string CreateDummy = "";
+    }
+
+    [CoreLibrary]
+    internal static class Health
+    {
+        internal const string PathController = "";
+
+        internal const string HealthCheck = "";
     }
 }

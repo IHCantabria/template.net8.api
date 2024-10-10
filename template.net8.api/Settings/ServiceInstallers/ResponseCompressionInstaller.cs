@@ -55,7 +55,12 @@ public sealed class ResponseCompressionInstaller : IServiceInstaller
     ///     Install Compression Respònse Service
     /// </summary>
     /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

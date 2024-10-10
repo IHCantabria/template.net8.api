@@ -16,12 +16,16 @@ public sealed class SecurityInstaller : IServiceInstaller
     /// </summary>
     public short LoadOrder => 20;
 
-
     /// <summary>
     ///     Install Security Service
     /// </summary>
     /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

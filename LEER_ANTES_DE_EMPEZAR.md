@@ -1,5 +1,7 @@
 # PROJECT CONFIGURATION
 
+Read and follow this steps after clone template repo and  before doing anything more.
+
 ## RENAME .NET PROJECT
 	1. Manual rename the next files and folders with the SAME NAME:
 		- Solution file "template.net8.api.sln".
@@ -21,15 +23,18 @@
 		- appsettings.json
 		- Renamed "template.net8.api"
 		Ex: MiProject.Api
-	2. Replace {PROJECT_NAME} with the project name value. 
+	2. Replace {PROJECT_CODE} with a unique short project code. 
+		- BusinessConstants.
+		Ex: TERI
+	3. Replace {PROJECT_NAME} with the project name value. 
 		- Properties/launchSettings.json
 		- appsettings.json
 		- Renamed "template.net8.api"
 		Ex: MiProject.Api
-	3. Replace {PROJECT_GUID} with a new GUID. Visual Studio -> Tools -> Create GUID.
+	4. Replace {PROJECT_GUID} with a new GUID. Visual Studio -> Tools -> Create GUID.
 		- Properties/PublishProfiles/**
 		Ex: 9E4F3D66-752A-487C-80DE-EA733A0B111B
-	4. Remove the unused envs config and/or add custom envs config( Development, Pre, Prod...)
+	5. Remove the unused envs config and/or add custom envs config( Development, Pre, Prod...)
 		- Envs.cs
 		- appsettings."env".json
 		- Properties/launchSettings.json
@@ -50,7 +55,7 @@
 ## CONFIGURE SONARQUBE
 	1. Link repository with sonarqube server project.
 	2. Configure PROJECT_KEY y SONAR_TOKEN_KEY in the sonarqube server.
-	3. Create file sonar.ps1 using the template recursosIT/sonarqube/sonarqube-windows-net.ps1, this file will be omitted from the repository.
+	3. Rename the file analyser_template.ps1 to sonar.ps1. This file will be your configuration for the local env of the project, this file will be omitted from the repository.
 	
 ## CONFIGURE appsettings.local.json
 	1. Rename the file appsettings.local_template.json to appsettings.local.json. This file will be your configuration for the local env of the project, this file will be omitted from the repository.
@@ -67,4 +72,4 @@
 ## CHECKS
 	1. Check correct compilation and Startup
 	2. Check correct build using the command npm build:"env"
-	3. Delete this FILE
+	3. ¡DELETE THIS FILE!.

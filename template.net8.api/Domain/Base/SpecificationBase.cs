@@ -35,7 +35,13 @@ public class VerificationBase<TEntity> : IVerification<TEntity> where TEntity : 
     /// </summary>
     /// <param name="orderByExpression"></param>
     /// <param name="orderType"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
@@ -44,7 +50,13 @@ public class VerificationBase<TEntity> : IVerification<TEntity> where TEntity : 
     /// <summary>
     /// </summary>
     /// <param name="filterExpression"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddFilter(Expression<Func<TEntity, bool>> filterExpression)
     {
         Filters.Add(filterExpression);
@@ -93,7 +105,13 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     /// <summary>
     /// </summary>
     /// <param name="includeExpression"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddInclude(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeExpression)
     {
         Includes.Add(includeExpression);
@@ -103,7 +121,13 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     /// </summary>
     /// <param name="orderByExpression"></param>
     /// <param name="orderType"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
@@ -112,7 +136,13 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     /// <summary>
     /// </summary>
     /// <param name="filterExpression"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddFilter(Expression<Func<TEntity, bool>> filterExpression)
     {
         Filters.Add(filterExpression);
@@ -194,7 +224,13 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// <summary>
     /// </summary>
     /// <param name="includeExpression"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddInclude(Expression<Func<TEntity, object>> includeExpression)
     {
         Includes.Add(includeExpression);
@@ -204,7 +240,13 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// </summary>
     /// <param name="orderByExpression"></param>
     /// <param name="orderType"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
@@ -213,7 +255,13 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// <summary>
     /// </summary>
     /// <param name="filterExpression"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddFilter(Expression<Func<TEntity, bool>> filterExpression)
     {
         Filters.Add(filterExpression);
@@ -254,7 +302,13 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// <summary>
     /// </summary>
     /// <param name="memberExpression"></param>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     protected void AddMember(Expression<Func<TDto, object?>> memberExpression)
     {
         MembersToExpand.Add(memberExpression);

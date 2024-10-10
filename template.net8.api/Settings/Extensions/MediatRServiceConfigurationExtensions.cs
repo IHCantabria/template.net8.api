@@ -3,13 +3,23 @@ using MediatR;
 using template.net8.api.Behaviors;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.DTOs;
+using template.net8.api.Domain.Persistence.Models;
 using template.net8.api.Features.Commands;
+using template.net8.api.Features.Querys;
 
 namespace template.net8.api.Settings.Extensions;
 
 [CoreLibrary]
 internal static class MediatRServiceConfigurationExtensions
 {
+    internal static MediatRServiceConfiguration AddBehaviours(this MediatRServiceConfiguration config)
+    {
+        config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+        config.AddValidations();
+
+        return config;
+    }
+
     private static MediatRServiceConfiguration AddValidation<TRequest, TResponse>(
         this MediatRServiceConfiguration config) where TRequest : notnull
     {
@@ -17,10 +27,12 @@ internal static class MediatRServiceConfigurationExtensions
             .AddBehavior<IPipelineBehavior<TRequest, Result<TResponse>>, ValidationBehavior<TRequest, TResponse>>();
     }
 
-    internal static MediatRServiceConfiguration AddBehaviours(this MediatRServiceConfiguration config)
+
+    private static MediatRServiceConfiguration AddValidations(this MediatRServiceConfiguration config)
     {
-        config.AddOpenBehavior(typeof(LoggingBehavior<,>));
-        config.AddValidation<CreateDummyCommand, DummyDto>();
+        config.AddValidation<CommandCreateDummy, Dummy>();
+        config.AddValidation<QueryGetDummy, DummyDto>();
+        config.AddValidation<QueryGetDummies, IEnumerable<DummyDto>>();
         return config;
     }
 

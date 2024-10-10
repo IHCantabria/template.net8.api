@@ -18,13 +18,17 @@ public sealed class RequestTimeoutInstaller : IServiceInstaller
     /// </summary>
     public short LoadOrder => 21;
 
-
     /// <summary>
     ///     Install Request Timeout Service
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

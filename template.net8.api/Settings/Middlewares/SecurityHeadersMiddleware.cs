@@ -16,7 +16,12 @@ public sealed class SecurityHeadersMiddleware(RequestDelegate next)
     ///     Invoke Async method to invoke the middleware. This method adds the security headers to the response.
     /// </summary>
     /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     public Task InvokeAsync(HttpContext context)
     {
@@ -27,7 +32,7 @@ public sealed class SecurityHeadersMiddleware(RequestDelegate next)
             // Content-Security-Policy Header
             context.Response.Headers.Append("Content-Security-Policy",
                 new StringValues(
-                    "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://avatars3.githubusercontent.com data:; style-src-elem 'self' 'unsafe-inline'; script-src-elem 'self' 'unsafe-inline';"));
+                    "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' avatars3.githubusercontent.com cdn.redoc.ly data:; style-src-elem 'self' 'unsafe-inline' fonts.googleapis.com; script-src-elem 'self' 'unsafe-inline'; worker-src blob:; font-src fonts.gstatic.com"));
 
             // X-Content-Type-Options Header
             context.Response.Headers.Append("X-Content-Type-Options", new StringValues("nosniff"));

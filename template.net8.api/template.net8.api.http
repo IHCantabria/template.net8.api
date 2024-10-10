@@ -1,14 +1,18 @@
 ###
 
-GET {{HostAddress}}/v1/public/dummy
+GET {{HostAddress}}/v1/public/dummies
 
 ###
 
-POST {{HostAddress}}/v1/public/dummy
+GET {{HostAddress}}/v1/public/dummies/1
+
+###
+
+POST {{HostAddress}}/v1/public/dummies
 Content-Type: application/json
 
 {
-  "text" :"hola mundo"
+    "text" :"hola mundo"
 }
 
 ###

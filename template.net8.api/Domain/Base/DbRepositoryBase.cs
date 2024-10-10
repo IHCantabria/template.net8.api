@@ -16,7 +16,7 @@ public class DbRepositoryScopedDbContextBase : RepositoryBase
     /// </summary>
     /// <param name="context"></param>
     /// <param name="logger"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException">Condition.</exception>
     protected DbRepositoryScopedDbContextBase(DbContext context, ILogger<DbRepositoryScopedDbContextBase> logger) :
         base(logger)
     {
@@ -34,7 +34,7 @@ public class DbRepositoryTransientDbContextBase : RepositoryBase
     ///     Db Repository Base Constructor
     /// </summary>
     /// <param name="logger"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException">Condition.</exception>
     protected DbRepositoryTransientDbContextBase(ILogger<DbRepositoryTransientDbContextBase> logger) : base(logger)
     {
     }

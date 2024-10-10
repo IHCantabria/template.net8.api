@@ -18,6 +18,7 @@ public sealed partial record DummyDto
         ArgumentNullException.ThrowIfNull(dto);
         return new DummyResource
         {
+            Key = dto.Key,
             Text = dto.Text
         };
     }

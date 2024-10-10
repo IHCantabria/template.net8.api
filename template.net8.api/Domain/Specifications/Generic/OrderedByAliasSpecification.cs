@@ -9,9 +9,15 @@ namespace template.net8.api.Domain.Specifications.Generic;
 
 [CoreLibrary]
 internal sealed class DtosOrderedByAliasSpecifications<TEntity, TDto> : SpecificationBase<TEntity, TDto>
-    where TEntity : class, IAliasEntity where TDto : class, IDto
+    where TEntity : class, IEntityWithAlias where TDto : class, IDto
 {
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal DtosOrderedByAliasSpecifications(bool trackData = false)
     {
         AddOrderBy(e => e.AliasText, OrderByType.Asc);

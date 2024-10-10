@@ -21,7 +21,12 @@ public sealed class HealthConfigurator : IPipelineConfigurator
     /// </summary>
     /// <param name="app"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);

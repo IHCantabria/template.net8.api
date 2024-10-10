@@ -10,7 +10,13 @@ namespace template.net8.api.Domain.Specifications.Generic;
 [CoreLibrary]
 internal sealed class EntityByIdSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntityWithId
 {
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal EntityByIdSpecification(short entityId, bool trackData = false)
     {
         AddFilter(e => e.Id == entityId);
@@ -23,8 +29,19 @@ internal sealed class EntityByIdSpecification<TEntity> : SpecificationBase<TEnti
 internal sealed class EntitiesByIdsSpecification<TEntity> : SpecificationBase<TEntity>
     where TEntity : class, IEntityWithId
 {
-    /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal EntitiesByIdsSpecification(IEnumerable<short>? entityIds = null,
         bool trackData = false)
     {
@@ -44,7 +61,13 @@ internal sealed class EntitiesByIdsSpecification<TEntity> : SpecificationBase<TE
 internal sealed class DtoByIdSpecification<TEntity, TDto> : SpecificationBase<TEntity, TDto>
     where TEntity : class, IEntityWithId where TDto : class, IDto
 {
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal DtoByIdSpecification(short dtoId, bool trackData = false)
     {
         AddFilter(e => e.Id == dtoId);
@@ -58,8 +81,19 @@ internal sealed class DtoByIdSpecification<TEntity, TDto> : SpecificationBase<TE
 internal sealed class DtosByIdsSpecification<TEntity, TDto> : SpecificationBase<TEntity, TDto>
     where TEntity : class, IEntityWithId where TDto : class, IDto
 {
-    /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal DtosByIdsSpecification(IEnumerable<short>? dtosIds = null, bool trackData = false)
     {
         if (dtosIds != null)

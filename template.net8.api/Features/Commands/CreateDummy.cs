@@ -1,63 +1,62 @@
 ﻿using System.Globalization;
 using System.Net;
+using System.Numerics;
 using FluentValidation;
 using JetBrains.Annotations;
 using LanguageExt.Common;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Domain.DTOs;
+using template.net8.api.Domain.Persistence.Models;
 
 namespace template.net8.api.Features.Commands;
 
 /// <summary>
-///     Create Dummy CQRS Command
+///     Command Create Dummy CQRS
 /// </summary>
-[UsedImplicitly]
-public sealed record CreateDummyCommand(CommandDummyCreateParamsDto CommandParams) : IRequest<Result<DummyDto>>;
+public sealed record CommandCreateDummy(CommandCreateDummyParamsDto CommandParams) : IRequest<Result<Dummy>>,
+    IEqualityOperators<CommandCreateDummy, CommandCreateDummy, bool>;
 
-/// <summary>
-///     Create Dummy CQRS Command Handler
-/// </summary>
 [UsedImplicitly]
-public sealed class CreateDummyHandlerCommand : IRequestHandler<CreateDummyCommand, Result<DummyDto>>
+internal sealed class CreateDummyHandlerCommand : IRequestHandler<CommandCreateDummy, Result<Dummy>>
 {
     /// <summary>
+    ///     Handle the Create Dummy Command request
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
-    public Task<Result<DummyDto>> Handle(CreateDummyCommand request,
+    public Task<Result<Dummy>> Handle(CommandCreateDummy request,
         CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        return Task.FromResult(new Result<DummyDto>(new DummyDto
+        return Task.FromResult(new Result<Dummy>(new Dummy
         {
+            Key = "1",
             Text = request.CommandParams.Text
         }));
     }
 }
 
 /// <summary>
-///     Create Dummy Handler Validator class to validate the  Create Dummy Command DTO before processing the request.
-///     This class is used to validate the Create Dummy Command DTO before processing the request. It implements the
-///     AbstractValidator class from the FluentValidation library.
+///     Create dummy text validator class to validate the text declared in the Command Create Dummy DTO
+///     before
+///     processing the request.
 /// </summary>
 [UsedImplicitly]
-public sealed class CreateDummyHandlerValidator : AbstractValidator<CreateDummyCommand>
+public sealed class CreateDummyTextValidator : AbstractValidator<CommandCreateDummy>
 {
-    private const string MsgText =
+    private const string Msg =
         "You must specify a valid text";
 
     /// <summary>
     ///     Create Dummy Handler Validator Constructor to initialize the validation rules for the Create Dummy Command DTO
     ///     class.
     /// </summary>
-    public CreateDummyHandlerValidator()
+    public CreateDummyTextValidator()
     {
         RuleFor(x => x.CommandParams.Text).Must(x => !x.IsNullOrEmpty())
             .OverridePropertyName("text")
-            .WithMessage(MsgText.ToString(CultureInfo.InvariantCulture))
+            .WithMessage(Msg.ToString(CultureInfo.InvariantCulture))
             .WithErrorCode(StatusCodes.Status422UnprocessableEntity.ToString(CultureInfo.InvariantCulture))
             .WithState(_ => HttpStatusCode.UnprocessableEntity);
     }

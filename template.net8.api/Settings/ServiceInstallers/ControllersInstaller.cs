@@ -21,9 +21,20 @@ public sealed class ControllersInstaller : IServiceInstaller
     ///     Install Controller Services
     /// </summary>
     /// <param name="builder"></param>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     /// <exception cref="InvalidOperationException">This property is set after serialization or deserialization has occurred.</exception>
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
-    /// <exception cref="ArgumentNullException">Condition.</exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

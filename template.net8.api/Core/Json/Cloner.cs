@@ -12,13 +12,13 @@ internal static class Cloner
 {
     private static readonly JsonSerializerOptions Options = new JsonSerializerOptions().AddCoreOptions();
 
-    /// <exception cref="ResultFaultedInvalidOperationException">
-    ///     Result is not a failure! Use ExtractData method instead and Check the state
-    ///     of Result with IsSuccess or IsFaulted before use this method or ExtractData method
-    /// </exception>
     /// <exception cref="ResultSuccessInvalidOperationException">
-    ///     Result is not a success! Use ExtractException method instead and Check the
-    ///     state of Result with IsSuccess or IsFaulted before use this method or ExtractException method
+    ///     Result is not a success! Use ExtractException method instead
+    ///     and Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractException method
+    /// </exception>
+    /// <exception cref="ResultFaultedInvalidOperationException">
+    ///     Result is not a failure! Use ExtractData method instead and
+    ///     Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractData method
     /// </exception>
     internal static Try<T> DeepClone<T>(T obj)
     {

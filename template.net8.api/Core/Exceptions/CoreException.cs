@@ -6,7 +6,7 @@ namespace template.net8.api.Core.Exceptions;
 ///     Core Exception
 /// </summary>
 [CoreLibrary]
-//TODO: Improve this class Investigate How Log When This Exception is Created or Thrown. Thin kabout the diference between this an Business Exception class
+//TODO: Improve this class and child Investigate How Log When This Exception is Created or Thrown. Think about the diference between this an Business Exception class
 public class CoreException : Exception
 {
     /// <summary>

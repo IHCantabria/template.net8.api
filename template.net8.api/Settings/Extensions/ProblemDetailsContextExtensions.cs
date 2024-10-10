@@ -14,10 +14,18 @@ internal static class ProblemDetailsContextExtensions
             ctx.ProblemDetails.Detail = null;
     }
 
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal static void AddMethodField(this ProblemDetailsContext ctx)
     {
         if (ContainsMethod(ctx.ProblemDetails.Extensions)) return;
+
         var httpMethod = ctx.HttpContext.Request.Method;
         ctx.ProblemDetails.Extensions.Add(new KeyValuePair<string, object?>("method", httpMethod));
     }
@@ -28,12 +36,36 @@ internal static class ProblemDetailsContextExtensions
             ctx.ProblemDetails.Instance = GetInstance(ctx.HttpContext);
     }
 
-    /// <exception cref="NotSupportedException">The <see /> is read-only.</exception>
+
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
     internal static void AddTraceIdField(this ProblemDetailsContext ctx)
     {
         if (ContainsTraceId(ctx.ProblemDetails.Extensions)) return;
+
         var traceId = Activity.Current?.Id ?? ctx.HttpContext.TraceIdentifier;
         ctx.ProblemDetails.Extensions.Add(new KeyValuePair<string, object?>("traceId", traceId));
+    }
+
+
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>ICollection`1</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
+    internal static void AddCodeField(this ProblemDetailsContext ctx)
+    {
+        if (ContainsCode(ctx.ProblemDetails.Extensions)) return;
+
+        const string code = "NCE";
+        ctx.ProblemDetails.Extensions.Add(new KeyValuePair<string, object?>("code", code));
     }
 
     internal static void UseClientProblemDetails(this ProblemDetailsContext ctx, ProblemDetails clientProblemDetails)
@@ -70,6 +102,11 @@ internal static class ProblemDetailsContextExtensions
     private static bool ContainsTraceId(IDictionary<string, object?> extensions)
     {
         return extensions.ContainsKey("traceId");
+    }
+
+    private static bool ContainsCode(IDictionary<string, object?> extensions)
+    {
+        return extensions.ContainsKey("code");
     }
 
     private static bool NotContainsInstance(ProblemDetailsContext ctx)

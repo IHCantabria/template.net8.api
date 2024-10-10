@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using Microsoft.Extensions.Options;
 using template.net8.api.Core.Attributes;
 
@@ -8,7 +9,7 @@ namespace template.net8.api.Settings.Options;
 ///     ReDoc Options for the ReDoc Document Generator
 /// </summary>
 [CoreLibrary]
-public sealed record ReDocOptions
+public sealed record ReDocOptions : IEqualityOperators<ReDocOptions, ReDocOptions, bool>
 {
     /// <summary>
     ///     AppSettings Key for ReDoc Options

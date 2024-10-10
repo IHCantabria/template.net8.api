@@ -1,4 +1,6 @@
-﻿using LanguageExt.Common;
+﻿using JetBrains.Annotations;
+using LanguageExt;
+using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.Interfaces;
@@ -13,15 +15,22 @@ namespace template.net8.api.Domain.Persistence.Repositories.Interfaces;
 /// <typeparam name="TDbContext"></typeparam>
 /// <typeparam name="TEntity"></typeparam>
 [CoreLibrary]
-public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
+public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     where TDbContext : DbContext where TEntity : class, IEntity
 {
+    /// <summary>
+    ///     Get the current DbContext.
+    /// </summary>
+    /// <returns></returns>
+    [MustDisposeResource]
+    TDbContext DbContext();
+
     /// <summary>
     ///     Synchronously verifies the entity that satisfies the verification.
     /// </summary>
     /// <param name="verification"></param>
     /// <returns></returns>
-    Result<bool> Verificate(IVerification<TEntity>? verification);
+    Try<bool> Verificate(IVerification<TEntity>? verification);
 
     /// <summary>
     ///     Asynchronously verifies the entity that satisfies the verification.
@@ -77,7 +86,7 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    public Task<Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -97,8 +106,17 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    public Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
+        where TDto : class, IDto;
+
+    /// <summary>
+    ///     Synchronously gets the first entity that satisfies the specification and maps it to a DTO.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <typeparam name="TDto"></typeparam>
+    /// <returns></returns>
+    Try<TDto> GetFirst<TDto>(ISpecification<TEntity, TDto> specification)
         where TDto : class, IDto;
 
     /// <summary>
@@ -107,22 +125,14 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="entity"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken);
+    Task<Result<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Synchronously deletes the entity
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public Result<TEntity> Delete(TEntity entity);
-
-    /// <summary>
-    ///     Synchronously deletes the entity and maps it to a DTO
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <typeparam name="TDto"></typeparam>
-    /// <returns></returns>
-    public Result<TDto> Delete<TDto>(TEntity entity) where TDto : class, IDto;
+    Try<TEntity> Delete(TEntity entity);
 
     /// <summary>
     ///     Asynchronously deletes the entity by its id
@@ -130,31 +140,14 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="entityId"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<TEntity>> DeleteAsync(short entityId, CancellationToken cancellationToken);
-
-    /// <summary>
-    ///     Asynchronously deletes the entity by its id and maps it to a DTO
-    /// </summary>
-    /// <param name="entityId"></param>
-    /// <param name="cancellationToken"></param>
-    /// <typeparam name="TDto"></typeparam>
-    /// <returns></returns>
-    public Task<Result<TDto>> DeleteAsync<TDto>(short entityId, CancellationToken cancellationToken)
-        where TDto : class, IDto;
+    Task<Result<TEntity>> DeleteAsync(short entityId, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Synchronously updates the entity
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public Result<TEntity> Update(TEntity entity);
-
-    /// <summary>
-    ///     Synchonously updates the entity and maps it to a DTO
-    /// </summary>
-    /// <param name="entity"></param>
-    /// <returns></returns>
-    public Result<TDto> Update<TDto>(TEntity entity);
+    Try<TEntity> Update(TEntity entity);
 
     /// <summary>
     ///     Asynchronously executes the query procedure.
@@ -163,7 +156,7 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
+    Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
         CancellationToken cancellationToken,
         params object[] parameters);
 
@@ -175,7 +168,7 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public Task<Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
+    Task<Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
         ISpecification<TEntity>? specification, CancellationToken cancellationToken,
         params object[] parameters);
 
@@ -189,7 +182,7 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
     /// <param name="parameters"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    public Task<Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
+    Task<Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
         ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken,
         params object[] parameters) where TDto : class, IDto;
 }
@@ -198,8 +191,15 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
 ///     Interfaces for generic database repositories with scoped DbContexts.
 /// </summary>
 [CoreLibrary]
-public interface IGenericDbRepositoryScopedDbContext<TDbContext> where TDbContext : DbContext
+public interface IGenericDbRepositoryScopedDbContext<out TDbContext> where TDbContext : DbContext
 {
+    /// <summary>
+    ///     Get the current DbContext.
+    /// </summary>
+    /// <returns></returns>
+    [MustDisposeResource]
+    TDbContext DbContext();
+
     /// <summary>
     ///     Asynchronously gets the composed DTOs.
     /// </summary>
@@ -207,7 +207,7 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext> where TDbContex
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDtoComposed"></typeparam>
     /// <returns></returns>
-    public Task<Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
+    Task<Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
         IEnumerable<Tuple<string, object>> entitiesSpecifications, CancellationToken cancellationToken)
         where TDtoComposed : class, IDto, new();
 
@@ -217,7 +217,7 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext> where TDbContex
     /// <param name="entitiesVerifications"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<bool>> VerificateComposedAsync(
+    Task<Result<bool>> VerificateComposedAsync(
         IEnumerable<VerificationModel> entitiesVerifications, CancellationToken cancellationToken);
 }
 
@@ -227,15 +227,22 @@ public interface IGenericDbRepositoryScopedDbContext<TDbContext> where TDbContex
 /// <typeparam name="TEntity"></typeparam>
 /// <typeparam name="TDbContext"></typeparam>
 [CoreLibrary]
-public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
+public interface IGenericDbRepositoryTransientDbContext<out TDbContext, TEntity>
     where TDbContext : DbContext where TEntity : class, IEntity
 {
+    /// <summary>
+    ///     Get the current DbContext.
+    /// </summary>
+    /// <returns></returns>
+    [MustDisposeResource]
+    TDbContext DbContext();
+
     /// <summary>
     ///     Synchronously verifies the entity that satisfies the verification.
     /// </summary>
     /// <param name="verification"></param>
     /// <returns></returns>
-    Result<bool> Verificate(IVerification<TEntity>? verification);
+    Try<bool> Verificate(IVerification<TEntity>? verification);
 
     /// <summary>
     ///     Asynchronously verifies the entity that satisfies the verification.
@@ -291,7 +298,7 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    public Task<Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -311,8 +318,17 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    public Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
+        where TDto : class, IDto;
+
+    /// <summary>
+    ///     Synchronously gets the first entity that satisfies the specification and maps it to a DTO.
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <typeparam name="TDto"></typeparam>
+    /// <returns></returns>
+    Try<TDto> GetFirst<TDto>(ISpecification<TEntity, TDto> specification)
         where TDto : class, IDto;
 
     /// <summary>
@@ -322,7 +338,7 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
+    Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
         CancellationToken cancellationToken,
         params object[] parameters);
 
@@ -335,7 +351,7 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     /// <param name="cancellationToken"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public Task<Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
+    Task<Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
         ISpecification<TEntity>? specification, CancellationToken cancellationToken,
         params object[] parameters);
 
@@ -349,7 +365,7 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     /// <param name="parameters"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    public Task<Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
+    Task<Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
         ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken,
         params object[] parameters) where TDto : class, IDto;
 }
@@ -359,9 +375,16 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
 /// </summary>
 /// <typeparam name="TDbContext"></typeparam>
 [CoreLibrary]
-public interface IGenericDbRepositoryTransientDbContext<TDbContext>
+public interface IGenericDbRepositoryTransientDbContext<out TDbContext>
     where TDbContext : DbContext
 {
+    /// <summary>
+    ///     Get the current DbContext.
+    /// </summary>
+    /// <returns></returns>
+    [MustDisposeResource]
+    TDbContext DbContext();
+
     /// <summary>
     ///     Asynchronously gets the composed DTOs.
     /// </summary>
@@ -369,7 +392,7 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDtoComposed"></typeparam>
     /// <returns></returns>
-    public Task<Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
+    Task<Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
         IEnumerable<Tuple<string, object>> entitiesSpecifications, CancellationToken cancellationToken)
         where TDtoComposed : class, IDto, new();
 
@@ -379,6 +402,6 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext>
     /// <param name="entitiesVerifications"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<bool>> VerificateComposedAsync(
+    Task<Result<bool>> VerificateComposedAsync(
         IEnumerable<VerificationModel> entitiesVerifications, CancellationToken cancellationToken);
 }

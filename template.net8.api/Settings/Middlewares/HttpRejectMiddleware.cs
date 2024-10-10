@@ -21,7 +21,12 @@ public sealed class HttpRejectMiddleware(
     ///     Invoke Async method to check if the request is HTTPS.
     /// </summary>
     /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     public async Task InvokeAsync(HttpContext context)
     {

@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using JetBrains.Annotations;
 using LanguageExt.Common;
 using MediatR;
+using template.net8.api.Business.Messages;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Parallel;
 
 namespace template.net8.api.Behaviors;
 
-[UsedImplicitly]
+[CoreLibrary]
 internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : notnull
@@ -33,17 +35,25 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValid
     private async Task<ICollection<ValidationFailure>> ValidateRequestAsync(TRequest request,
         CancellationToken cancellationToken = default)
     {
-        var context = new ValidationContext<TRequest>(request);
-        var results = await ValidateValidatorsAsync(context, cancellationToken).ConfigureAwait(false);
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var results = await ValidateValidatorsAsync(request, cts).ConfigureAwait(false);
         return AggregateValidationResults(results).ToList();
     }
 
-    private async Task<IEnumerable<ValidationResult>> ValidateValidatorsAsync(IValidationContext context,
-        CancellationToken cancellationToken = default)
+    private async Task<IEnumerable<ValidationResult>> ValidateValidatorsAsync(TRequest request,
+        CancellationTokenSource cts)
     {
-        //TODO: paralelized validation?
-        var validationTasks = _validators.Select(v => v.ValidateAsync(context, cancellationToken));
-        return await Task.WhenAll(validationTasks).ConfigureAwait(false);
+        var tasks = _validators.Select(validator =>
+        {
+            return Task.Run(() => validator.ValidateAsync(new ValidationContext<TRequest>(request), cts.Token),
+                cts.Token);
+        });
+        var result = await ParallelUtils.ExecuteInParallelAsync(tasks, cts).ConfigureAwait(false);
+        var validateValidatorsAsync = result.ToList();
+        if (validateValidatorsAsync.Length() != _validators.Length())
+            throw new ValidationException(MessageDefinitions.GenericValidatorError);
+
+        return validateValidatorsAsync;
     }
 
     private static IEnumerable<ValidationFailure> AggregateValidationResults(IEnumerable<ValidationResult> results)

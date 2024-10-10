@@ -1,4 +1,5 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using JetBrains.Annotations;
+using template.net8.api.Core.Attributes;
 using template.net8.api.Logger;
 
 namespace template.net8.api.Communications;
@@ -18,6 +19,7 @@ internal class WebClientBase
         Logger.LogWebClientBaseInjected(logger.GetType().ToString());
     }
 
+    [MustDisposeResource]
     internal static HttpRequestMessage CreateRequest(HttpMethod method, Uri path)
     {
         return new HttpRequestMessage(method, path);

@@ -20,7 +20,12 @@ public sealed class RepositoriesInstaller : IServiceInstaller
     ///     Install Repository Services
     /// </summary>
     /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -32,6 +37,9 @@ public sealed class RepositoriesInstaller : IServiceInstaller
             typeof(GenericDbRepositoryTransientDbContext<,>));
         builder.Services.AddScoped(typeof(IGenericDbRepositoryTransientDbContext<>),
             typeof(GenericDbRepositoryTransientDbContext<>));
+        //Commented out because it is not used in the project template. Use it if you need to perform unit of work operations (Db Transactions).
+        //builder.Services.AddScoped(typeof(IUnitOfWork<>),
+        //    typeof(UnitOfWork<>));
         return Task.CompletedTask;
     }
 }

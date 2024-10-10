@@ -16,16 +16,25 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// <summary>
     /// </summary>
     /// <returns></returns>
+    /// <exception cref="DbUpdateException">An error is encountered while saving to the database.</exception>
     /// <exception cref="DbUpdateConcurrencyException">
     ///     A concurrency violation is encountered while saving to the database.
     ///     A concurrency violation occurs when an unexpected number of rows are affected during save.
     ///     This is usually because the data in the database has been modified since it was loaded into memory.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    /// <exception cref="DbUpdateException">An error is encountered while saving to the database.</exception>
     public async Task<Result<bool>> CompleteAsync(CancellationToken cancellationToken)
     {
         await Context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        return new Result<bool>(true);
+        return true;
+    }
+
+    /// <summary>
+    ///     Get the current DbContext.
+    /// </summary>
+    /// <returns></returns>
+    public TDbContext DbContext()
+    {
+        return (TDbContext)Context;
     }
 }

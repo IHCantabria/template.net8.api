@@ -19,7 +19,12 @@ public sealed class ValidatorsInstaller : IServiceInstaller
     ///     Install Validators Services
     /// </summary>
     /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">Condition.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

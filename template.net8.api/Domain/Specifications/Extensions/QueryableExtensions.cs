@@ -10,7 +10,6 @@ namespace template.net8.api.Domain.Specifications.Extensions;
 [CoreLibrary]
 internal static class QueryableExtensions
 {
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
     [CoreLibrary]
     internal static IQueryable<TEntity> ApplyVerification<TEntity>(this IQueryable<TEntity> query,
         IVerification<TEntity>? verification) where TEntity : class, IEntity
@@ -24,9 +23,6 @@ internal static class QueryableExtensions
         return query;
     }
 
-
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     [CoreLibrary]
     internal static IQueryable<TEntity> ApplySpecification<TEntity>(this IQueryable<TEntity> query,
         ISpecification<TEntity>? specification) where TEntity : class, IEntity
@@ -46,8 +42,6 @@ internal static class QueryableExtensions
         return query;
     }
 
-
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
     [CoreLibrary]
     internal static IQueryable<TEntity> ApplySpecification<TEntity, TDto>(this IQueryable<TEntity> query,
         ISpecification<TEntity, TDto>? specification) where TEntity : class, IEntity where TDto : class, IDto
@@ -66,22 +60,18 @@ internal static class QueryableExtensions
         return query;
     }
 
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
     private static IQueryable<TEntity> ApplyFilters<TEntity>(this IQueryable<TEntity> queryable,
         ICollection<Expression<Func<TEntity, bool>>> filters) where TEntity : class, IEntity
     {
         return filters.Aggregate(queryable, (current, filter) => current.Where(filter));
     }
 
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     private static IQueryable<TEntity> ApplyIncludes<TEntity>(this IQueryable<TEntity> queryable,
         IEnumerable<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includes)
     {
         return includes.Aggregate(queryable, (current, include) => include(current));
     }
 
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
     private static IQueryable<TEntity> ApplyOrderBys<TEntity>(this IQueryable<TEntity> queryable,
         ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> orderBys) where TEntity : class, IEntity
     {
@@ -89,7 +79,6 @@ internal static class QueryableExtensions
             (current, orderBy) => current.SmartOrderBy(orderBy.Item1, orderBy.Item2, current.Equals(queryable)));
     }
 
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
     private static IQueryable<TEntity> SmartOrderBy<TEntity>(this IQueryable<TEntity> queryable,
         Expression<Func<TEntity, object>> expression, OrderByType orderType, bool isFirstIteration)
         where TEntity : class, IEntity
@@ -106,7 +95,6 @@ internal static class QueryableExtensions
         };
     }
 
-    /// <exception cref="ArgumentNullException"><paramref /> or <paramref /> is <see langword="null" />.</exception>
     private static IQueryable<TEntity> ApplyGroupBy<TEntity>(this IQueryable<TEntity> queryable,
         Expression<Func<TEntity, object>>? groupBy) where TEntity : class, IEntity
     {
@@ -124,7 +112,6 @@ internal static class QueryableExtensions
         };
     }
 
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
     private static IQueryable<TEntity> ApplyQueryTrackStrategyy<TEntity>(this IQueryable<TEntity> queryable,
         QueryTrackingBehavior queryTrackStrategy) where TEntity : class, IEntity
     {

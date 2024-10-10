@@ -26,16 +26,19 @@ public sealed class HealthInstaller : IServiceInstaller
     /// </summary>
     public short LoadOrder => 23;
 
-
     /// <summary>
     ///     Install Health Checks Service
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
-        ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(builder);
         var connectionOptions = builder.Configuration
             .GetSection(ProjectDbOptions.ProjectDb)
@@ -47,22 +50,29 @@ public sealed class HealthInstaller : IServiceInstaller
 
     private static void AddHealthChecks(IHostApplicationBuilder builder, ProjectDbOptions? connectionOptions)
     {
-        var healthChecksBuilder = builder.Services.AddHealthChecks()
-            .AddApplicationStatus("API Status", tags: ApplicationTags)
-            .AddCheck<MemoryHealthCheck>("Feedback Service Memory Check", HealthStatus.Unhealthy,
-                ServiceMemoryTags);
-        if (connectionOptions is not null)
-            healthChecksBuilder.AddNpgSql(connectionOptions.DecodedConnectionString, "select 1",
-                name: "PostgreSql Server PROJECT DB", failureStatus: HealthStatus.Unhealthy, tags: DbTags);
+        var healthChecksBuilder = builder.Services.AddHealthChecks();
+
+        AddChecks(healthChecksBuilder, connectionOptions);
 
         //TODO: FIX, ONLY WORK IN LOCAL
-        builder.Services.AddHealthChecksUI(opt =>
+        builder.Services.AddHealthChecksUI(opts =>
             {
-                opt.SetEvaluationTimeInSeconds(120); //time in seconds between check    
-                opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks    
-                opt.SetApiMaxActiveRequests(1); //api requests concurrency    
-                opt.AddHealthCheckEndpoint("Feedback Api", "/healthchecks"); //map health check api    
+                opts.SetEvaluationTimeInSeconds(120); //time in seconds between check    
+                opts.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks    
+                opts.SetApiMaxActiveRequests(1); //api requests concurrency    
+                opts.AddHealthCheckEndpoint("Feedback Api", "/healthchecks"); //map health check api    
             })
             .AddInMemoryStorage();
+    }
+
+    private static void AddChecks(IHealthChecksBuilder builder, ProjectDbOptions? connectionOptions)
+    {
+        builder.AddApplicationStatus("API Status", tags: ApplicationTags);
+
+        builder.AddCheck<MemoryHealthCheck>("Feedback Service Memory Check", HealthStatus.Unhealthy,
+            ServiceMemoryTags);
+        if (connectionOptions is not null)
+            builder.AddNpgSql(connectionOptions.DecodedConnectionString, "select 1",
+                name: "PostgreSql Server Project DB", failureStatus: HealthStatus.Unhealthy, tags: DbTags);
     }
 }

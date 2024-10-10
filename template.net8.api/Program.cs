@@ -30,13 +30,13 @@ try
 catch (Exception e)
 {
     // NLog: catch setup errors
-    MainLoggerMethods.LogMainError(logger, e, BusinessConstants.ApiName);
+    MainLoggerMethods.LogCriticalError(logger, e, BusinessConstants.ApiName);
     throw;
 }
 finally
 {
     // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
-    MainLoggerMethods.LogMainEnd(logger, BusinessConstants.ApiName);
+    MainLoggerMethods.LogMainShutdown(logger, BusinessConstants.ApiName);
     LogManager.Shutdown();
 }
 

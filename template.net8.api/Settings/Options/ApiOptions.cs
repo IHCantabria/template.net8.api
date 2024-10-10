@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using Microsoft.Extensions.Options;
 using template.net8.api.Core.Attributes;
 
@@ -8,7 +9,7 @@ namespace template.net8.api.Settings.Options;
 ///     Api Options class to hold the Api Options
 /// </summary>
 [CoreLibrary]
-public sealed record ApiOptions
+public sealed record ApiOptions : IEqualityOperators<ApiOptions, ApiOptions, bool>
 {
     /// <summary>
     ///     AppSettings key for the Api Options

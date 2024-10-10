@@ -3,7 +3,6 @@ using template.net8.api.Core.Exceptions;
 
 namespace template.net8.api.Business.Exceptions;
 
-//TODO: Improve this class. Important! Investigate How Log When This Exception is Created or Thrown
 [CoreLibrary]
 internal class BusinessException : CoreException
 {
@@ -53,6 +52,22 @@ internal sealed class BadRequestException : BusinessException
 }
 
 [CoreLibrary]
+internal sealed class UnauthorizedException : BusinessException
+{
+    internal UnauthorizedException()
+    {
+    }
+
+    internal UnauthorizedException(string message) : base(message)
+    {
+    }
+
+    internal UnauthorizedException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
 internal sealed class ConflictException : BusinessException
 {
     internal ConflictException()
@@ -64,6 +79,38 @@ internal sealed class ConflictException : BusinessException
     }
 
     internal ConflictException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class ForbiddenException : BusinessException
+{
+    internal ForbiddenException()
+    {
+    }
+
+    internal ForbiddenException(string message) : base(message)
+    {
+    }
+
+    internal ForbiddenException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class RequestTimeoutException : BusinessException
+{
+    internal RequestTimeoutException()
+    {
+    }
+
+    internal RequestTimeoutException(string message) : base(message)
+    {
+    }
+
+    internal RequestTimeoutException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
@@ -96,6 +143,22 @@ internal sealed class UnprocessableEntityException : BusinessException
     }
 
     internal UnprocessableEntityException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class InternalServerErrorException : BusinessException
+{
+    internal InternalServerErrorException()
+    {
+    }
+
+    internal InternalServerErrorException(string message) : base(message)
+    {
+    }
+
+    internal InternalServerErrorException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }

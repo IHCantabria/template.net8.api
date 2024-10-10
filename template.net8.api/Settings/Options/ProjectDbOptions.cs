@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using System.Web;
 using Microsoft.Extensions.Options;
 using template.net8.api.Core.Attributes;
@@ -10,10 +11,11 @@ namespace template.net8.api.Settings.Options;
 ///     Project Database Options
 /// </summary>
 [CoreLibrary]
-public sealed record ProjectDbOptions : IConnectionsOptions
+public sealed record ProjectDbOptions : IConnectionsOptions,
+    IEqualityOperators<ProjectDbOptions, ProjectDbOptions, bool>
 {
     /// <summary>
-    ///     AppSettings Key for Project DB Database
+    ///     AppSettings Key for Project Database
     /// </summary>
     public static readonly string ProjectDb = $"{IConnectionsOptions.Connections}:{nameof(ProjectDb)}";
 

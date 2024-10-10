@@ -3,7 +3,7 @@
 namespace template.net8.api.Business.Messages;
 
 [CoreLibrary]
-//TODO IMPORTANT: REFACTOR ALL the hardcoded msg to use properties inside this class 
+//TODO IMPORTANT: REFACTOR ALL the hardcoded msg to use properties inside this class THEN IMPLEMENT THE LOCALIZATION
 internal static class MessageDefinitions
 {
     internal const string DejaVu =
@@ -12,4 +12,6 @@ internal static class MessageDefinitions
     internal const string GenericServerError = "There is something wrong with our bloody servers today.";
 
     internal const string GenericClientError = "There is something wrong with your request.";
+
+    internal const string GenericValidatorError = "There is something wrong with the validators for your request";
 }

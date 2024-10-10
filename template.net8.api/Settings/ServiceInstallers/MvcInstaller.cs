@@ -16,17 +16,24 @@ public sealed class MvcInstaller : IServiceInstaller
     /// </summary>
     public short LoadOrder => 4;
 
-
     /// <summary>
     ///     Install MVC Service
     /// </summary>
     /// <param name="builder"></param>
     /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     /// <exception cref="ArgumentException">
-    ///     In a set operation, the <see />
+    ///     In a set operation, the
+    ///     <see>
+    ///         <cref>P:System.Globalization.CultureInfo.Name</cref>
+    ///     </see>
     ///     property value is invalid.
     /// </exception>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

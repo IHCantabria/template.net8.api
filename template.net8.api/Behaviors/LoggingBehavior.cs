@@ -1,13 +1,24 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 using LanguageExt.Common;
 using MediatR;
+using template.net8.api.Core.Attributes;
 using template.net8.api.Logger;
 
 namespace template.net8.api.Behaviors;
 
+[CoreLibrary]
 internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
+    private const string IsBottom = nameof(Result<bool>.IsBottom);
+
+    private const string IsSuccess = nameof(Result<bool>.IsSuccess);
+
+    private const string IsFaulted = nameof(Result<bool>.IsBottom);
+
+    private const string Exception = "exception";
+
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger =
         logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -35,29 +46,66 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
         return result;
     }
 
-    private void LogHandledRequest(TResponse result, long startTimestamp)
+    private void LogHandledRequest(TResponse? result, long startTimestamp)
     {
         var delta = Stopwatch.GetElapsedTime(startTimestamp);
-        switch (result)
-        {
-            case Result<IEnumerable<object>> responseCollection:
-                LogResult(responseCollection.IsSuccess, delta);
-                break;
-            case Result<object> responseObject:
-                LogResult(responseObject.IsSuccess, delta);
-                break;
-            case not null:
-                LogResult(true, delta);
-                break;
-            default:
-                LogResult(false, delta);
-                break;
-        }
+        LogResponse(result, delta);
     }
 
-    private void LogResult(bool isSuccess, TimeSpan delta)
+    private void LogResponse(TResponse? result, TimeSpan delta)
     {
-        var resultStatus = isSuccess ? "Succeded" : "Failed";
-        _logger.LogHandledRequest(typeof(TRequest).Name, resultStatus, $"{delta}ms");
+        if (result is null)
+        {
+            LogResponseEmpty(delta);
+            return;
+        }
+
+        if (IsResultType(result.GetType()))
+        {
+            LogResult(result, delta);
+            return;
+        }
+
+        LogResponseSuccess(delta);
+    }
+
+    private void LogResponseEmpty(TimeSpan delta)
+    {
+        _logger.LogHandledRequestIsEmpty(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
+    }
+
+    private void LogResponseSuccess(TimeSpan delta)
+    {
+        _logger.LogHandledRequestSuccess(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
+    }
+
+    private void LogResponseError(Exception ex, TimeSpan delta)
+    {
+        LogResponseError(delta);
+        _logger.LogExceptionClient(ex.ToString());
+    }
+
+    private void LogResponseError(TimeSpan delta)
+    {
+        _logger.LogHandledRequestError(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
+    }
+
+    private void LogResult(TResponse result, TimeSpan delta)
+    {
+        var type = result?.GetType();
+        var exceptionInfo = type?.GetField(Exception, BindingFlags.NonPublic | BindingFlags.Instance);
+
+        // Get the value of the exception field
+        if (exceptionInfo?.GetValue(result) is Exception exception)
+            LogResponseError(exception, delta);
+        else
+            LogResponseSuccess(delta);
+    }
+
+    private static bool IsResultType(Type type)
+    {
+        return type.GetProperty(IsFaulted) != null
+               && type.GetProperty(IsSuccess) != null
+               && type.GetProperty(IsBottom) != null;
     }
 }

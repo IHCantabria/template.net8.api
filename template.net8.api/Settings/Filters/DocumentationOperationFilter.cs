@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
-using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 
 namespace template.net8.api.Settings.Filters;
@@ -11,7 +11,7 @@ namespace template.net8.api.Settings.Filters;
 /// <summary>
 ///     Documentation Operation Filter
 /// </summary>
-[UsedImplicitly]
+[CoreLibrary]
 public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
 {
     private const string InternalServerErrorDescription =
@@ -33,10 +33,17 @@ public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
     /// </summary>
     /// <param name="operation"></param>
     /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException">source is <see langword="null" />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        // Add coomon response types.
+        // Add common response types.
+        ArgumentNullException.ThrowIfNull(operation);
+        ArgumentNullException.ThrowIfNull(context);
         operation.Responses.TryAdd(StatusCodes.Status408RequestTimeout.ToString(CultureInfo.InvariantCulture),
             new OpenApiResponse
             {

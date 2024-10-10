@@ -23,7 +23,7 @@ public sealed class AutoMapperInstaller : IServiceInstaller
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.AddAutoMapper(typeof(Program).Assembly);
+        builder.Services.AddAutoMapper(typeof(global::Program).Assembly);
         return Task.CompletedTask;
     }
 }

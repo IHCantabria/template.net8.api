@@ -6,22 +6,21 @@ internal static class MainLoggerMethods
 {
     internal static void LogMainInitConfig(NLog.Logger logger, string name)
     {
-        logger.Info(CultureInfo.InvariantCulture, "Starting {name} Configuration.", name);
+        logger.Info(CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.StartingConfig, name);
     }
 
     internal static void LogMainEndConfig(NLog.Logger logger, string name)
     {
-        logger.Info(CultureInfo.InvariantCulture, "Completed {name} configuration.", name);
+        logger.Info(CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.CompletedConfig, name);
     }
 
-    internal static void LogMainError(NLog.Logger logger, Exception ex, string name)
+    internal static void LogCriticalError(NLog.Logger logger, Exception ex, string name)
     {
-        logger.Error(ex, CultureInfo.InvariantCulture,
-            "Stopped {name} due to a critical not controlled exception.", name);
+        logger.Error(ex, CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.CriticalError, name);
     }
 
-    internal static void LogMainEnd(NLog.Logger logger, string name)
+    internal static void LogMainShutdown(NLog.Logger logger, string name)
     {
-        logger.Info(CultureInfo.InvariantCulture, "Shutdown {name}.", name);
+        logger.Info(CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.Shutdown, name);
     }
 }

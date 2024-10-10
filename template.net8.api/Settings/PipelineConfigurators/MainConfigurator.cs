@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Globalization;
+using Microsoft.Extensions.Options;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Settings.Extensions;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Middlewares;
 using template.net8.api.Settings.Options;
+
+// ReSharper disable MethodTooLong (justification: The method is the main pipeline configuration for the application)
 
 namespace template.net8.api.Settings.PipelineConfigurators;
 
@@ -22,8 +26,26 @@ public sealed class MainConfigurator : IPipelineConfigurator
     /// </summary>
     /// <param name="app"></param>
     /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">There is no service of type <typeparamref />.</exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     There is no service of type
+    ///     <typeparamref>
+    ///         <name>T</name>
+    ///     </typeparamref>
+    ///     .
+    /// </exception>
+    /// <exception cref="CultureNotFoundException">
+    ///     <paramref>
+    ///         <name>name</name>
+    ///     </paramref>
+    ///     is not a valid culture name. For more information,
+    ///     see the Notes to Callers section.
+    /// </exception>
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
@@ -33,6 +55,9 @@ public sealed class MainConfigurator : IPipelineConfigurator
 
         // Enable middleware to control exceptions.
         app.UseExceptionHandler();
+
+        // Add the Request Localization middleware
+        app.ConfigureLocalizationMiddleware();
 
         // Enable middleware to allow Error response outside the scope of the API.
         app.UseStatusCodePages();
@@ -66,6 +91,12 @@ public sealed class MainConfigurator : IPipelineConfigurator
 
         // Enable cors middleware to allow cross domain requests.
         app.UseCors(configuration.CorsPolicy);
+
+        //Enable authentication middleware. Commented out because it is not used in this template.
+        //app.UseAuthentication();
+
+        //Enable Authorization middleware. Commented out because it is not used in this template.
+        //app.UseAuthorization();
 
         //Enable response compression middleware.
         app.UseResponseCompression();

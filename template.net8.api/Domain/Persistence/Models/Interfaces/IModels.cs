@@ -33,6 +33,18 @@ public interface IEntityWithId : IEntity
 }
 
 /// <summary>
+///     This interface is intended  to mark class models of the database context that have a primary key using Datahub Id.
+/// </summary>
+[CoreLibrary]
+public interface IEntityWithDatahubId : IEntity
+{
+    /// <summary>
+    ///     Pk of the entity.
+    /// </summary>
+    public short DatahubId { get; init; }
+}
+
+/// <summary>
 ///     This interface is intended  to mark class models of the database context that have a primary key uuid.
 /// </summary>
 [CoreLibrary]
@@ -41,14 +53,26 @@ public interface IEntityWithUuid : IEntity
     /// <summary>
     ///     Pk of the entity.
     /// </summary>
-    public string Uuid { get; init; }
+    public Guid Uuid { get; init; }
 }
 
 /// <summary>
-///     This interface is intended  to mark class models of the database context that have Name field.
+///     This interface is intended  to mark class models of the database context that have a primary key uuid.
 /// </summary>
 [CoreLibrary]
-public interface INamedEntity : IEntity
+public interface IEntityWithName : IEntity
+{
+    /// <summary>
+    ///     Name of the entity.
+    /// </summary>
+    public string Name { get; set; }
+}
+
+/// <summary>
+///     This interface is intended  to mark class models of the database context that have Name mutable field.
+/// </summary>
+[CoreLibrary]
+public interface IEntityWithNameKey : IEntity
 {
     /// <summary>
     ///     Name of the entity.
@@ -60,10 +84,10 @@ public interface INamedEntity : IEntity
 ///     This interface is intended  to mark class models of the database context that have Name and Alias fields.
 /// </summary>
 [CoreLibrary]
-public interface IAliasEntity : IEntity
+public interface IEntityWithAlias : IEntity
 {
     /// <summary>
     ///     Alias of the entity.
     /// </summary>
-    public string AliasText { get; init; }
+    public string AliasText { get; set; }
 }
