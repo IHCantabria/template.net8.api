@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using template.net8.api.Contracts;
 using template.net8.api.Controllers.Extensions;
@@ -10,6 +11,7 @@ using template.net8.api.Domain.DTOs;
 using template.net8.api.Domain.Persistence.Models;
 using template.net8.api.Features.Commands;
 using template.net8.api.Features.Querys;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Controllers.V1;
 
@@ -21,8 +23,9 @@ namespace template.net8.api.Controllers.V1;
 [ApiController]
 public sealed class Dummies(
     IMediator mediator,
+    IStringLocalizer<Resource> localizer,
     ILogger<Dummies> logger)
-    : MyControllerBase(mediator, logger)
+    : MyControllerBase(mediator, localizer, logger)
 {
     /// <summary>
     ///     Get the Dummies.
@@ -58,7 +61,7 @@ public sealed class Dummies(
         var action =
             new ActionResultPayload<IEnumerable<DummyDto>, IEnumerable<DummyResource>>(obj =>
                 DummyDto.ToCollection(obj.ToList()));
-        return result.ToActionResult(action, HttpContext.Features);
+        return result.ToActionResult(action, Localizer, HttpContext.Features);
     }
 
 
@@ -96,7 +99,7 @@ public sealed class Dummies(
         var query = new QueryGetDummy(paramsDto);
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
         var action = new ActionResultPayload<DummyDto, DummyResource>(obj => obj);
-        return result.ToActionResult(action, HttpContext.Features);
+        return result.ToActionResult(action, Localizer, HttpContext.Features);
     }
 
     /// <summary>
@@ -130,6 +133,6 @@ public sealed class Dummies(
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
         var action = new ActionResultPayload<Dummy, DummyCreatedResource>(obj => obj,
             (nameof(Dummies), nameof(GetDummy)), ("Key", "dummy-key"));
-        return result.ToActionResult(action, HttpContext.Features);
+        return result.ToActionResult(action, Localizer, HttpContext.Features);
     }
 }

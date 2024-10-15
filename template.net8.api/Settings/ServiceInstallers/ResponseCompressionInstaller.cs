@@ -49,7 +49,7 @@ public sealed class ResponseCompressionInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 18;
+    public short LoadOrder => 21;
 
     /// <summary>
     ///     Install Compression Respònse Service

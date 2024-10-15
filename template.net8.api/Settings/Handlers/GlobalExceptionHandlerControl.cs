@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.api.Business.Messages;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Localize.Resources;
 using template.net8.api.Logger;
 
 namespace template.net8.api.Settings.Handlers;
@@ -9,9 +10,13 @@ namespace template.net8.api.Settings.Handlers;
 [CoreLibrary]
 internal sealed class GlobalExceptionHandlerControl(
     IProblemDetailsService problemDetailsService,
+    IStringLocalizer<Resource> localizer,
     ILogger<ControllerBase> logger)
     : IExceptionHandler
 {
+    private readonly IStringLocalizer<Resource> _localizer =
+        localizer ?? throw new ArgumentNullException(nameof(localizer));
+
     private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     private readonly IProblemDetailsService _problemDetailsService =
@@ -29,7 +34,7 @@ internal sealed class GlobalExceptionHandlerControl(
             HttpContext = httpContext,
             ProblemDetails =
             {
-                Title = MessageDefinitions.GenericServerError,
+                Title = _localizer["GenericServerError"],
                 Detail = exception.Message,
                 Type = "https://tools.ietf.org/html/rfc9110#name-500-internal-server-error"
             },

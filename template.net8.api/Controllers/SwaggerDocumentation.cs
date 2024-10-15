@@ -42,4 +42,19 @@ internal static class SwaggerDocumentation
                 "Unable to create the dummy due to a data incompatibility in the client payload. Please review the payload and fix the errors before retry the request.";
         }
     }
+
+    internal static class Filter
+    {
+        internal const string AuthorizationErrorDescription =
+            "Unable to execute the requested operation due to a authorization error. Please, log in the system with your user and get a valid access_token before trying again. if the error persist contact with IH-IT.";
+
+        internal const string ForbiddenErrorDescription =
+            "Unable to execute the requested operation due to a forbidden error. Your current user don't have privileges to execute the requested operation.";
+
+        internal const string InternalServerErrorDescription =
+            "Unable to execute the requested operation due to a server error. Please, try again after a couple of mins. if the error persist contact with IH-IT.";
+
+        internal const string RequestTimeoutErrorDescription =
+            "Unable to execute the requested operation due to a request timeout issue, please retry the request.";
+    }
 }

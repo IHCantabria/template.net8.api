@@ -51,7 +51,8 @@ internal static class WebApplicationExtensions
     internal static void ConfigureLocalizationMiddleware(this WebApplication app)
     {
         // Define the supported cultures
-        var supportedCultures = new[] { new CultureInfo("en") };
+        var defaultCulture = new CultureInfo("en");
+        var supportedCultures = new[] { defaultCulture, new CultureInfo("es") };
         // Configure the Request Localization options
         var requestLocalizationOptions = new RequestLocalizationOptions
         {

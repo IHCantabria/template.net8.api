@@ -5,7 +5,9 @@ using FluentValidation;
 using JetBrains.Annotations;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Domain.DTOs;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Features.Querys;
 
@@ -37,20 +39,25 @@ internal sealed class GetDummyHandlerQuery : IRequestHandler<QueryGetDummy, Resu
 [UsedImplicitly]
 public sealed class GetDummyKeyValidator : AbstractValidator<QueryGetDummy>
 {
-    private const string DummyNotFoundMsg =
-        "The dummy key declared in your request doesn't match any dummy in the system.";
-
     /// <summary>
     ///     Get project role validator constructor to initialize the validation rules for the key in
     ///     the
     ///     Get Project Query DTO class.
     /// </summary>
-    public GetDummyKeyValidator()
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    public GetDummyKeyValidator(IStringLocalizer<Resource> localizer)
     {
+        ArgumentNullException.ThrowIfNull(localizer);
+
         RuleFor(x => x.QueryParams.Key)
             .Must(ValidateDummyKey)
             .OverridePropertyName("project-key")
-            .WithMessage(DummyNotFoundMsg)
+            .WithMessage(localizer["GetDummyValidatorNotFoundMsg"])
             .WithErrorCode(StatusCodes.Status404NotFound.ToString(CultureInfo.InvariantCulture))
             .WithState(_ => HttpStatusCode.NotFound);
     }

@@ -13,8 +13,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\net8.0\template.net8.api.xml</DocumentationFile>
-    <!--<DocumentationFile>bin\Debug\net8.0\{PROJECT_NAMESPACE}.xml</DocumentationFile>-->
+    <DocumentationFile>bin\Debug\net8.0\{PROJECT_NAMESPACE}.xml</DocumentationFile>
     <Optimize>False</Optimize>
   </PropertyGroup>
 
@@ -64,6 +63,7 @@
     <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="NLog.DiagnosticSource" Version="5.2.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.14" />

@@ -15,12 +15,12 @@ namespace template.net8.api.Settings.ServiceInstallers;
 public sealed class DbInstaller : IServiceInstaller
 {
     private const short MaxRetryCount = 5;
-    private static readonly TimeSpan MaxRetryDelay = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan MaxRetryDelay = TimeSpan.FromSeconds(1);
 
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 7;
+    public short LoadOrder => 8;
 
     /// <summary>
     ///     Install Db Services

@@ -5,9 +5,11 @@ using FluentValidation;
 using JetBrains.Annotations;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Domain.DTOs;
 using template.net8.api.Domain.Persistence.Models;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Features.Commands;
 
@@ -45,18 +47,23 @@ internal sealed class CreateDummyHandlerCommand : IRequestHandler<CommandCreateD
 [UsedImplicitly]
 public sealed class CreateDummyTextValidator : AbstractValidator<CommandCreateDummy>
 {
-    private const string Msg =
-        "You must specify a valid text";
-
     /// <summary>
     ///     Create Dummy Handler Validator Constructor to initialize the validation rules for the Create Dummy Command DTO
     ///     class.
     /// </summary>
-    public CreateDummyTextValidator()
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    public CreateDummyTextValidator(IStringLocalizer<Resource> localizer)
     {
+        ArgumentNullException.ThrowIfNull(localizer);
+
         RuleFor(x => x.CommandParams.Text).Must(x => !x.IsNullOrEmpty())
             .OverridePropertyName("text")
-            .WithMessage(Msg.ToString(CultureInfo.InvariantCulture))
+            .WithMessage(localizer["CreateDummyValidatorTextInvalidMsg"])
             .WithErrorCode(StatusCodes.Status422UnprocessableEntity.ToString(CultureInfo.InvariantCulture))
             .WithState(_ => HttpStatusCode.UnprocessableEntity);
     }

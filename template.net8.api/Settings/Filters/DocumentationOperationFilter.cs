@@ -3,6 +3,7 @@ using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using template.net8.api.Controllers;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 
@@ -14,12 +15,6 @@ namespace template.net8.api.Settings.Filters;
 [CoreLibrary]
 public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
 {
-    private const string InternalServerErrorDescription =
-        "Unable to execute the requested operation due to a server error. Please, try again after a couple of mins. if the error persist contact with IH-IT.";
-
-    private const string RequestTimeoutErrorDescription =
-        "Unable to execute the requested operation due to a request timeout issue, please retry the request.";
-
     /// <summary>
     ///     Default Constructor
     /// </summary>
@@ -47,7 +42,7 @@ public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
         operation.Responses.TryAdd(StatusCodes.Status408RequestTimeout.ToString(CultureInfo.InvariantCulture),
             new OpenApiResponse
             {
-                Description = RequestTimeoutErrorDescription,
+                Description = SwaggerDocumentation.Filter.RequestTimeoutErrorDescription,
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
                     [MediaTypeNames.Application.ProblemJson] = new()
@@ -60,7 +55,7 @@ public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
         operation.Responses.TryAdd(StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture),
             new OpenApiResponse
             {
-                Description = InternalServerErrorDescription,
+                Description = SwaggerDocumentation.Filter.InternalServerErrorDescription,
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
                     [MediaTypeNames.Application.ProblemJson] = new()

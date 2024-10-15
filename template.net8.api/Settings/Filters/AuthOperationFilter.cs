@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using template.net8.api.Controllers;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Settings.Options;
@@ -17,12 +18,6 @@ namespace template.net8.api.Settings.Filters;
 [CoreLibrary]
 public class AuthOperationFilter : IOperationFilter, IOrderedFilter
 {
-    private const string AuthorizationErrorDescription =
-        "Unable to execute the requested operation due to a authorization error. Please, log in the system with your user and get a valid access_token before trying again. if the error persist contact with IH-IT.";
-
-    private const string ForbiddenErrorDescription =
-        "Unable to execute the requested operation due to a forbidden error. Your current user don't have privileges to execute the requested operation.";
-
     private readonly IOptions<SwaggerSecurityOptions> _config;
 
     /// <summary>
@@ -80,7 +75,7 @@ public class AuthOperationFilter : IOperationFilter, IOrderedFilter
         operation.Responses.TryAdd(StatusCodes.Status401Unauthorized.ToString(CultureInfo.InvariantCulture),
             new OpenApiResponse
             {
-                Description = AuthorizationErrorDescription,
+                Description = SwaggerDocumentation.Filter.AuthorizationErrorDescription,
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
                     [MediaTypeNames.Application.ProblemJson] = new()
@@ -93,7 +88,7 @@ public class AuthOperationFilter : IOperationFilter, IOrderedFilter
         operation.Responses.TryAdd(StatusCodes.Status403Forbidden.ToString(CultureInfo.InvariantCulture),
             new OpenApiResponse
             {
-                Description = ForbiddenErrorDescription,
+                Description = SwaggerDocumentation.Filter.ForbiddenErrorDescription,
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
                     [MediaTypeNames.Application.ProblemJson] = new()

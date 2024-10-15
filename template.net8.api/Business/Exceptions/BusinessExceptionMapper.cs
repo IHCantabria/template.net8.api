@@ -2,8 +2,10 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Factory;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Business.Exceptions;
 
@@ -19,7 +21,7 @@ internal enum ExceptionType
     Gone = 410,
     Validation,
     UnprocessableEntity = 422,
-    Business = 500,
+    InternalServerError = 500,
 
     NoImplemented
     // Add more exception types as needed
@@ -28,51 +30,47 @@ internal enum ExceptionType
 [CoreLibrary]
 internal static class BusinessExceptionMapper
 {
-    private static readonly Dictionary<ExceptionType, Func<Exception, IFeatureCollection, IActionResult>>
+    private static readonly Dictionary<ExceptionType,
+            Func<Exception, IStringLocalizer<Resource>, IFeatureCollection, IActionResult>>
         ActionResultHandlers = new()
         {
             {
                 ExceptionType.BadRequest,
-                (ex, features) => HttpResultFactory.CreateBadRequestResult((BadRequestException)ex, features)
+                HttpResultFactory.CreateBadRequestResult
             },
             {
                 ExceptionType.Unauthorized,
-                (ex, features) => HttpResultFactory.CreateUnauthorizedResult((UnauthorizedException)ex, features)
+                HttpResultFactory.CreateUnauthorizedResult
             },
             {
                 ExceptionType.Forbidden,
-                (ex, features) => HttpResultFactory.CreateForbiddenResult((ForbiddenException)ex, features)
+                HttpResultFactory.CreateForbiddenResult
             },
             {
                 ExceptionType.NotFound,
-                (ex, features) => HttpResultFactory.CreateNotFoundResult((NotFoundException)ex, features)
+                HttpResultFactory.CreateNotFoundResult
             },
             {
                 ExceptionType.Conflict,
-                (ex, features) => HttpResultFactory.CreateConflictResult((ConflictException)ex, features)
+                HttpResultFactory.CreateConflictResult
             },
             {
                 ExceptionType.RequestTimeout,
-                (ex, features) => HttpResultFactory.CreateRequestTimeoutResult((RequestTimeoutException)ex, features)
+                HttpResultFactory.CreateRequestTimeoutResult
             },
-            { ExceptionType.Gone, (ex, features) => HttpResultFactory.CreateGoneResult((GoneException)ex, features) },
+            { ExceptionType.Gone, HttpResultFactory.CreateGoneResult },
             {
                 ExceptionType.Validation,
-                (ex, features) => HttpResultFactory.CreateDynamicResult((ValidationException)ex, features)
+                (ex, localizer, features) =>
+                    HttpResultFactory.CreateDynamicResult((ValidationException)ex, localizer, features)
             },
             {
                 ExceptionType.UnprocessableEntity,
-                (ex, features) =>
-                    HttpResultFactory.CreateUnprocessableEntityResult((UnprocessableEntityException)ex, features)
+                HttpResultFactory.CreateUnprocessableEntityResult
             },
             {
-                ExceptionType.Business,
-                (ex, features) =>
-                    HttpResultFactory.CreateBusinessResult((BusinessException)ex, features)
-            },
-            {
-                ExceptionType.NoImplemented,
-                (_, _) => throw new NotSupportedException("Exception type is not supported.")
+                ExceptionType.InternalServerError,
+                HttpResultFactory.CreateInternalServerErrorResult
             }
             // Add more exception type mappings as needed
         };
@@ -89,7 +87,7 @@ internal static class BusinessExceptionMapper
             { ExceptionType.Gone, HttpStatusCode.Gone },
             { ExceptionType.Validation, HttpStatusCode.BadRequest },
             { ExceptionType.UnprocessableEntity, HttpStatusCode.UnprocessableEntity },
-            { ExceptionType.Business, HttpStatusCode.InternalServerError }
+            { ExceptionType.InternalServerError, HttpStatusCode.InternalServerError }
             // Add more exception type mappings as needed
         };
 
@@ -101,14 +99,17 @@ internal static class BusinessExceptionMapper
     /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static IActionResult MapExceptionToResult(Exception ex,
+    internal static IActionResult MapExceptionToResult(Exception ex, IStringLocalizer<Resource> localizer,
         IFeatureCollection features)
     {
         var exceptionType = GetExceptionType(ex);
-        if (ActionResultHandlers.TryGetValue(exceptionType, out var handler))
-            return handler(ex, features);
+        if (exceptionType is ExceptionType.NoImplemented)
+            throw new NotSupportedException(localizer["MapperExceptionResultNotSupported", exceptionType]);
 
-        throw new NotSupportedException($"Mapper for exception type {exceptionType} is not supported.");
+        if (ActionResultHandlers.TryGetValue(exceptionType, out var handler))
+            return handler(ex, localizer, features);
+
+        throw new NotSupportedException(localizer["MapperExceptionResultNotSupported", exceptionType]);
     }
 
     /// <exception cref="ArgumentNullException">
@@ -118,13 +119,16 @@ internal static class BusinessExceptionMapper
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static HttpStatusCode MapExceptionToHttpStatusCode(Exception ex)
+    internal static HttpStatusCode ExceptionToHttpStatusCode(Exception ex, IStringLocalizer<Resource> localizer)
     {
         var exceptionType = GetExceptionType(ex);
+        if (exceptionType is ExceptionType.NoImplemented)
+            throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
+
         if (HttpStatusCodetHandlers.TryGetValue(exceptionType, out var statusCode))
             return statusCode;
 
-        throw new NotSupportedException($"Status Code for exception type {exceptionType} is not supported.");
+        throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
     }
 
     /// <summary>
@@ -144,7 +148,7 @@ internal static class BusinessExceptionMapper
             GoneException => ExceptionType.Gone,
             ValidationException => ExceptionType.Validation,
             UnprocessableEntityException => ExceptionType.UnprocessableEntity,
-            BusinessException => ExceptionType.Business,
+            InternalServerErrorException => ExceptionType.InternalServerError,
             _ => ExceptionType.NoImplemented
         };
     }

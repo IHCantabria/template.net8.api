@@ -16,7 +16,7 @@ public sealed class SettingsInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 5;
+    public short LoadOrder => 6;
 
     /// <summary>
     ///     Install Settings services

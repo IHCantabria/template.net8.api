@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Controllers.V1;
 
@@ -13,8 +15,9 @@ namespace template.net8.api.Controllers.V1;
 [CoreLibrary]
 public sealed class Health(
     IMediator mediator,
+    IStringLocalizer<Resource> localizer,
     ILogger<Health> logger)
-    : MyControllerBase(mediator, logger)
+    : MyControllerBase(mediator, localizer, logger)
 {
     /// <summary>
     ///     Health Check.

@@ -117,10 +117,84 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="String1" xml:space="preserve">
-    <value>HELLO</value>
+  <data name="MapperExceptionResultNotSupported" xml:space="preserve">
+    <value>Mapper for exception type {0} is not supported.</value>
+    <comment>MapperExceptionResultNotSupported</comment>
   </data>
-  <data name="String2" xml:space="preserve">
-    <value>GOODBYE</value>
+  <data name="ExceptionStatusCodeNotSupported" xml:space="preserve">
+    <value>Status Code for exception type {0} is not supported.</value>
+    <comment>ExceptionStatusCodeNotSupported</comment>
+  </data>
+  <data name="GenericServerError" xml:space="preserve">
+    <value>There is something wrong with our bloody servers today.</value>
+    <comment>GenericServerError</comment>
+  </data>
+  <data name="MapperExceptionStatusCodeNotSupported" xml:space="preserve">
+    <value>Mapper for http status code {0} is not supported.</value>
+    <comment>MapperExceptionStatusCodeNotSupported</comment>
+  </data>
+  <data name="GenieAccessTokenServerError" xml:space="preserve">
+    <value>Something went wrong when creating the genie access token.</value>
+    <comment>GenieAccessTokenServerError</comment>
+  </data>
+  <data name="CreateDummyValidatorTextInvalidMsg" xml:space="preserve">
+    <value>You must specify a valid text.</value>
+    <comment>CreateDummyValidatorTextInvalidMsg</comment>
+  </data>
+  <data name="DejaVu" xml:space="preserve">
+    <value>A Dejavu is usually a glitch in the matrix, it happens when they change something.</value>
+    <comment>DejaVu</comment>
+  </data>
+  <data name="GenericClientError" xml:space="preserve">
+    <value>There is something wrong with your request.</value>
+    <comment>GenericClientError</comment>
+  </data>
+  <data name="GenericValidatorError" xml:space="preserve">
+    <value>There is something wrong with the validators for your request.</value>
+    <comment>GenericValidatorError</comment>
+  </data>
+  <data name="GetDummyValidatorNotFoundMsg" xml:space="preserve">
+    <value>The dummy key declared in your request doesn't match any dummy in the system.</value>
+    <comment>GetDummyValidatorNotFoundMsg</comment>
+  </data>
+  <data name="ProblemDetailsBadRequestTitle" xml:space="preserve">
+    <value>Incorrect Inputs.</value>
+    <comment>ProblemDetailsBadRequestTitle</comment>
+  </data>
+  <data name="ProblemDetailsConflictTitle" xml:space="preserve">
+    <value>Operation Not Allowed.</value>
+    <comment>ProblemDetailsConflictTitle</comment>
+  </data>
+  <data name="ProblemDetailsForbiddenTitle" xml:space="preserve">
+    <value>Forbidden Access.</value>
+    <comment>ProblemDetailsForbiddenTitle</comment>
+  </data>
+  <data name="ProblemDetailsGoneTitle" xml:space="preserve">
+    <value>Expired Data.</value>
+    <comment>ProblemDetailsGoneTitle</comment>
+  </data>
+  <data name="ProblemDetailsNotFoundTitle" xml:space="preserve">
+    <value>Data not Found.</value>
+    <comment>ProblemDetailsNotFoundTitle</comment>
+  </data>
+  <data name="ProblemDetailsRequestTimeoutTitle" xml:space="preserve">
+    <value>Request Timeout. Try Again.</value>
+    <comment>ProblemDetailsRequestTimeoutTitle</comment>
+  </data>
+  <data name="ProblemDetailsUnauthorizedTitle" xml:space="preserve">
+    <value>Unauthorized Access.</value>
+    <comment>ProblemDetailsUnauthorizedTitle</comment>
+  </data>
+  <data name="ProblemDetailsUnprocessableEntityTitle" xml:space="preserve">
+    <value>Data inconsistency.</value>
+    <comment>ProblemDetailsUnprocessableEntityTitle</comment>
+  </data>
+  <data name="ProblemDetailsValidationDetail" xml:space="preserve">
+    <value>Check the described errors and relaunch the request with the fixed values.</value>
+    <comment>ProblemDetailsValidationDetail</comment>
+  </data>
+  <data name="ProblemDetailsValidationTitle" xml:space="preserve">
+    <value>One or more validation errors occurred.</value>
+    <comment>ProblemDetailsValidationTitle</comment>
   </data>
 </root>

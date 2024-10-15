@@ -2,17 +2,23 @@
 using FluentValidation.Results;
 using LanguageExt.Common;
 using MediatR;
-using template.net8.api.Business.Messages;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Parallel;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Behaviors;
 
 [CoreLibrary]
-internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+internal sealed class ValidationBehavior<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators,
+    IStringLocalizer<Resource> localizer)
     : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : notnull
 {
+    private readonly IStringLocalizer<Resource> _localizer =
+        localizer ?? throw new ArgumentNullException(nameof(localizer));
+
     private readonly IEnumerable<IValidator<TRequest>> _validators =
         validators ?? throw new ArgumentNullException(nameof(validators));
 
@@ -51,7 +57,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValid
         var result = await ParallelUtils.ExecuteInParallelAsync(tasks, cts).ConfigureAwait(false);
         var validateValidatorsAsync = result.ToList();
         if (validateValidatorsAsync.Length() != _validators.Length())
-            throw new ValidationException(MessageDefinitions.GenericValidatorError);
+            throw new ValidationException(_localizer["GenericValidatorError"]);
 
         return validateValidatorsAsync;
     }

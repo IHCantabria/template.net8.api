@@ -24,6 +24,7 @@ internal static class GenieIdentityConstants
 [CoreLibrary]
 internal static class ClaimCoreConstants
 {
+    internal const string RoleClaim = "role";
     internal const string ScopeClaim = "scope";
     internal const string TokenTypeClaim = "token_type";
     internal const string ApplicationPrivilegesClaim = "application_privileges";

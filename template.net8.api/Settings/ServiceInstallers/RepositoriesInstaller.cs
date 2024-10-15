@@ -14,7 +14,7 @@ public sealed class RepositoriesInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 9;
+    public short LoadOrder => 10;
 
     /// <summary>
     ///     Install Repository Services

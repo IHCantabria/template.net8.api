@@ -2,5 +2,9 @@
 
 namespace template.net8.api.Localize.Resources;
 
+/// <summary>
+///     Placeholder for resources.
+/// </summary>
 [CoreLibrary]
-internal static class Resource;
+//TODO: REVIEW RESOURCE INTEGRATION WITH BUSINESSEXCEPTION AND COREEXCEPTION
+public class Resource;

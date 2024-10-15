@@ -12,7 +12,7 @@ public sealed class AutoMapperInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 10;
+    public short LoadOrder => 11;
 
     /// <summary>
     ///     Install AutoMapper Service

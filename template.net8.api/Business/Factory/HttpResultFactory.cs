@@ -2,17 +2,15 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.api.Business.Messages;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Business.Factory;
 
 [CoreLibrary]
 internal static class HttpResultFactory
 {
-    private const string ValidationDetailErrorMsg =
-        "Check the described errors and relaunch the request with the correct values.";
-
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>
@@ -35,47 +33,56 @@ internal static class HttpResultFactory
     ///     .
     /// </exception>
     internal static BadRequestResult CreateDynamicResult(
-        ValidationException exception, IFeatureCollection features)
+        ValidationException exception, IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var httpStatusCode = HttpResultUtils.GetStatusCode(exception);
-        return CreateDynamicResult(httpStatusCode, exception, features);
+        return CreateDynamicResult(httpStatusCode, exception, localizer, features);
     }
 
     private static BadRequestResult CreateDynamicResult(HttpStatusCode httpStatusCode, Exception ex,
-        IFeatureCollection features)
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         return httpStatusCode switch
         {
-            HttpStatusCode.BadRequest when ex is ValidationException vex => CreateBadRequestResult(vex, features),
-            HttpStatusCode.BadRequest => CreateBadRequestResult(ex, features),
-            HttpStatusCode.Unauthorized when ex is ValidationException vex => CreateUnauthorizedResult(vex, features),
-            HttpStatusCode.Unauthorized => CreateUnauthorizedResult(ex, features),
-            HttpStatusCode.Forbidden when ex is ValidationException vex => CreateForbiddenResult(vex, features),
-            HttpStatusCode.Forbidden => CreateForbiddenResult(ex, features),
-            HttpStatusCode.NotFound when ex is ValidationException vex => CreateNotFoundResult(vex, features),
-            HttpStatusCode.NotFound => CreateNotFoundResult(ex, features),
-            HttpStatusCode.Conflict when ex is ValidationException vex => CreateConflictResult(vex, features),
-            HttpStatusCode.Conflict => CreateConflictResult(ex, features),
-            HttpStatusCode.Gone when ex is ValidationException vex => CreateGoneResult(vex, features),
-            HttpStatusCode.Gone => CreateGoneResult(ex, features),
+            HttpStatusCode.BadRequest when ex is ValidationException vex => CreateBadRequestResult(vex, localizer,
+                features),
+            HttpStatusCode.BadRequest => CreateBadRequestResult(ex, localizer, features),
+            HttpStatusCode.Unauthorized when ex is ValidationException vex => CreateUnauthorizedResult(vex, localizer,
+                features),
+            HttpStatusCode.Unauthorized => CreateUnauthorizedResult(ex, localizer, features),
+            HttpStatusCode.Forbidden when ex is ValidationException vex => CreateForbiddenResult(vex, localizer,
+                features),
+            HttpStatusCode.Forbidden => CreateForbiddenResult(ex, localizer, features),
+            HttpStatusCode.NotFound when ex is ValidationException vex =>
+                CreateNotFoundResult(vex, localizer, features),
+            HttpStatusCode.NotFound => CreateNotFoundResult(ex, localizer, features),
+            HttpStatusCode.Conflict when ex is ValidationException vex =>
+                CreateConflictResult(vex, localizer, features),
+            HttpStatusCode.Conflict => CreateConflictResult(ex, localizer, features),
+            HttpStatusCode.Gone when ex is ValidationException vex => CreateGoneResult(vex, localizer, features),
+            HttpStatusCode.Gone => CreateGoneResult(ex, localizer, features),
             HttpStatusCode.RequestTimeout when ex is ValidationException vex => CreateRequestTimeoutResult(vex,
+                localizer,
                 features),
-            HttpStatusCode.RequestTimeout => CreateRequestTimeoutResult(ex, features),
+            HttpStatusCode.RequestTimeout => CreateRequestTimeoutResult(ex, localizer, features),
             HttpStatusCode.UnprocessableEntity when ex is ValidationException vex => CreateValidationErrorResult(vex,
+                localizer,
                 features),
-            HttpStatusCode.UnprocessableEntity => CreateUnprocessableEntityResult(ex, features),
-            HttpStatusCode.InternalServerError when ex is ValidationException vex => CreateBusinessResult(vex,
+            HttpStatusCode.UnprocessableEntity => CreateUnprocessableEntityResult(ex, localizer, features),
+            HttpStatusCode.InternalServerError when ex is ValidationException vex => CreateInternalServerErrorResult(
+                vex, localizer,
                 features),
-            HttpStatusCode.InternalServerError => CreateBusinessResult(ex, features),
-            _ => throw new NotSupportedException($"Mapper for http status code {httpStatusCode} is not supported.")
+            HttpStatusCode.InternalServerError => CreateInternalServerErrorResult(ex, localizer, features),
+            _ => throw new NotSupportedException(localizer["MapperExceptionStatusCodeNotSupported"])
         };
     }
 
-    internal static BadRequestResult CreateBadRequestResult(Exception exception, IFeatureCollection features)
+    internal static BadRequestResult CreateBadRequestResult(Exception exception, IStringLocalizer<Resource> localizer,
+        IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Incorrect Inputs.",
+            Title = localizer["ProblemDetailsBadRequestTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request",
             Status = StatusCodes.Status400BadRequest
@@ -84,12 +91,13 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    private static BadRequestResult CreateBadRequestResult(ValidationException exception, IFeatureCollection features)
+    private static BadRequestResult CreateBadRequestResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Incorrect Inputs.",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsBadRequestTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request",
             Status = StatusCodes.Status400BadRequest
         };
@@ -98,11 +106,12 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateUnauthorizedResult(Exception exception, IFeatureCollection features)
+    internal static BadRequestResult CreateUnauthorizedResult(Exception exception, IStringLocalizer<Resource> localizer,
+        IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Unauthorized Inputs.",
+            Title = localizer["ProblemDetailsUnauthorizedTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-401-unauthorized",
             Status = StatusCodes.Status401Unauthorized
@@ -111,12 +120,13 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    private static BadRequestResult CreateUnauthorizedResult(ValidationException exception, IFeatureCollection features)
+    private static BadRequestResult CreateUnauthorizedResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Unauthorized Access.",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsUnauthorizedTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-401-unauthorized",
             Status = StatusCodes.Status401Unauthorized
         };
@@ -125,11 +135,12 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateForbiddenResult(Exception exception, IFeatureCollection features)
+    internal static BadRequestResult CreateForbiddenResult(Exception exception, IStringLocalizer<Resource> localizer,
+        IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Forbidden Access.",
+            Title = localizer["ProblemDetailsUnauthorizedTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-403-forbidden",
             Status = StatusCodes.Status403Forbidden
@@ -138,12 +149,13 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    private static BadRequestResult CreateForbiddenResult(ValidationException exception, IFeatureCollection features)
+    private static BadRequestResult CreateForbiddenResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Forbidden Access.",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsForbiddenTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-403-forbidden",
             Status = StatusCodes.Status403Forbidden
         };
@@ -152,11 +164,12 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateNotFoundResult(Exception exception, IFeatureCollection features)
+    internal static BadRequestResult CreateNotFoundResult(Exception exception, IStringLocalizer<Resource> localizer,
+        IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Data not Found.",
+            Title = localizer["ProblemDetailsNotFoundTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-404-not-found",
             Status = StatusCodes.Status404NotFound
@@ -165,12 +178,13 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    private static BadRequestResult CreateNotFoundResult(ValidationException exception, IFeatureCollection features)
+    private static BadRequestResult CreateNotFoundResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Data not Found.",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsNotFoundTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-404-not-found",
             Status = StatusCodes.Status404NotFound
         };
@@ -179,38 +193,12 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateConflictResult(Exception exception, IFeatureCollection features)
+    internal static BadRequestResult CreateRequestTimeoutResult(Exception exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Operation Not Allowed",
-            Detail = exception.Message,
-            Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
-            Status = StatusCodes.Status409Conflict
-        };
-        features.Set(clientProblemDetails);
-        return new BadRequestResult();
-    }
-
-    private static BadRequestResult CreateConflictResult(ValidationException exception, IFeatureCollection features)
-    {
-        var clientProblemDetails = new ProblemDetails
-        {
-            Title = "Operation Not Allowed",
-            Detail = ValidationDetailErrorMsg,
-            Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
-            Status = StatusCodes.Status409Conflict
-        };
-        clientProblemDetails = HttpResultUtils.AddErrors(clientProblemDetails, exception);
-        features.Set(clientProblemDetails);
-        return new BadRequestResult();
-    }
-
-    internal static BadRequestResult CreateRequestTimeoutResult(Exception exception, IFeatureCollection features)
-    {
-        var clientProblemDetails = new ProblemDetails
-        {
-            Title = "Request Timeout. Try Again",
+            Title = localizer["ProblemDetailsRequestTimeoutTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-408-request-timeout",
             Status = StatusCodes.Status408RequestTimeout
@@ -220,12 +208,13 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateRequestTimeoutResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Request Timeout. Try Again",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsRequestTimeoutTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-408-request-timeout",
             Status = StatusCodes.Status408RequestTimeout
         };
@@ -234,11 +223,41 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateGoneResult(Exception exception, IFeatureCollection features)
+    internal static BadRequestResult CreateConflictResult(Exception exception, IStringLocalizer<Resource> localizer,
+        IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Expired Data",
+            Title = localizer["ProblemDetailsConflictTitle"],
+            Detail = exception.Message,
+            Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
+            Status = StatusCodes.Status409Conflict
+        };
+        features.Set(clientProblemDetails);
+        return new BadRequestResult();
+    }
+
+    private static BadRequestResult CreateConflictResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+    {
+        var clientProblemDetails = new ProblemDetails
+        {
+            Title = localizer["ProblemDetailsConflictTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
+            Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
+            Status = StatusCodes.Status409Conflict
+        };
+        clientProblemDetails = HttpResultUtils.AddErrors(clientProblemDetails, exception);
+        features.Set(clientProblemDetails);
+        return new BadRequestResult();
+    }
+
+    internal static BadRequestResult CreateGoneResult(Exception exception, IStringLocalizer<Resource> localizer,
+        IFeatureCollection features)
+    {
+        var clientProblemDetails = new ProblemDetails
+        {
+            Title = localizer["ProblemDetailsGoneTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-410-gone",
             Status = StatusCodes.Status410Gone
@@ -247,12 +266,13 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    private static BadRequestResult CreateGoneResult(ValidationException exception, IFeatureCollection features)
+    private static BadRequestResult CreateGoneResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Expired Data",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsGoneTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-410-gone",
             Status = StatusCodes.Status410Gone
         };
@@ -262,12 +282,12 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateValidationErrorResult(
-        ValidationException exception, IFeatureCollection features)
+        ValidationException exception, IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "One or more validation errors occurred.",
-            Detail = ValidationDetailErrorMsg,
+            Title = localizer["ProblemDetailsValidationTitle"],
+            Detail = localizer["ProblemDetailsValidationDetail"],
             Type = "https://tools.ietf.org/html/rfc9110#name-422-unprocessable-content",
             Status = StatusCodes.Status422UnprocessableEntity
         };
@@ -277,11 +297,12 @@ internal static class HttpResultFactory
     }
 
     internal static BadRequestResult CreateUnprocessableEntityResult(Exception exception,
+        IStringLocalizer<Resource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = "Data inconsistency",
+            Title = localizer["ProblemDetailsUnprocessableEntityTitle"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-422-unprocessable-content",
             Status = StatusCodes.Status422UnprocessableEntity
@@ -290,12 +311,13 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateBusinessResult(Exception exception,
+    internal static BadRequestResult CreateInternalServerErrorResult(Exception exception,
+        IStringLocalizer<Resource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = MessageDefinitions.GenericServerError,
+            Title = localizer["GenericServerError"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-500-internal-server-error",
             Status = StatusCodes.Status500InternalServerError
@@ -304,11 +326,12 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    private static BadRequestResult CreateBusinessResult(ValidationException exception, IFeatureCollection features)
+    private static BadRequestResult CreateInternalServerErrorResult(ValidationException exception,
+        IStringLocalizer<Resource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
-            Title = MessageDefinitions.GenericServerError,
+            Title = localizer["GenericServerError"],
             Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc9110#name-500-internal-server-error",
             Status = StatusCodes.Status500InternalServerError

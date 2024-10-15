@@ -9,12 +9,10 @@ namespace template.net8.api.Settings.ServiceInstallers;
 [CoreLibrary]
 public sealed class LocalizerInstaller : IServiceInstaller
 {
-    private const string ResourcesPath = "Localize/Resources";
-
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 25;
+    public short LoadOrder => 4;
 
     /// <summary>
     ///     Install AutoMapper Service
@@ -25,7 +23,7 @@ public sealed class LocalizerInstaller : IServiceInstaller
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.AddLocalization(options => options.ResourcesPath = ResourcesPath);
+        builder.Services.AddLocalization();
         return Task.CompletedTask;
     }
 }

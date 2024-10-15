@@ -118,83 +118,83 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MapperExceptionResultNotSupported" xml:space="preserve">
-    <value>Mapper for exception type {0} is not supported.</value>
+    <value>No se admite el mapeador para el tipo de excepción {0}.</value>
     <comment>MapperExceptionResultNotSupported</comment>
   </data>
   <data name="ExceptionStatusCodeNotSupported" xml:space="preserve">
-    <value>Status Code for exception type {0} is not supported.</value>
+    <value>No se admite el código de estatus para el tipo de excepción {0}.</value>
     <comment>ExceptionStatusCodeNotSupported</comment>
   </data>
   <data name="GenericServerError" xml:space="preserve">
-    <value>There is something wrong with our bloody servers today.</value>
+    <value>Algo va mal con nuestros malditos servidores hoy.</value>
     <comment>GenericServerError</comment>
   </data>
   <data name="MapperExceptionStatusCodeNotSupported" xml:space="preserve">
-    <value>Mapper for http status code {0} is not supported.</value>
+    <value>El mapeador para el código de estado http {0} no es compatible.</value>
     <comment>MapperExceptionStatusCodeNotSupported</comment>
   </data>
   <data name="GenieAccessTokenServerError" xml:space="preserve">
-    <value>Something went wrong when creating the genie access token.</value>
+    <value>Algo ha ido mal al crear el token de acceso para el will smith.</value>
     <comment>GenieAccessTokenServerError</comment>
   </data>
   <data name="CreateDummyValidatorTextInvalidMsg" xml:space="preserve">
-    <value>You must specify a valid text.</value>
+    <value>Debe especificar un texto válido.</value>
     <comment>CreateDummyValidatorTextInvalidMsg</comment>
   </data>
   <data name="DejaVu" xml:space="preserve">
-    <value>A Dejavu is usually a glitch in the matrix, it happens when they change something.</value>
+    <value>Un Dejavu suele ser un fallo en la matriz, ocurre cuando cambian algo.</value>
     <comment>DejaVu</comment>
   </data>
   <data name="GenericClientError" xml:space="preserve">
-    <value>There is something wrong with your request.</value>
+    <value>Parece que hay algo mal en su petición.</value>
     <comment>GenericClientError</comment>
   </data>
   <data name="GenericValidatorError" xml:space="preserve">
-    <value>There is something wrong with the validators for your request.</value>
+    <value>Hay algún problema con los validadores de su solicitud.</value>
     <comment>GenericValidatorError</comment>
   </data>
   <data name="GetDummyValidatorNotFoundMsg" xml:space="preserve">
-    <value>The dummy key declared in your request doesn't match any dummy in the system.</value>
+    <value>El Dummy con el valor solicitado en tu petición no existe en el sistema.</value>
     <comment>GetDummyValidatorNotFoundMsg</comment>
   </data>
   <data name="ProblemDetailsBadRequestTitle" xml:space="preserve">
-    <value>Incorrect Inputs.</value>
+    <value>Entrada de Datos Incorrecta.</value>
     <comment>ProblemDetailsBadRequestTitle</comment>
   </data>
   <data name="ProblemDetailsConflictTitle" xml:space="preserve">
-    <value>Operation Not Allowed.</value>
+    <value>Operación No Permitida.</value>
     <comment>ProblemDetailsConflictTitle</comment>
   </data>
   <data name="ProblemDetailsForbiddenTitle" xml:space="preserve">
-    <value>Forbidden Access.</value>
+    <value>Acceso Prohibido.</value>
     <comment>ProblemDetailsForbiddenTitle</comment>
   </data>
   <data name="ProblemDetailsGoneTitle" xml:space="preserve">
-    <value>Expired Data.</value>
+    <value>Datos Caducados.</value>
     <comment>ProblemDetailsGoneTitle</comment>
   </data>
   <data name="ProblemDetailsNotFoundTitle" xml:space="preserve">
-    <value>Data not Found.</value>
+    <value>Datos No Encontrados.</value>
     <comment>ProblemDetailsNotFoundTitle</comment>
   </data>
   <data name="ProblemDetailsRequestTimeoutTitle" xml:space="preserve">
-    <value>Request Timeout. Try Again.</value>
+    <value>Timeout en la petición, vuelva a lanzar.</value>
     <comment>ProblemDetailsRequestTimeoutTitle</comment>
   </data>
   <data name="ProblemDetailsUnauthorizedTitle" xml:space="preserve">
-    <value>Unauthorized Access.</value>
+    <value>Acceso no autorizado.</value>
     <comment>ProblemDetailsUnauthorizedTitle</comment>
   </data>
   <data name="ProblemDetailsUnprocessableEntityTitle" xml:space="preserve">
-    <value>Data inconsistency.</value>
+    <value>Incoherencia de los datos.</value>
     <comment>ProblemDetailsUnprocessableEntityTitle</comment>
   </data>
   <data name="ProblemDetailsValidationDetail" xml:space="preserve">
-    <value>Check the described errors and relaunch the request with the fixed values.</value>
+    <value>Compruebe los errores descritos y vuelva a lanzar la solicitud con los valores corregidos.</value>
     <comment>ProblemDetailsValidationDetail</comment>
   </data>
   <data name="ProblemDetailsValidationTitle" xml:space="preserve">
-    <value>One or more validation errors occurred.</value>
+    <value>Se han producido uno o varios errores de validación.</value>
     <comment>ProblemDetailsValidationTitle</comment>
   </data>
 </root>

@@ -1,7 +1,6 @@
 ﻿using LanguageExt;
 using LanguageExt.Common;
 using NetTopologySuite.Geometries;
-using template.net8.api.Business.Exceptions;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Domain.DTOs;
@@ -18,7 +17,7 @@ internal static class GeometryUtils
         {
             // Check that the input array has exactly four coordinates
             if (!extent.IsValid())
-                return new Result<Geometry>(new BadRequestException("Extent is not valid"));
+                return new Result<Geometry>(new CoreException("Extent is not valid"));
 
             var linearRing = new LinearRing([
                 new Coordinate((double)extent.LonMin, (double)extent.LatMin),
@@ -38,7 +37,7 @@ internal static class GeometryUtils
         {
             // Check that the input array has exactly four coordinates
             if (!point.IsValid())
-                return new Result<Geometry>(new BadRequestException("Point is not valid"));
+                return new Result<Geometry>(new CoreException("Point is not valid"));
 
             var geom = new Point(
                 new Coordinate((double)point.Lon, (double)point.Lat)
