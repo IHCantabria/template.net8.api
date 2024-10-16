@@ -35,4 +35,26 @@ internal static class ApiRoutes
 
         internal const string HealthCheck = "";
     }
+
+    [CoreLibrary]
+    internal static class Test
+    {
+        private const string ControllerIdentity = "test";
+
+        internal const string PathController = $"{PathAccess}/{ControllerIdentity}";
+
+        internal const string Codes = "";
+    }
+
+    [CoreLibrary]
+    internal static class System
+    {
+        private const string ControllerIdentity = "systems";
+
+        internal const string PathController = $"{PathAccess}/{ControllerIdentity}";
+
+        internal const string GetErrorCodes = "error-codes";
+
+        internal const string GetVersion = "version";
+    }
 }

@@ -10,11 +10,11 @@ namespace template.net8.api.Settings.Handlers;
 [CoreLibrary]
 internal sealed class GlobalExceptionHandlerControl(
     IProblemDetailsService problemDetailsService,
-    IStringLocalizer<Resource> localizer,
+    IStringLocalizer<ResourceMain> localizer,
     ILogger<ControllerBase> logger)
     : IExceptionHandler
 {
-    private readonly IStringLocalizer<Resource> _localizer =
+    private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));

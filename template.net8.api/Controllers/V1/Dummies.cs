@@ -23,7 +23,7 @@ namespace template.net8.api.Controllers.V1;
 [ApiController]
 public sealed class Dummies(
     IMediator mediator,
-    IStringLocalizer<Resource> localizer,
+    IStringLocalizer<ResourceMain> localizer,
     ILogger<Dummies> logger)
     : MyControllerBase(mediator, localizer, logger)
 {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Localize.Resources;
+using template.net8.api.Settings.Attributes;
 
 namespace template.net8.api.Controllers.V1;
 
@@ -11,11 +12,11 @@ namespace template.net8.api.Controllers.V1;
 /// </summary>
 [Route(ApiRoutes.Health.PathController)]
 [ApiController]
-[ApiExplorerSettings(IgnoreApi = true)]
+[DevSwagger]
 [CoreLibrary]
 public sealed class Health(
     IMediator mediator,
-    IStringLocalizer<Resource> localizer,
+    IStringLocalizer<ResourceMain> localizer,
     ILogger<Health> logger)
     : MyControllerBase(mediator, localizer, logger)
 {

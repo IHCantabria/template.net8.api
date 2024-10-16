@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Localize.Resources;
+using template.net8.api.Localize.Interfaces;
 
 namespace template.net8.api.Business.Factory;
 
@@ -33,14 +33,14 @@ internal static class HttpResultFactory
     ///     .
     /// </exception>
     internal static BadRequestResult CreateDynamicResult(
-        ValidationException exception, IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        ValidationException exception, IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var httpStatusCode = HttpResultUtils.GetStatusCode(exception);
         return CreateDynamicResult(httpStatusCode, exception, localizer, features);
     }
 
     private static BadRequestResult CreateDynamicResult(HttpStatusCode httpStatusCode, Exception ex,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         return httpStatusCode switch
         {
@@ -77,7 +77,8 @@ internal static class HttpResultFactory
         };
     }
 
-    internal static BadRequestResult CreateBadRequestResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateBadRequestResult(Exception exception,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -92,7 +93,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateBadRequestResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -106,7 +107,8 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateUnauthorizedResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateUnauthorizedResult(Exception exception,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -121,7 +123,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateUnauthorizedResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -135,7 +137,8 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateForbiddenResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateForbiddenResult(Exception exception,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -150,7 +153,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateForbiddenResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -164,7 +167,7 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateNotFoundResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateNotFoundResult(Exception exception, IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -179,7 +182,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateNotFoundResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -194,7 +197,7 @@ internal static class HttpResultFactory
     }
 
     internal static BadRequestResult CreateRequestTimeoutResult(Exception exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -208,7 +211,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateRequestTimeoutResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -223,7 +226,7 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateConflictResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateConflictResult(Exception exception, IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -238,7 +241,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateConflictResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -252,7 +255,7 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    internal static BadRequestResult CreateGoneResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateGoneResult(Exception exception, IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -267,7 +270,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateGoneResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -282,7 +285,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateValidationErrorResult(
-        ValidationException exception, IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        ValidationException exception, IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {
@@ -297,7 +300,7 @@ internal static class HttpResultFactory
     }
 
     internal static BadRequestResult CreateUnprocessableEntityResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -312,7 +315,7 @@ internal static class HttpResultFactory
     }
 
     internal static BadRequestResult CreateInternalServerErrorResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
@@ -327,7 +330,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateInternalServerErrorResult(ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<IResource> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = new ProblemDetails
         {

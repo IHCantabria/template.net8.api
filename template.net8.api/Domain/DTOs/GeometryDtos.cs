@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.Interfaces;
 
 namespace template.net8.api.Domain.DTOs;
@@ -7,7 +6,6 @@ namespace template.net8.api.Domain.DTOs;
 /// <summary>
 ///     Extent DTO
 /// </summary>
-[CoreLibrary]
 public sealed partial record ExtentDto : IDto, IEqualityOperators<ExtentDto, ExtentDto, bool>
 {
     /// <summary>
@@ -35,7 +33,6 @@ public sealed partial record ExtentDto : IDto, IEqualityOperators<ExtentDto, Ext
 /// <summary>
 ///     Create Extent DTO
 /// </summary>
-[CoreLibrary]
 public sealed record CreateExtentDto : IDto, IEqualityOperators<CreateExtentDto, CreateExtentDto, bool>
 {
     /// <summary>
@@ -73,7 +70,6 @@ public sealed record CreateExtentDto : IDto, IEqualityOperators<CreateExtentDto,
 /// <summary>
 ///     Point DTO
 /// </summary>
-[CoreLibrary]
 public sealed partial record PointDto : IDto, IEqualityOperators<PointDto, PointDto, bool>
 {
     /// <summary>
@@ -95,7 +91,6 @@ public sealed partial record PointDto : IDto, IEqualityOperators<PointDto, Point
 /// <summary>
 ///     Create Point DTO
 /// </summary>
-[CoreLibrary]
 public sealed record CreatePointDto : IDto, IEqualityOperators<CreatePointDto, CreatePointDto, bool>
 {
     /// <summary>

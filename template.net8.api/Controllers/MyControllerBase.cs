@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Localize.Resources;
+using template.net8.api.Localize.Interfaces;
 using template.net8.api.Logger;
 
 namespace template.net8.api.Controllers;
@@ -13,7 +13,7 @@ namespace template.net8.api.Controllers;
 [CoreLibrary]
 public class MyControllerBase : ControllerBase
 {
-    internal readonly IStringLocalizer<Resource> Localizer;
+    internal readonly IStringLocalizer<IResource> Localizer;
     internal readonly ILogger Logger;
 
     internal readonly IMediator Mediator;
@@ -25,7 +25,7 @@ public class MyControllerBase : ControllerBase
     /// <param name="localizer"></param>
     /// <param name="logger"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    protected MyControllerBase(IMediator mediator, IStringLocalizer<Resource> localizer,
+    protected MyControllerBase(IMediator mediator, IStringLocalizer<IResource> localizer,
         ILogger<MyControllerBase> logger)
     {
         Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

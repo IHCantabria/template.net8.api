@@ -120,7 +120,7 @@ internal static class HttpResultUtils
         {
             var errors = group.Select(error => new ProblemDetailsValidationError
             {
-                Detail = error.ErrorMessage, Code = $"{BusinessConstants.ApiCode}-BE-{error.ErrorCode}",
+                Detail = error.ErrorMessage, Code = error.ErrorCode,
                 Value = error.AttemptedValue?.ToString(), Pointer = group.Key
             });
             errorsList.AddRange(errors);

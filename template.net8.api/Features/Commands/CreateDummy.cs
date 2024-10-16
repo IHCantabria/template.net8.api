@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Net;
+﻿using System.Net;
 using System.Numerics;
 using FluentValidation;
 using JetBrains.Annotations;
@@ -57,14 +56,14 @@ public sealed class CreateDummyTextValidator : AbstractValidator<CommandCreateDu
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public CreateDummyTextValidator(IStringLocalizer<Resource> localizer)
+    public CreateDummyTextValidator(IStringLocalizer<ResourceMain> localizer)
     {
         ArgumentNullException.ThrowIfNull(localizer);
 
         RuleFor(x => x.CommandParams.Text).Must(x => !x.IsNullOrEmpty())
             .OverridePropertyName("text")
             .WithMessage(localizer["CreateDummyValidatorTextInvalidMsg"])
-            .WithErrorCode(StatusCodes.Status422UnprocessableEntity.ToString(CultureInfo.InvariantCulture))
+            .WithErrorCode(localizer["CreateDummyValidatorTextInvalidCode"])
             .WithState(_ => HttpStatusCode.UnprocessableEntity);
     }
 }

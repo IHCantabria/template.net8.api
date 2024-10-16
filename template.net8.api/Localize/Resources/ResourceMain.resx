@@ -197,4 +197,12 @@
     <value>One or more validation errors occurred.</value>
     <comment>ProblemDetailsValidationTitle</comment>
   </data>
+  <data name="CreateDummyValidatorTextInvalidCode" xml:space="preserve">
+    <value>BE-CD-V-01</value>
+    <comment>CreateDummyValidatorTextInvalidCode</comment>
+  </data>
+  <data name="GetDummyValidatorNotFoundCode" xml:space="preserve">
+    <value>BE-GD-V-01</value>
+    <comment>GetDummyValidatorNotFoundCode</comment>
+  </data>
 </root>

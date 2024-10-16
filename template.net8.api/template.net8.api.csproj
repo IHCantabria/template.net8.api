@@ -13,7 +13,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\net8.0\{PROJECT_NAMESPACE}.xml</DocumentationFile>
+    <!--<DocumentationFile>bin\Debug\net8.0\{PROJECT_NAMESPACE}.xml</DocumentationFile>-->
+    <DocumentationFile>bin\Debug\net8.0\template.net8.api.xml</DocumentationFile>
     <Optimize>False</Optimize>
   </PropertyGroup>
 
@@ -81,6 +82,12 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localize\Resources\ResourceMain.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

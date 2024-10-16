@@ -8,21 +8,20 @@ using template.net8.api.Business.Exceptions;
 using template.net8.api.Communications.Interfaces;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
-using template.net8.api.Localize.Resources;
+using template.net8.api.Localize.Interfaces;
 
 namespace template.net8.api.Controllers.Extensions;
 
 [CoreLibrary]
 internal static class ControllerExtensions
 {
-    //TODO: AQUI EL LOCALIZATION
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     /// <exception cref="CoreException">
     ///     Error Creating the Http Action Result. Error mapping action endpoint response to
     ///     resource
     /// </exception>
     internal static IActionResult ToActionResult<TResult, TContract>(this Result<TResult> result,
-        ActionResultPayload<TResult, TContract> action, IStringLocalizer<Resource> localizer,
+        ActionResultPayload<TResult, TContract> action, IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         return result.Match(obj =>
@@ -52,7 +51,8 @@ internal static class ControllerExtensions
             ex => ManageExceptionActionResult(ex, localizer, features));
     }
 
-    private static IActionResult ManageExceptionActionResult(Exception ex, IStringLocalizer<Resource> localizer,
+    private static IActionResult ManageExceptionActionResult(Exception ex,
+        IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         if (ex is BusinessException or ValidationException)

@@ -1,10 +1,9 @@
 ﻿using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Localize.Resources;
+namespace template.net8.api.Localize.Interfaces;
 
 /// <summary>
-///     Placeholder for resources.
 /// </summary>
 [CoreLibrary]
 //TODO: REVIEW RESOURCE INTEGRATION WITH BUSINESSEXCEPTION AND COREEXCEPTION
-public class Resource;
+public interface IResource;

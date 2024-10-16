@@ -2,7 +2,6 @@
 
 namespace template.net8.api.Controllers;
 
-[CoreLibrary]
 internal static class SwaggerDocumentation
 {
     internal static class Dummies
@@ -43,6 +42,29 @@ internal static class SwaggerDocumentation
         }
     }
 
+    [CoreLibrary]
+    internal static class System
+    {
+        internal const string ControllerDescription = "System Controller";
+
+        internal static class GetErrorCodes
+        {
+            internal const string Summary = "Get Error Codes.";
+            internal const string Description = "Get the error codes and their description managed for the system.";
+            internal const string Id = "GetErrorCodes";
+            internal const string Ok = "Return the error codes and their description managed for the system.";
+        }
+
+        internal static class GetVersion
+        {
+            internal const string Summary = "Get Version";
+            internal const string Description = "Get the current system version.";
+            internal const string Id = "GetVersion";
+            internal const string Ok = "Return the current system version.";
+        }
+    }
+
+    [CoreLibrary]
     internal static class Filter
     {
         internal const string AuthorizationErrorDescription =

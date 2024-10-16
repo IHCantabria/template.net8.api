@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Net;
+﻿using System.Net;
 using System.Numerics;
 using FluentValidation;
 using JetBrains.Annotations;
@@ -50,7 +49,7 @@ public sealed class GetDummyKeyValidator : AbstractValidator<QueryGetDummy>
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public GetDummyKeyValidator(IStringLocalizer<Resource> localizer)
+    public GetDummyKeyValidator(IStringLocalizer<ResourceMain> localizer)
     {
         ArgumentNullException.ThrowIfNull(localizer);
 
@@ -58,7 +57,7 @@ public sealed class GetDummyKeyValidator : AbstractValidator<QueryGetDummy>
             .Must(ValidateDummyKey)
             .OverridePropertyName("project-key")
             .WithMessage(localizer["GetDummyValidatorNotFoundMsg"])
-            .WithErrorCode(StatusCodes.Status404NotFound.ToString(CultureInfo.InvariantCulture))
+            .WithErrorCode(localizer["GetDummyValidatorNotFoundCode"])
             .WithState(_ => HttpStatusCode.NotFound);
     }
 

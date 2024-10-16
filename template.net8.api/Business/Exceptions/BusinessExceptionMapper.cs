@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Factory;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Localize.Resources;
+using template.net8.api.Localize.Interfaces;
 
 namespace template.net8.api.Business.Exceptions;
 
@@ -31,7 +31,7 @@ internal enum ExceptionType
 internal static class BusinessExceptionMapper
 {
     private static readonly Dictionary<ExceptionType,
-            Func<Exception, IStringLocalizer<Resource>, IFeatureCollection, IActionResult>>
+            Func<Exception, IStringLocalizer<IResource>, IFeatureCollection, IActionResult>>
         ActionResultHandlers = new()
         {
             {
@@ -99,7 +99,7 @@ internal static class BusinessExceptionMapper
     /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static IActionResult MapExceptionToResult(Exception ex, IStringLocalizer<Resource> localizer,
+    internal static IActionResult MapExceptionToResult(Exception ex, IStringLocalizer<IResource> localizer,
         IFeatureCollection features)
     {
         var exceptionType = GetExceptionType(ex);
@@ -119,7 +119,7 @@ internal static class BusinessExceptionMapper
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static HttpStatusCode ExceptionToHttpStatusCode(Exception ex, IStringLocalizer<Resource> localizer)
+    internal static HttpStatusCode ExceptionToHttpStatusCode(Exception ex, IStringLocalizer<IResource> localizer)
     {
         var exceptionType = GetExceptionType(ex);
         if (exceptionType is ExceptionType.NoImplemented)
