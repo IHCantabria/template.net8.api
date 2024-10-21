@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
+using template.net8.api.Business;
 using template.net8.api.Contracts;
 using template.net8.api.Controllers.Extensions;
 using template.net8.api.Core.Attributes;
@@ -24,7 +25,7 @@ namespace template.net8.api.Controllers.V1;
 [CoreLibrary]
 public sealed class ApplicationSystem(
     IMediator mediator,
-    IStringLocalizer<ResourceCode> localizer,
+    IStringLocalizer<Resource> localizer,
     ILogger<ApplicationSystem> logger)
     : MyControllerBase(mediator, localizer, logger)
 {
@@ -45,6 +46,12 @@ public sealed class ApplicationSystem(
     ///     Error Creating the Http Action Result. Error mapping action endpoint response to
     ///     resource
     /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     <paramref>
+    ///         <name>comparisonType</name>
+    ///     </paramref>
+    ///     is not a <see cref="StringComparison" /> value.
+    /// </exception>
     [HttpGet]
     [DevSwagger]
     [Route(ApiRoutes.System.GetErrorCodes)]
@@ -58,7 +65,9 @@ public sealed class ApplicationSystem(
         typeof(IEnumerable<ErrorCodeResource>), MediaTypeNames.Application.Json)]
     public Task<IActionResult> GetErrorCodes(CancellationToken cancellationToken)
     {
-        var resources = localizer.GetAllStrings().ToList();
+        var resources = Localizer.GetAllStrings().Filter(s =>
+                s.Name.StartsWith(BusinessConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
+            .ToList();
         var result = new Result<IEnumerable<LocalizedString>>(resources);
         var action =
             new ActionResultPayload<IEnumerable<LocalizedString>, IEnumerable<ErrorCodeResource>>(obj =>

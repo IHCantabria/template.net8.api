@@ -1,4 +1,7 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using Microsoft.Extensions.Localization;
+using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Factory;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Settings.Middlewares;
 
@@ -7,11 +10,16 @@ namespace template.net8.api.Settings.Middlewares;
 /// </summary>
 /// <param name="next"></param>
 /// <param name="problemDetailsService"></param>
+/// <param name="localizer"></param>
 [CoreLibrary]
 public sealed class HttpRejectMiddleware(
     RequestDelegate next,
-    IProblemDetailsService problemDetailsService)
+    IProblemDetailsService problemDetailsService,
+    IStringLocalizer<Resource> localizer)
 {
+    private readonly IStringLocalizer<Resource> _localizer =
+        localizer ?? throw new ArgumentNullException(nameof(localizer));
+
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
     private readonly IProblemDetailsService _problemDetailsService =
@@ -38,15 +46,11 @@ public sealed class HttpRejectMiddleware(
         else
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            var problemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsBadRequestHttpNotSupported(_localizer);
             await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
             {
                 HttpContext = context,
-                ProblemDetails =
-                {
-                    Title = "HTTP protocol is not allowed.",
-                    Detail = "HTTPS protocol is required.",
-                    Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request"
-                }
+                ProblemDetails = problemDetails
             }).ConfigureAwait(false);
         }
     }

@@ -8,7 +8,8 @@ using template.net8.api.Business.Exceptions;
 using template.net8.api.Communications.Interfaces;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
-using template.net8.api.Localize.Interfaces;
+using template.net8.api.Core.Factory;
+using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Controllers.Extensions;
 
@@ -21,7 +22,7 @@ internal static class ControllerExtensions
     ///     resource
     /// </exception>
     internal static IActionResult ToActionResult<TResult, TContract>(this Result<TResult> result,
-        ActionResultPayload<TResult, TContract> action, IStringLocalizer<IResource> localizer,
+        ActionResultPayload<TResult, TContract> action, IStringLocalizer<Resource> localizer,
         IFeatureCollection features)
     {
         return result.Match(obj =>
@@ -52,7 +53,7 @@ internal static class ControllerExtensions
     }
 
     private static IActionResult ManageExceptionActionResult(Exception ex,
-        IStringLocalizer<IResource> localizer,
+        IStringLocalizer<Resource> localizer,
         IFeatureCollection features)
     {
         if (ex is BusinessException or ValidationException)
@@ -60,13 +61,7 @@ internal static class ControllerExtensions
 
         //Exception not Controlled
         //Important: Only Write details for Business Exceptions
-        var clientProblemDetails = new ProblemDetails
-        {
-            Title = localizer["GenericServerError"],
-            Detail = ex.Message,
-            Type = "https://tools.ietf.org/html/rfc9110#name-500-internal-server-error",
-            Status = StatusCodes.Status500InternalServerError
-        };
+        var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsInternalServerError(ex, localizer);
         features.Set(clientProblemDetails);
         return new BadRequestResult();
     }

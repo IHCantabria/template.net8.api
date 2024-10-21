@@ -4,33 +4,17 @@ using template.net8.api.Core.Exceptions;
 namespace template.net8.api.Business.Exceptions;
 
 [CoreLibrary]
-internal class BusinessException : CoreException
+internal abstract class BusinessException : CoreException
 {
-    internal BusinessException()
+    protected BusinessException()
     {
     }
 
-    internal BusinessException(string message) : base(message)
+    protected BusinessException(string message) : base(message)
     {
     }
 
-    internal BusinessException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
-}
-
-[CoreLibrary]
-internal sealed class GoneException : BusinessException
-{
-    internal GoneException()
-    {
-    }
-
-    internal GoneException(string message) : base(message)
-    {
-    }
-
-    internal GoneException(string message, Exception innerException) : base(message, innerException)
+    protected BusinessException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
@@ -68,22 +52,6 @@ internal sealed class UnauthorizedException : BusinessException
 }
 
 [CoreLibrary]
-internal sealed class ConflictException : BusinessException
-{
-    internal ConflictException()
-    {
-    }
-
-    internal ConflictException(string message) : base(message)
-    {
-    }
-
-    internal ConflictException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
-}
-
-[CoreLibrary]
 internal sealed class ForbiddenException : BusinessException
 {
     internal ForbiddenException()
@@ -95,6 +63,22 @@ internal sealed class ForbiddenException : BusinessException
     }
 
     internal ForbiddenException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class NotFoundException : BusinessException
+{
+    internal NotFoundException()
+    {
+    }
+
+    internal NotFoundException(string message) : base(message)
+    {
+    }
+
+    internal NotFoundException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
@@ -116,17 +100,33 @@ internal sealed class RequestTimeoutException : BusinessException
 }
 
 [CoreLibrary]
-internal sealed class NotFoundException : BusinessException
+internal sealed class ConflictException : BusinessException
 {
-    internal NotFoundException()
+    internal ConflictException()
     {
     }
 
-    internal NotFoundException(string message) : base(message)
+    internal ConflictException(string message) : base(message)
     {
     }
 
-    internal NotFoundException(string message, Exception innerException) : base(message, innerException)
+    internal ConflictException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class GoneException : BusinessException
+{
+    internal GoneException()
+    {
+    }
+
+    internal GoneException(string message) : base(message)
+    {
+    }
+
+    internal GoneException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
@@ -159,6 +159,23 @@ internal sealed class InternalServerErrorException : BusinessException
     }
 
     internal InternalServerErrorException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
+
+[CoreLibrary]
+internal sealed class NotImplementedException : BusinessException
+{
+    internal NotImplementedException()
+    {
+    }
+
+    internal NotImplementedException(string message) : base(message)
+    {
+    }
+
+    internal NotImplementedException(string message, Exception innerException) : base(
+        message, innerException)
     {
     }
 }

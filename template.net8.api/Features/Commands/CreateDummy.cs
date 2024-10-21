@@ -56,7 +56,7 @@ public sealed class CreateDummyTextValidator : AbstractValidator<CommandCreateDu
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public CreateDummyTextValidator(IStringLocalizer<ResourceMain> localizer)
+    public CreateDummyTextValidator(IStringLocalizer<Resource> localizer)
     {
         ArgumentNullException.ThrowIfNull(localizer);
 

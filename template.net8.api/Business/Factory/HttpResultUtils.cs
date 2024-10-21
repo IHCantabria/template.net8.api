@@ -3,7 +3,6 @@ using System.Numerics;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc;
 using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Business.Factory;
@@ -11,61 +10,7 @@ namespace template.net8.api.Business.Factory;
 [CoreLibrary]
 internal static class HttpResultUtils
 {
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     <paramref>
-    ///         <name>index</name>
-    ///     </paramref>
-    ///     is less than 0.
-    ///     -or-
-    ///     <paramref>
-    ///         <name>index</name>
-    ///     </paramref>
-    ///     is equal to or greater than
-    ///     <see>
-    ///         <cref>P:System.Collections.Generic.List`1.Count</cref>
-    ///     </see>
-    ///     .
-    /// </exception>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The property is set and the
-    ///     <see>
-    ///         <cref>IDictionary`2</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    /// <exception cref="KeyNotFoundException">
-    ///     The property is retrieved and
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is not found.
-    /// </exception>
-    internal static ProblemDetails AddErrors(ProblemDetails problemDetails, ValidationException vex)
-    {
-        var errorsCollection = CreateErrorsCollection(vex);
-        if (errorsCollection.Count is 1)
-        {
-            var singleError = errorsCollection[0];
-            problemDetails.Detail = singleError.Detail;
-            problemDetails.Extensions["value"] = singleError.Value;
-            problemDetails.Extensions["pointer"] = singleError.Pointer;
-            problemDetails.Extensions["code"] = singleError.Code;
-        }
-        else
-        {
-            problemDetails.Extensions["errors"] = errorsCollection;
-        }
-
-        return problemDetails;
-    }
-
-    private static List<ProblemDetailsValidationError> CreateErrorsCollection(ValidationException validationException)
+    internal static List<ProblemDetailsValidationError> CreateErrorsCollection(ValidationException validationException)
     {
         var groupedErrors = GroupErrors(validationException.Errors);
         return ConvertToDictionary(groupedErrors);

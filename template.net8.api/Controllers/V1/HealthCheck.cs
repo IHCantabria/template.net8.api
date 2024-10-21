@@ -16,7 +16,7 @@ namespace template.net8.api.Controllers.V1;
 [CoreLibrary]
 public sealed class Health(
     IMediator mediator,
-    IStringLocalizer<ResourceMain> localizer,
+    IStringLocalizer<Resource> localizer,
     ILogger<Health> logger)
     : MyControllerBase(mediator, localizer, logger)
 {

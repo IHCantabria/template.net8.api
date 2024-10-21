@@ -12,6 +12,7 @@ internal static class JsonSerializerExtensions
     {
         options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+        options.AllowTrailingCommas = true;
         return options;
     }
 }

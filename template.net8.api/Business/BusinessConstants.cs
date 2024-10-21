@@ -8,4 +8,6 @@ internal static class BusinessConstants
     internal const string ApiName = "{PROJECT_NAMESPACE}";
 
     internal const string ApiCode = "{PROJECT_CODE}";
+
+    internal const string ApiErrorCodesPrefix = "BE-";
 }

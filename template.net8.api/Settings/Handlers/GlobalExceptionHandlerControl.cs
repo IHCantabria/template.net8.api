@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Factory;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Logger;
 
@@ -10,11 +12,11 @@ namespace template.net8.api.Settings.Handlers;
 [CoreLibrary]
 internal sealed class GlobalExceptionHandlerControl(
     IProblemDetailsService problemDetailsService,
-    IStringLocalizer<ResourceMain> localizer,
+    IStringLocalizer<Resource> localizer,
     ILogger<ControllerBase> logger)
     : IExceptionHandler
 {
-    private readonly IStringLocalizer<ResourceMain> _localizer =
+    private readonly IStringLocalizer<Resource> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -22,6 +24,12 @@ internal sealed class GlobalExceptionHandlerControl(
     private readonly IProblemDetailsService _problemDetailsService =
         problemDetailsService ?? throw new ArgumentNullException(nameof(problemDetailsService));
 
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
@@ -29,16 +37,15 @@ internal sealed class GlobalExceptionHandlerControl(
     {
         //TODO: Add exception handling specific, read https://adnanrafiq.com/blog/a-complete-guide-to-all-asp-dot-net-builtin-middlewares-part3/
         _logger.LogExceptionServer(exception.ToString());
+        var problemDetails =
+            ProblemDetailsFactoryCore.CreateProblemDetailsByHttpStatusCode(
+                (HttpStatusCode)httpContext.Response.StatusCode, exception,
+                _localizer);
         return _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,
-            ProblemDetails =
-            {
-                Title = _localizer["GenericServerError"],
-                Detail = exception.Message,
-                Type = "https://tools.ietf.org/html/rfc9110#name-500-internal-server-error"
-            },
-            Exception = exception
+            Exception = exception,
+            ProblemDetails = problemDetails
         });
     }
 }

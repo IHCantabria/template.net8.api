@@ -17,12 +17,12 @@ namespace template.net8.api.Settings.Events;
 ///     App Jwt Bearer Events
 /// </summary>
 [CoreLibrary]
-public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocalizer<ResourceMain> localizer)
+public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocalizer<Resource> localizer)
     : JwtBearerEvents
 {
     private readonly IOptions<JwtOptions> _config = config ?? throw new ArgumentNullException(nameof(config));
 
-    private readonly IStringLocalizer<ResourceMain> _localizer =
+    private readonly IStringLocalizer<Resource> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     /// <summary>
