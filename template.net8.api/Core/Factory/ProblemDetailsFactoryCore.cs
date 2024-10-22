@@ -88,7 +88,8 @@ internal static class ProblemDetailsFactoryCore
             Status = StatusCodes.Status400BadRequest
         };
         problemDetails.Extensions.TryAdd("errors", errors);
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestValidationJsonMalformedCode"]);
+        problemDetails.Extensions.TryAdd("code",
+            localizer["ProblemDetailsBadRequestValidationJsonMalformedCode"].Value);
         return problemDetails;
     }
 
@@ -104,7 +105,7 @@ internal static class ProblemDetailsFactoryCore
             Status = StatusCodes.Status400BadRequest
         };
         problemDetails.Extensions.TryAdd("errors", errors);
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestValidationJsonInvalidCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestValidationJsonInvalidCode"].Value);
         return problemDetails;
     }
 
@@ -124,7 +125,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request",
             Status = StatusCodes.Status400BadRequest
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestCode"].Value);
         return problemDetails;
     }
 
@@ -143,7 +144,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-400-bad-request",
             Status = StatusCodes.Status500InternalServerError
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestHttpNotSupportedCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsBadRequestHttpNotSupportedCode"].Value);
         return problemDetails;
     }
 
@@ -163,7 +164,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-401-unauthorized",
             Status = StatusCodes.Status401Unauthorized
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnauthorizedCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnauthorizedCode"].Value);
         return problemDetails;
     }
 
@@ -183,7 +184,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-403-forbidden",
             Status = StatusCodes.Status403Forbidden
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsForbiddenCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsForbiddenCode"].Value);
         return problemDetails;
     }
 
@@ -203,7 +204,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-404-not-found",
             Status = StatusCodes.Status404NotFound
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsNotFoundCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsNotFoundCode"].Value);
         return problemDetails;
     }
 
@@ -217,7 +218,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-405-method-not-allowed",
             Status = StatusCodes.Status405MethodNotAllowed
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsMethodNotAllowedCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsMethodNotAllowedCode"].Value);
         return problemDetails;
     }
 
@@ -237,7 +238,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-408-request-timeout",
             Status = StatusCodes.Status408RequestTimeout
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsRequestTimeoutCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsRequestTimeoutCode"].Value);
         return problemDetails;
     }
 
@@ -257,7 +258,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-409-conflict",
             Status = StatusCodes.Status409Conflict
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsConflictCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsConflictCode"].Value);
         return problemDetails;
     }
 
@@ -277,7 +278,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-410-gone",
             Status = StatusCodes.Status410Gone
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsGoneCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsGoneCode"].Value);
         return problemDetails;
     }
 
@@ -291,7 +292,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-415-unsupported-media-type",
             Status = StatusCodes.Status415UnsupportedMediaType
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnsupportedMediaTypeCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnsupportedMediaTypeCode"].Value);
         return problemDetails;
     }
 
@@ -311,7 +312,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-422-unprocessable-content",
             Status = StatusCodes.Status422UnprocessableEntity
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnprocessableEntityCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnprocessableEntityCode"].Value);
         return problemDetails;
     }
 
@@ -325,7 +326,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc6585#section-4",
             Status = StatusCodes.Status429TooManyRequests
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsTooManyRequestCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsTooManyRequestCode"].Value);
         return problemDetails;
     }
 
@@ -345,7 +346,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-500-internal-server-error",
             Status = StatusCodes.Status500InternalServerError
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsInternalServerErrorCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsInternalServerErrorCode"].Value);
         return problemDetails;
     }
 
@@ -365,7 +366,7 @@ internal static class ProblemDetailsFactoryCore
             Type = "https://tools.ietf.org/html/rfc9110#name-501-not-implemented",
             Status = StatusCodes.Status501NotImplemented
         };
-        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsNotImplementedCode"]);
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsNotImplementedCode"].Value);
         return problemDetails;
     }
 

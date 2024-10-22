@@ -6,7 +6,7 @@ using template.net8.api.Core.Attributes;
 namespace template.net8.api.Core.Contracts;
 
 /// <summary>
-///     Dummy Resource
+///     Error Code Resource
 /// </summary>
 [CoreLibrary]
 public sealed partial record ErrorCodeResource : IPublicApiContract,
