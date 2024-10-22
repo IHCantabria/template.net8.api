@@ -61,7 +61,7 @@ public sealed class ApplicationSystem(
             SwaggerDocumentation.System.GetErrorCodes.Description,
         OperationId = SwaggerDocumentation.System.GetErrorCodes.Id
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummies.GetDummies.Ok,
+    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.System.GetErrorCodes.Ok,
         typeof(IEnumerable<ErrorCodeResource>), MediaTypeNames.Application.Json)]
     public Task<IActionResult> GetErrorCodes(CancellationToken cancellationToken)
     {
