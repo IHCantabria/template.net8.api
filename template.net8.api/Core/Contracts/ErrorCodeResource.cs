@@ -1,12 +1,14 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using template.net8.api.Communications.Interfaces;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Contracts;
+namespace template.net8.api.Core.Contracts;
 
 /// <summary>
 ///     Dummy Resource
 /// </summary>
+[CoreLibrary]
 public sealed partial record ErrorCodeResource : IPublicApiContract,
     IEqualityOperators<ErrorCodeResource, ErrorCodeResource, bool>
 {

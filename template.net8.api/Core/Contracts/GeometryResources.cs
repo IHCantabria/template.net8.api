@@ -1,12 +1,14 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using template.net8.api.Communications.Interfaces;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Contracts;
+namespace template.net8.api.Core.Contracts;
 
 /// <summary>
 ///     Create Extent Resource
 /// </summary>
+[CoreLibrary]
 public sealed partial record CreateExtentResource : IPublicApiContract,
     IEqualityOperators<CreateExtentResource, CreateExtentResource, bool>
 {
@@ -38,6 +40,7 @@ public sealed partial record CreateExtentResource : IPublicApiContract,
 /// <summary>
 ///     Extent Resource
 /// </summary>
+[CoreLibrary]
 public sealed record ExtentResource : IPublicApiContract, IEqualityOperators<ExtentResource, ExtentResource, bool>
 {
     /// <summary>
@@ -68,6 +71,7 @@ public sealed record ExtentResource : IPublicApiContract, IEqualityOperators<Ext
 /// <summary>
 ///     Create Point Resource
 /// </summary>
+[CoreLibrary]
 public sealed partial record CreatePointResource : IPublicApiContract,
     IEqualityOperators<CreatePointResource, CreatePointResource, bool>
 {
@@ -87,6 +91,7 @@ public sealed partial record CreatePointResource : IPublicApiContract,
 /// <summary>
 ///     Point Resource
 /// </summary>
+[CoreLibrary]
 public sealed record PointResource : IPublicApiContract, IEqualityOperators<PointResource, PointResource, bool>
 {
     /// <summary>

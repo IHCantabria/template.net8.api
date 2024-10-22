@@ -1,12 +1,14 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
 using template.net8.api.Communications.Interfaces;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Contracts;
+namespace template.net8.api.Core.Contracts;
 
 /// <summary>
 ///     Version Resource
 /// </summary>
+[CoreLibrary]
 public sealed record VersionResource : IPublicApiContract, IEqualityOperators<VersionResource, VersionResource, bool>
 {
     /// <summary>

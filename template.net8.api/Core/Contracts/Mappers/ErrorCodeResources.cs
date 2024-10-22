@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Localization;
 
-namespace template.net8.api.Contracts;
+namespace template.net8.api.Core.Contracts;
 
 /// <summary>
 ///     Create Extent Resource

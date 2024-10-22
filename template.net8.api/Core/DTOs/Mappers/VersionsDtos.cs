@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
-using template.net8.api.Contracts;
+using template.net8.api.Core.Contracts;
 
-namespace template.net8.api.Domain.DTOs;
+namespace template.net8.api.Core.DTOs;
 
 /// <summary>
 ///     Version DTO

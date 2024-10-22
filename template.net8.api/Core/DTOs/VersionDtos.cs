@@ -2,7 +2,7 @@
 using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.Interfaces;
 
-namespace template.net8.api.Domain.DTOs;
+namespace template.net8.api.Core.DTOs;
 
 /// <summary>
 ///     Version DTO

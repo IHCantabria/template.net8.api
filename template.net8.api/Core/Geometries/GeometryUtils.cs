@@ -2,8 +2,8 @@
 using LanguageExt.Common;
 using NetTopologySuite.Geometries;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.DTOs;
 using template.net8.api.Core.Exceptions;
-using template.net8.api.Domain.DTOs;
 
 namespace template.net8.api.Core.Geometries;
 

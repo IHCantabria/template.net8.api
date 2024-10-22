@@ -2,7 +2,7 @@
 using LanguageExt.Common;
 using MediatR;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.DTOs;
+using template.net8.api.Core.DTOs;
 
 namespace template.net8.api.Features.Querys;
 

@@ -1,6 +1,6 @@
-﻿using template.net8.api.Domain.DTOs;
+﻿using template.net8.api.Core.DTOs;
 
-namespace template.net8.api.Contracts;
+namespace template.net8.api.Core.Contracts;
 
 /// <summary>
 ///     Create Extent Resource
