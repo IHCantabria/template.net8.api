@@ -115,6 +115,7 @@ public sealed class Dummies(
     /// </exception>
     [HttpPost]
     [Route(ApiRoutes.Dummies.CreateDummy)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.Dummies.CreateDummy.Summary,
         Description =
