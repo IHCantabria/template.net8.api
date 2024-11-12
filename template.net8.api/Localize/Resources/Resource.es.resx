@@ -142,7 +142,7 @@
     <comment>CreateDummyValidatorTextInvalidMsg</comment>
   </data>
   <data name="DejaVu" xml:space="preserve">
-    <value>Un Dejavu suele ser un fallo en la matriz, ocurre cuando cambian algo.</value>
+    <value>Un Dejavu suele ser un fallo en matrix, ocurre cuando cambian algo.</value>
     <comment>DejaVu</comment>
   </data>
   <data name="GenericValidatorError" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>ProblemDetailsNotImplementedCode</comment>
   </data>
   <data name="BE-BROKEN-ARROW" xml:space="preserve">
-    <value>Algo se ha roto muy fuerte. Reporte el Problem Details a IT.</value>
+    <value>Algo ha ido terriblemente mal. Reporte el Problem Details completo a IT.</value>
   </data>
   <data name="BE-CD-EV-001" xml:space="preserve">
     <value>El campo texto al crear un dummy es obligatorio.</value>

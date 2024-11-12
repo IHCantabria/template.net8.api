@@ -378,7 +378,7 @@
     <comment>ProblemDetailsTooManyRequestTitle</comment>
   </data>
   <data name="BE-BROKEN-ARROW" xml:space="preserve">
-    <value>Algo se ha roto muy fuerte. Reporte el Problem Details a IT.</value>
+    <value>Algo ha ido terriblemente mal. Reporte el Problem Details completo a IT.</value>
     <comment>BE-BROKEN-ARROW</comment>
   </data>
 </root>
