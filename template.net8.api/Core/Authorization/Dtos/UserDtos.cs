@@ -21,6 +21,16 @@ public abstract record UserIdTokenBaseDto : IDto, IEqualityOperators<UserIdToken
     public required string Username { get; init; } = null!;
 
     /// <summary>
+    ///     First Name
+    /// </summary>
+    public required string? FirstName { get; init; }
+
+    /// <summary>
+    ///     Last Name
+    /// </summary>
+    public required string? LastName { get; init; }
+
+    /// <summary>
     ///     Email Address
     /// </summary>
     public required string Email { get; init; } = null!;
@@ -59,6 +69,16 @@ public abstract record UserIdTokenWithScopesBaseDto : IDto,
     public required string Username { get; init; } = null!;
 
     /// <summary>
+    ///     First Name
+    /// </summary>
+    public required string? FirstName { get; init; }
+
+    /// <summary>
+    ///     Last Name
+    /// </summary>
+    public required string? LastName { get; init; }
+
+    /// <summary>
     ///     Email Address
     /// </summary>
     public required string Email { get; init; } = null!;
@@ -90,6 +110,16 @@ public abstract record UserAccessTokenBaseDto : IDto,
     ///     Username
     /// </summary>
     public required string Username { get; init; } = null!;
+
+    /// <summary>
+    ///     First Name
+    /// </summary>
+    public required string? FirstName { get; init; }
+
+    /// <summary>
+    ///     Last Name
+    /// </summary>
+    public required string? LastName { get; init; }
 
     /// <summary>
     ///     Email Address
@@ -128,6 +158,16 @@ public abstract record UserAccessTokenWithScopeBaseDto : IDto,
     ///     Username
     /// </summary>
     public required string Username { get; init; } = null!;
+
+    /// <summary>
+    ///     First Name
+    /// </summary>
+    public required string? FirstName { get; init; }
+
+    /// <summary>
+    ///     Last Name
+    /// </summary>
+    public required string? LastName { get; init; }
 
     /// <summary>
     ///     Email Address

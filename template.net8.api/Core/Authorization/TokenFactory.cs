@@ -127,8 +127,8 @@ internal static class TokenFactory
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         claims.AddClaimIfNotNull(ClaimCoreConstants.RoleClaim, user.RoleName);
-        //claims.AddClaimIfNotNull(JwtRegisteredClaimNames.FamilyName, user.LastName);
-        //claims.AddClaimIfNotNull(JwtRegisteredClaimNames.GivenName, user.FirstName);
+        claims.AddClaimIfNotNull(JwtRegisteredClaimNames.FamilyName, user.LastName);
+        claims.AddClaimIfNotNull(JwtRegisteredClaimNames.GivenName, user.FirstName);
         return claims;
     }
 
@@ -144,8 +144,8 @@ internal static class TokenFactory
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         claims.AddClaimIfNotNull(ClaimCoreConstants.RoleClaim, user.RoleName);
-        //claims.AddClaimIfNotNull(JwtRegisteredClaimNames.FamilyName, user.LastName);
-        //claims.AddClaimIfNotNull(JwtRegisteredClaimNames.GivenName, user.FirstName);
+        claims.AddClaimIfNotNull(JwtRegisteredClaimNames.FamilyName, user.LastName);
+        claims.AddClaimIfNotNull(JwtRegisteredClaimNames.GivenName, user.FirstName);
         return claims.Append(AddClimportPrivileges(user.Scope.Claims.Select(c => c.Name))).ToList();
     }
 
