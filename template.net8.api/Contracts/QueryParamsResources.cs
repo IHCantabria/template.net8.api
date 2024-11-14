@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.api.Communications.Interfaces;
+using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Contracts;
 

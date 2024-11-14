@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using LanguageExt.Common;
 using MediatR;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,6 +11,7 @@ using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Core.DTOs;
 using template.net8.api.Core.Exceptions;
+using template.net8.api.Core.Timeout;
 using template.net8.api.Features.Querys;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
@@ -54,6 +56,7 @@ public sealed class ApplicationSystem(
     /// </exception>
     [HttpGet]
     [DevSwagger]
+    [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.System.GetErrorCodes)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.System.GetErrorCodes.Summary,
@@ -86,6 +89,7 @@ public sealed class ApplicationSystem(
     ///     resource
     /// </exception>
     [HttpGet]
+    [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.System.GetVersion)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.System.GetVersion.Summary,

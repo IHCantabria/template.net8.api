@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using MediatR;
+using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
@@ -7,6 +8,7 @@ using template.net8.api.Contracts;
 using template.net8.api.Controllers.Extensions;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Core.Exceptions;
+using template.net8.api.Core.Timeout;
 using template.net8.api.Domain.DTOs;
 using template.net8.api.Domain.Persistence.Models;
 using template.net8.api.Features.Commands;
@@ -45,6 +47,7 @@ public sealed class Dummies(
     ///     resource
     /// </exception>
     [HttpGet]
+    [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.Dummies.GetDummies)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.Dummies.GetDummies.Summary,
@@ -77,6 +80,7 @@ public sealed class Dummies(
     ///     resource
     /// </exception>
     [HttpGet]
+    [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.Dummies.GetDummy)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.Dummies.GetDummy.Summary,
@@ -114,6 +118,7 @@ public sealed class Dummies(
     ///     resource
     /// </exception>
     [HttpPost]
+    [RequestTimeout(RequestConstants.RequestCommandGenericPolicy)]
     [Route(ApiRoutes.Dummies.CreateDummy)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(

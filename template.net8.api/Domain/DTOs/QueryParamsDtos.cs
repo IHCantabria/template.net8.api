@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using template.net8.api.Domain.Interfaces;
+using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Domain.DTOs;
 

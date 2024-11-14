@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.Interfaces;
+using template.net8.api.Core.Interfaces;
 
-namespace template.net8.api.Core.Authorization.Dtos;
+namespace template.net8.api.Core.Authorization.DTOs;
 
 /// <summary>
 ///     User Id Token Base DTO

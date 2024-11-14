@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 using System.Text.Json.Serialization;
-using template.net8.api.Communications.Interfaces;
+using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Contracts;
 

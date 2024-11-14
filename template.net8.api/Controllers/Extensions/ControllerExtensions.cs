@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Exceptions;
-using template.net8.api.Communications.Interfaces;
+using template.net8.api.Contracts.Interfaces;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Factory;

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Timeout;
 using template.net8.api.Domain.Persistence.Context;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
@@ -14,9 +15,6 @@ namespace template.net8.api.Settings.ServiceInstallers;
 [CoreLibrary]
 public sealed class DbInstaller : IServiceInstaller
 {
-    private const short MaxRetryCount = 5;
-    private static readonly TimeSpan MaxRetryDelay = TimeSpan.FromSeconds(1);
-
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
@@ -78,7 +76,8 @@ public sealed class DbInstaller : IServiceInstaller
             x =>
             {
                 x.UseNetTopologySuite();
-                x.EnableRetryOnFailure(MaxRetryCount, MaxRetryDelay, []);
+                x.CommandTimeout(DbContextConstants.CommandTimeout);
+                x.EnableRetryOnFailure(DbContextConstants.MaxRetryCount, DbContextConstants.MaxRetryDelay, []);
             });
     }
 

@@ -7,7 +7,7 @@ using LanguageExt.Common;
 using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Business.Exceptions;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Core.Authorization.Dtos;
+using template.net8.api.Core.Authorization.DTOs;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Settings;

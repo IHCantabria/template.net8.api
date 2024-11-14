@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.Interfaces;
+using template.net8.api.Core.Interfaces;
 using template.net8.api.Domain.Persistence.Models.Interfaces;
 using template.net8.api.Domain.Specifications.Interfaces;
 

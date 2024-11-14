@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Http.Timeouts;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Timeout;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
@@ -11,8 +12,6 @@ namespace template.net8.api.Settings.ServiceInstallers;
 [CoreLibrary]
 public sealed class RequestTimeoutInstaller : IServiceInstaller
 {
-    private readonly TimeSpan _timeout = TimeSpan.FromMilliseconds(8000);
-
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
@@ -36,9 +35,19 @@ public sealed class RequestTimeoutInstaller : IServiceInstaller
         {
             options.DefaultPolicy = new RequestTimeoutPolicy
             {
-                Timeout = _timeout,
+                Timeout = RequestConstants.RequestDefaultTimeout,
                 TimeoutStatusCode = (short?)HttpStatusCode.RequestTimeout
             };
+            options.AddPolicy(RequestConstants.RequestQueryGenericPolicy, new RequestTimeoutPolicy
+            {
+                Timeout = RequestConstants.RequestQueryGenericTimeout,
+                TimeoutStatusCode = (short?)HttpStatusCode.RequestTimeout
+            });
+            options.AddPolicy(RequestConstants.RequestCommandGenericPolicy, new RequestTimeoutPolicy
+            {
+                Timeout = RequestConstants.RequestCommandGenericTimeout,
+                TimeoutStatusCode = (short?)HttpStatusCode.RequestTimeout
+            });
         });
         return Task.CompletedTask;
     }

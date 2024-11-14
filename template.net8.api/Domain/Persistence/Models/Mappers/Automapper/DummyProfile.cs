@@ -5,9 +5,9 @@ using template.net8.api.Domain.DTOs;
 namespace template.net8.api.Domain.Persistence.Models.Automapper;
 
 [UsedImplicitly]
-internal sealed class VersionProfile : Profile
+internal sealed class DummyProfile : Profile
 {
-    public VersionProfile()
+    public DummyProfile()
     {
         CreateMap<Dummy, DummyDto>();
     }

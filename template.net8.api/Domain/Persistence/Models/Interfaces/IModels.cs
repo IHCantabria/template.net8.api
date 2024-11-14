@@ -21,7 +21,19 @@ public interface IEntity
 }
 
 /// <summary>
-///     This interface is intended  to mark class models of the database context that have a primary key Id.
+///     This interface is intended  to mark class models of the database context that have a primary key Id smallint type.
+/// </summary>
+[CoreLibrary]
+public interface IEntityWithIdShort : IEntity
+{
+    /// <summary>
+    ///     Pk of the entity.
+    /// </summary>
+    public short Id { get; init; }
+}
+
+/// <summary>
+///     This interface is intended  to mark class models of the database context that have a primary key Id integer type.
 /// </summary>
 [CoreLibrary]
 public interface IEntityWithId : IEntity
@@ -29,7 +41,19 @@ public interface IEntityWithId : IEntity
     /// <summary>
     ///     Pk of the entity.
     /// </summary>
-    public short Id { get; init; }
+    public int Id { get; init; }
+}
+
+/// <summary>
+///     This interface is intended  to mark class models of the database context that have a primary key Id bigint type.
+/// </summary>
+[CoreLibrary]
+public interface IEntityWithIdLong : IEntity
+{
+    /// <summary>
+    ///     Pk of the entity.
+    /// </summary>
+    public long Id { get; init; }
 }
 
 /// <summary>
