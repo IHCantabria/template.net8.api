@@ -11,9 +11,9 @@ internal static class ApiRoutes
 
     private const string PathVersion = Root + Version;
 
-    private const string Access = "public";
+    private const string ApiAccess = "public";
 
-    private const string PathAccess = $"{PathVersion}/{Access}";
+    private const string PathAccess = $"{PathVersion}/{ApiAccess}";
 
     internal static class Dummies
     {
