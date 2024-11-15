@@ -154,7 +154,7 @@ public sealed record ForbiddenProblemDetailsResource : ProblemDetailsBaseResourc
 ///     NotFound Problem Details Resource
 /// </summary>
 [CoreLibrary]
-internal sealed record NotFoundProblemDetailsResource : ProblemDetailsBaseResource,
+public sealed record NotFoundProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<NotFoundProblemDetailsResource, NotFoundProblemDetailsResource, bool>
 {
     /// <summary>
@@ -208,7 +208,7 @@ public sealed record RequestTimeoutProblemDetailsResource : ProblemDetailsBaseRe
 ///     Conflict Problem Details Resource
 /// </summary>
 [CoreLibrary]
-internal sealed record ConflictProblemDetailsResource : ProblemDetailsBaseResource,
+public sealed record ConflictProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<ConflictProblemDetailsResource, ConflictProblemDetailsResource, bool>
 {
     /// <summary>

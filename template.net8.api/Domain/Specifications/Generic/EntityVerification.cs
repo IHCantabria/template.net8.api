@@ -5,8 +5,8 @@ using template.net8.api.Domain.Persistence.Models.Interfaces;
 namespace template.net8.api.Domain.Specifications.Generic;
 
 [CoreLibrary]
-internal sealed class EntityVerificationByIdShort<TEntity> : VerificationBase<TEntity>
-    where TEntity : class, IEntityWithIdShort
+internal sealed class EntityVerificationById<TEntity, TKey> : VerificationBase<TEntity>
+    where TEntity : class, IEntityWithId<TKey> where TKey : struct
 {
     /// <exception cref="NotSupportedException">
     ///     The
@@ -15,15 +15,15 @@ internal sealed class EntityVerificationByIdShort<TEntity> : VerificationBase<TE
     ///     </see>
     ///     is read-only.
     /// </exception>
-    internal EntityVerificationByIdShort(short id)
+    internal EntityVerificationById(TKey id)
     {
-        AddFilter(e => e.Id == id);
+        AddFilter(e => e.Id.Equals(id));
     }
 }
 
 [CoreLibrary]
-internal sealed class EntitiesVerificationByIdsShort<TEntity> : VerificationBase<TEntity>
-    where TEntity : class, IEntityWithIdShort
+internal sealed class EntitiesVerificationByIds<TEntity, TKey> : VerificationBase<TEntity>
+    where TEntity : class, IEntityWithId<TKey> where TKey : struct
 {
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
@@ -38,92 +38,7 @@ internal sealed class EntitiesVerificationByIdsShort<TEntity> : VerificationBase
     ///     </see>
     ///     is read-only.
     /// </exception>
-    internal EntitiesVerificationByIdsShort(IEnumerable<short>? entityIds = null)
-    {
-        if (entityIds is null) return;
-
-        var enumerable = entityIds.ToList();
-        AddFilter(e => enumerable.Contains(e.Id));
-    }
-}
-
-[CoreLibrary]
-internal sealed class EntityVerificationById<TEntity> : VerificationBase<TEntity> where TEntity : class, IEntityWithId
-{
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    internal EntityVerificationById(int id)
-    {
-        AddFilter(e => e.Id == id);
-    }
-}
-
-[CoreLibrary]
-internal sealed class EntitiesVerificationByIds<TEntity> : VerificationBase<TEntity>
-    where TEntity : class, IEntityWithId
-{
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    internal EntitiesVerificationByIds(IEnumerable<int>? entityIds = null)
-    {
-        if (entityIds is null) return;
-
-        var enumerable = entityIds.ToList();
-        AddFilter(e => enumerable.Contains(e.Id));
-    }
-}
-
-[CoreLibrary]
-internal sealed class EntityVerificationByIdLong<TEntity> : VerificationBase<TEntity>
-    where TEntity : class, IEntityWithIdLong
-{
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    internal EntityVerificationByIdLong(long id)
-    {
-        AddFilter(e => e.Id == id);
-    }
-}
-
-[CoreLibrary]
-internal sealed class EntitiesVerificationByIdsLong<TEntity> : VerificationBase<TEntity>
-    where TEntity : class, IEntityWithIdLong
-{
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    internal EntitiesVerificationByIdsLong(IEnumerable<long>? entityIds = null)
+    internal EntitiesVerificationByIds(IEnumerable<TKey>? entityIds = null)
     {
         if (entityIds is null) return;
 

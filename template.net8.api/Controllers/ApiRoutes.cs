@@ -37,16 +37,6 @@ internal static class ApiRoutes
     }
 
     [CoreLibrary]
-    internal static class Test
-    {
-        private const string ControllerIdentity = "test";
-
-        internal const string PathController = $"{PathAccess}/{ControllerIdentity}";
-
-        internal const string Codes = "";
-    }
-
-    [CoreLibrary]
     internal static class System
     {
         private const string ControllerIdentity = "systems";

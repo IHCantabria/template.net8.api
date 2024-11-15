@@ -99,7 +99,9 @@ public abstract record UserIdTokenWithScopesBaseDto : IDto,
 /// </summary>
 [CoreLibrary]
 public abstract record UserAccessTokenBaseDto : IDto,
-    IEqualityOperators<UserAccessTokenBaseDto, UserAccessTokenBaseDto, bool>
+    IEqualityOperators<UserAccessTokenBaseDto,
+        UserAccessTokenBaseDto,
+        bool>
 {
     /// <summary>
     ///     Universal Unique Identifier
@@ -132,14 +134,14 @@ public abstract record UserAccessTokenBaseDto : IDto,
     public required string? RoleName { get; init; }
 
     /// <summary>
-    ///     User Scopes
-    /// </summary>
-    public virtual required IEnumerable<UserScopeBaseDto> UserScopes { get; init; } = [];
-
-    /// <summary>
     ///     Role Scopes
     /// </summary>
-    public virtual required IEnumerable<UserScopeBaseDto> RoleScopes { get; init; } = [];
+    public virtual IEnumerable<UserScopeBaseDto> RoleScopes { get; init; } = [];
+
+    /// <summary>
+    ///     User Scopes
+    /// </summary>
+    public virtual IEnumerable<UserScopeBaseDto> UserScopes { get; init; } = [];
 }
 
 /// <summary>
@@ -147,7 +149,8 @@ public abstract record UserAccessTokenBaseDto : IDto,
 /// </summary>
 [CoreLibrary]
 public abstract record UserAccessTokenWithScopeBaseDto : IDto,
-    IEqualityOperators<UserAccessTokenWithScopeBaseDto, UserAccessTokenWithScopeBaseDto, bool>
+    IEqualityOperators<UserAccessTokenWithScopeBaseDto,
+        UserAccessTokenWithScopeBaseDto, bool>
 {
     /// <summary>
     ///     Universal Unique Identifier
@@ -189,7 +192,7 @@ public abstract record UserAccessTokenWithScopeBaseDto : IDto,
 ///     Access Token DTO
 /// </summary>
 [CoreLibrary]
-public sealed record AccessTokenDto : IDto, IEqualityOperators<AccessTokenDto, AccessTokenDto, bool>
+public sealed partial record AccessTokenDto : IDto, IEqualityOperators<AccessTokenDto, AccessTokenDto, bool>
 {
     /// <summary>
     ///     Jwt Access Token
@@ -216,7 +219,7 @@ public sealed record AccessTokenDto : IDto, IEqualityOperators<AccessTokenDto, A
 ///     Id Token DTO
 /// </summary>
 [CoreLibrary]
-public sealed record IdTokenDto : IDto, IEqualityOperators<IdTokenDto, IdTokenDto, bool>
+public sealed partial record IdTokenDto : IDto, IEqualityOperators<IdTokenDto, IdTokenDto, bool>
 {
     /// <summary>
     ///     Jwt Id Token
@@ -238,7 +241,9 @@ public sealed record IdTokenDto : IDto, IEqualityOperators<IdTokenDto, IdTokenDt
 ///     User Scope Base DTO
 /// </summary>
 [CoreLibrary]
-public abstract record UserScopeBaseDto : IDto, IEqualityOperators<UserScopeBaseDto, UserScopeBaseDto, bool>
+public abstract record UserScopeBaseDto : IDto,
+    IEqualityOperators<UserScopeBaseDto, UserScopeBaseDto,
+        bool>
 {
     /// <summary>
     ///     Name
@@ -248,7 +253,7 @@ public abstract record UserScopeBaseDto : IDto, IEqualityOperators<UserScopeBase
     /// <summary>
     ///     Claims
     /// </summary>
-    public virtual required IEnumerable<ClaimBaseDto> Claims { get; init; } = [];
+    public virtual IEnumerable<ClaimBaseDto> Claims { get; init; } = [];
 }
 
 /// <summary>

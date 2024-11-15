@@ -119,187 +119,141 @@
   </resheader>
   <data name="MapperExceptionResultNotSupported" xml:space="preserve">
     <value>No se admite el mapeador para el tipo de excepción {0}.</value>
-    <comment>MapperExceptionResultNotSupported</comment>
   </data>
   <data name="ExceptionStatusCodeNotSupported" xml:space="preserve">
     <value>No se admite el código de estatus para el tipo de excepción {0}.</value>
-    <comment>ExceptionStatusCodeNotSupported</comment>
   </data>
   <data name="ProblemDetailsInternalServerErrorTitle" xml:space="preserve">
     <value>Algo va mal con nuestros malditos servidores hoy.</value>
-    <comment>ProblemDetailsInternalServerErrorTitle</comment>
   </data>
   <data name="MapperExceptionStatusCodeNotSupported" xml:space="preserve">
     <value>El mapeador para el código de estado http {0} no es compatible.</value>
-    <comment>MapperExceptionStatusCodeNotSupported</comment>
   </data>
   <data name="GenieAccessTokenServerError" xml:space="preserve">
     <value>Algo ha ido mal al crear el token de acceso para Will Smith.</value>
-    <comment>GenieAccessTokenServerError</comment>
   </data>
   <data name="CreateDummyValidatorTextInvalidMsg" xml:space="preserve">
     <value>Debe especificar un texto válido.</value>
-    <comment>CreateDummyValidatorTextInvalidMsg</comment>
   </data>
   <data name="DejaVu" xml:space="preserve">
     <value>Un Dejavu suele ser un fallo en matrix, ocurre cuando cambian algo.</value>
-    <comment>DejaVu</comment>
   </data>
   <data name="GenericValidatorError" xml:space="preserve">
     <value>Hay algún problema con los validadores de su solicitud.</value>
-    <comment>GenericValidatorError</comment>
   </data>
   <data name="GetDummyValidatorNotFoundMsg" xml:space="preserve">
     <value>El Dummy con el valor solicitado en tu petición no existe en el sistema.</value>
-    <comment>GetDummyValidatorNotFoundMsg</comment>
   </data>
   <data name="ProblemDetailsBadRequestTitle" xml:space="preserve">
     <value>Entrada de Datos Incorrecta.</value>
-    <comment>ProblemDetailsBadRequestTitle</comment>
   </data>
   <data name="ProblemDetailsConflictTitle" xml:space="preserve">
     <value>Operación No Permitida.</value>
-    <comment>ProblemDetailsConflictTitle</comment>
   </data>
   <data name="ProblemDetailsForbiddenTitle" xml:space="preserve">
     <value>Acceso Prohibido.</value>
-    <comment>ProblemDetailsForbiddenTitle</comment>
   </data>
   <data name="ProblemDetailsGoneTitle" xml:space="preserve">
     <value>Datos Caducados.</value>
-    <comment>ProblemDetailsGoneTitle</comment>
   </data>
   <data name="ProblemDetailsNotFoundTitle" xml:space="preserve">
     <value>Datos No Encontrados.</value>
-    <comment>ProblemDetailsNotFoundTitle</comment>
   </data>
   <data name="ProblemDetailsRequestTimeoutTitle" xml:space="preserve">
     <value>Timeout en la petición, vuelva a lanzar.</value>
-    <comment>ProblemDetailsRequestTimeoutTitle</comment>
   </data>
   <data name="ProblemDetailsUnauthorizedTitle" xml:space="preserve">
     <value>Acceso No Autorizado.</value>
-    <comment>ProblemDetailsUnauthorizedTitle</comment>
   </data>
   <data name="ProblemDetailsUnprocessableEntityTitle" xml:space="preserve">
     <value>Incoherencia De los datos.</value>
-    <comment>ProblemDetailsUnprocessableEntityTitle</comment>
   </data>
   <data name="ProblemDetailsValidationDetail" xml:space="preserve">
     <value>Compruebe los errores descritos y vuelva a lanzar la solicitud con los valores corregidos.</value>
-    <comment>ProblemDetailsValidationDetail</comment>
   </data>
   <data name="ProblemDetailsValidationTitle" xml:space="preserve">
     <value>Se han producido uno o varios errores de validación.</value>
-    <comment>ProblemDetailsValidationTitle</comment>
   </data>
   <data name="CreateDummyValidatorTextInvalidCode" xml:space="preserve">
     <value>BE-CD-V-01</value>
-    <comment>CreateDummyValidatorTextInvalidCode</comment>
   </data>
   <data name="GetDummyValidatorNotFoundCode" xml:space="preserve">
     <value>BE-GD-V-01</value>
-    <comment>GetDummyValidatorNotFoundCode</comment>
   </data>
   <data name="ProblemDetailsValidationCode" xml:space="preserve">
     <value>BE-R-EV-001</value>
-    <comment>ProblemDetailsValidationCode</comment>
   </data>
   <data name="ProblemDetailsBadRequestValidationJsonMalformedDetail" xml:space="preserve">
     <value>La carga útil está malformada y no es un archivo json válido.</value>
-    <comment>ProblemDetailsBadRequestValidationJsonMalformedDetail</comment>
   </data>
   <data name="ProblemDetailsBadRequestValidationJsonMalformedCode" xml:space="preserve">
     <value>BE-R-EV-002</value>
-    <comment>ProblemDetailsBadRequestValidationJsonMalformedCode</comment>
   </data>
   <data name="ProblemDetailsBadRequestValidationJsonInvalidDetail" xml:space="preserve">
     <value>El Json utilizado como carga útil no cumple el contrato requerido.</value>
-    <comment>ProblemDetailsBadRequestValidationJsonInvalidDetail</comment>
   </data>
   <data name="ProblemDetailsBadRequestValidationJsonInvalidCode" xml:space="preserve">
     <value>BE-R-EV-003</value>
-    <comment>ProblemDetailsBadRequestValidationJsonInvalidCode</comment>
   </data>
   <data name="ProblemDetailsBadRequestCode" xml:space="preserve">
     <value>BE-R-E-400</value>
-    <comment>ProblemDetailsBadRequestCode</comment>
   </data>
   <data name="ProblemDetailsBadRequestHttpNotSupportedTitle" xml:space="preserve">
     <value>HTTP protocol is not allowed.</value>
-    <comment>ProblemDetailsBadRequestHttpNotSupportedTitle</comment>
   </data>
   <data name="ProblemDetailsBadRequestHttpNotSupportedDetail" xml:space="preserve">
     <value>HTTPS protocol is required.</value>
-    <comment>ProblemDetailsBadRequestHttpNotSupportedDetail</comment>
   </data>
   <data name="ProblemDetailsBadRequestHttpNotSupportedCode" xml:space="preserve">
     <value>BE-R-E-001</value>
-    <comment>ProblemDetailsBadRequestHttpNotSupportedCode</comment>
   </data>
   <data name="ProblemDetailsUnauthorizedCode" xml:space="preserve">
     <value>BE-R-E-401</value>
-    <comment>ProblemDetailsUnauthorizedCode</comment>
   </data>
   <data name="ProblemDetailsForbiddenCode" xml:space="preserve">
     <value>BE-R-E-403</value>
-    <comment>ProblemDetailsForbiddenCode</comment>
   </data>
   <data name="ProblemDetailsNotFoundCode" xml:space="preserve">
     <value>BE-R-E-404</value>
-    <comment>ProblemDetailsNotFoundCode</comment>
   </data>
   <data name="ProblemDetailsMethodNotAllowedTitle" xml:space="preserve">
     <value>Método no Permitido.</value>
-    <comment>ProblemDetailsMethodNotAllowedTitle</comment>
   </data>
   <data name="ProblemDetailsMethodNotAllowedCode" xml:space="preserve">
     <value>BE-R-E-405</value>
-    <comment>ProblemDetailsMethodNotAllowedCode</comment>
   </data>
   <data name="ProblemDetailsRequestTimeoutCode" xml:space="preserve">
     <value>BE-R-E-408</value>
-    <comment>ProblemDetailsRequestTimeoutCode</comment>
   </data>
   <data name="ProblemDetailsConflictCode" xml:space="preserve">
     <value>BE-R-E-409</value>
-    <comment>ProblemDetailsConflictCode</comment>
   </data>
   <data name="ProblemDetailsGoneCode" xml:space="preserve">
     <value>BE-R-E-410</value>
-    <comment>ProblemDetailsGoneCode</comment>
   </data>
   <data name="ProblemDetailsUnsupportedMediaTypeTitle" xml:space="preserve">
     <value>Cabecera HTTP Content Type No Permitida.</value>
-    <comment>ProblemDetailsUnsupportedMediaTypeTitle</comment>
   </data>
   <data name="ProblemDetailsUnsupportedMediaTypeCode" xml:space="preserve">
     <value>BE-R-E-415</value>
-    <comment>ProblemDetailsUnsupportedMediaTypeCode</comment>
   </data>
   <data name="ProblemDetailsUnprocessableEntityCode" xml:space="preserve">
     <value>BE-R-E-422</value>
-    <comment>ProblemDetailsUnprocessableEntityCode</comment>
   </data>
   <data name="ProblemDetailsTooManyRequestTitle" xml:space="preserve">
     <value>Demasiadas Peticiones.</value>
-    <comment>ProblemDetailsTooManyRequestTitle</comment>
   </data>
   <data name="ProblemDetailsTooManyRequestCode" xml:space="preserve">
     <value>BE-R-E-429</value>
-    <comment>ProblemDetailsTooManyRequestCode</comment>
   </data>
   <data name="ProblemDetailsInternalServerErrorCode" xml:space="preserve">
     <value>BE-R-E-500</value>
-    <comment>ProblemDetailsInternalServerErrorCode</comment>
   </data>
   <data name="ProblemDetailsNotImplementedTitle" xml:space="preserve">
     <value>No Implementado.</value>
-    <comment>ProblemDetailsNotImplementedTitle</comment>
   </data>
   <data name="ProblemDetailsNotImplementedCode" xml:space="preserve">
     <value>BE-R-E-501</value>
-    <comment>ProblemDetailsNotImplementedCode</comment>
   </data>
   <data name="BE-BROKEN-ARROW" xml:space="preserve">
     <value>Algo ha ido terriblemente mal. Reporte el Problem Details completo a IT.</value>
@@ -360,5 +314,8 @@
   </data>
   <data name="BE-R-EV-003" xml:space="preserve">
     <value>El fichero JSON de la petición está bien formado, pero no cumple el contrato expuesto por la API. Revise el contrato y el JSON antes de volver a intentarlo.</value>
+  </data>
+  <data name="InternalServerErrorValidationData" xml:space="preserve">
+    <value>Se ha producido un error en el proceso de validación de datos contra la base de datos.</value>
   </data>
 </root>
