@@ -38,7 +38,7 @@ public sealed class ValidationProblemDetailsResult : IActionResult
     public Task ExecuteResultAsync(ActionContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
-        var localizer = context.HttpContext.RequestServices.GetRequiredService<IStringLocalizer<Resource>>();
+        var localizer = context.HttpContext.RequestServices.GetRequiredService<IStringLocalizer<ResourceMain>>();
         var problemDetails =
             ProblemDetailsFactoryCore.CreateProblemDetailsBadRequestValidationPayload(context.ModelState, localizer);
         var objectResult = new ObjectResult(problemDetails) { StatusCode = problemDetails.Status };

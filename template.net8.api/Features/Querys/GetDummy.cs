@@ -49,7 +49,7 @@ public sealed class GetDummyKeyValidator : AbstractValidator<QueryGetDummy>
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public GetDummyKeyValidator(IStringLocalizer<Resource> localizer)
+    public GetDummyKeyValidator(IStringLocalizer<ResourceMain> localizer)
     {
         ArgumentNullException.ThrowIfNull(localizer);
 

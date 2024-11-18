@@ -255,67 +255,22 @@
   <data name="ProblemDetailsNotImplementedCode" xml:space="preserve">
     <value>BE-R-E-501</value>
   </data>
-  <data name="BE-BROKEN-ARROW" xml:space="preserve">
-    <value>Algo ha ido terriblemente mal. Reporte el Problem Details completo a IT.</value>
-  </data>
-  <data name="BE-CD-EV-001" xml:space="preserve">
-    <value>El campo texto al crear un dummy es obligatorio.</value>
-  </data>
-  <data name="BE-GD-EV-001" xml:space="preserve">
-    <value>No existe el Dummy con el identificador enviado en la petición.</value>
-  </data>
-  <data name="BE-R-E-001" xml:space="preserve">
-    <value>Esta API no permite conexiones usando HTTP, usé el protocolo HTTPS</value>
-  </data>
-  <data name="BE-R-E-400" xml:space="preserve">
-    <value>Hay algo que está mal en la petición, revísela antes de volver a intentarlo.</value>
-  </data>
-  <data name="BE-R-E-401" xml:space="preserve">
-    <value>Acceso no autorizado. Debe presentar credenciales válidas para acceder.</value>
-  </data>
-  <data name="BE-R-E-403" xml:space="preserve">
-    <value>Acceso prohibido. No tiene permisos para acceder.</value>
-  </data>
-  <data name="BE-R-E-404" xml:space="preserve">
-    <value>El elemento que busca no existe en el sistema.</value>
-  </data>
-  <data name="BE-R-E-405" xml:space="preserve">
-    <value>El verbo HTTP que está usando no está permitido para este método.</value>
-  </data>
-  <data name="BE-R-E-408" xml:space="preserve">
-    <value>Se ha alcanzado el tiempo máximo de espera en la petición, vuelva a intentarlo.</value>
-  </data>
-  <data name="BE-R-E-409" xml:space="preserve">
-    <value>La petición puede provocar un conflicto y no puede llevarse a cabo.</value>
-  </data>
-  <data name="BE-R-E-410" xml:space="preserve">
-    <value>El elemento que busca ya no existe en el sistema y se ha borrado.</value>
-  </data>
-  <data name="BE-R-E-415" xml:space="preserve">
-    <value>La cabecera content-type en la petición no tiene un valor admitido por la API para el método requerido.</value>
-  </data>
-  <data name="BE-R-E-422" xml:space="preserve">
-    <value>La petición está bien formada, pero uno de los valores no es correcto. Cámbielo antes de volver a intentarlo.</value>
-  </data>
-  <data name="BE-R-E-429" xml:space="preserve">
-    <value>Está sobrepasando el límite de peticiones que puede gestionar la API. Reduzca el ritmo de peticiones y esperé unos minutos antes de continuar.</value>
-  </data>
-  <data name="BE-R-E-500" xml:space="preserve">
-    <value>Se ha producido un error en el servidor, esperé unos minutos. Si el error persiste, contacte con IH-IT.</value>
-  </data>
-  <data name="BE-R-E-501" xml:space="preserve">
-    <value>Estamos trabajando en ello.</value>
-  </data>
-  <data name="BE-R-EV-001" xml:space="preserve">
-    <value>La petición presenta varios errores de validación, resuélvalos antes de volver a intentarlo.</value>
-  </data>
-  <data name="BE-R-EV-002" xml:space="preserve">
-    <value>El fichero JSON de la petición está malformado, revíselo antes de volver a intentarlo.</value>
-  </data>
-  <data name="BE-R-EV-003" xml:space="preserve">
-    <value>El fichero JSON de la petición está bien formado, pero no cumple el contrato expuesto por la API. Revise el contrato y el JSON antes de volver a intentarlo.</value>
-  </data>
   <data name="InternalServerErrorValidationData" xml:space="preserve">
     <value>Se ha producido un error en el proceso de validación de datos contra la base de datos.</value>
   </data>
+  <data name="ProblemDetailsForbiddenAccessCode" xml:space="preserve">
+  <value>BE-R-E-002</value>
+</data>
+<data name="ProblemDetailsForbiddenAccessDetail" xml:space="preserve">
+  <value>El token suministrado no cumple con las políticas de acceso al recurso solicitado.</value>
+</data>
+<data name="ProblemDetailsForbiddenAccessTitle" xml:space="preserve">
+  <value>Acceso Prohibido.</value>
+</data>
+<data name="ProblemDetailsUnauthorizedProcessFailTitle" xml:space="preserve">
+  <value>Acceso No Autorizado.</value>
+</data>
+<data name="ProblemDetailsUnauthorizedProcessFailCode" xml:space="preserve">
+  <value>BE-R-E-003</value>
+</data>
 </root>

@@ -12,11 +12,11 @@ namespace template.net8.api.Behaviors;
 [CoreLibrary]
 internal sealed class ValidationBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators,
-    IStringLocalizer<Resource> localizer)
+    IStringLocalizer<ResourceMain> localizer)
     : IPipelineBehavior<TRequest, Result<TResponse>>
     where TRequest : notnull
 {
-    private readonly IStringLocalizer<Resource> _localizer =
+    private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     private readonly IEnumerable<IValidator<TRequest>> _validators =

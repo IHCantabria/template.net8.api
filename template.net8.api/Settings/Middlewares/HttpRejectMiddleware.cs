@@ -15,9 +15,9 @@ namespace template.net8.api.Settings.Middlewares;
 public sealed class HttpRejectMiddleware(
     RequestDelegate next,
     IProblemDetailsService problemDetailsService,
-    IStringLocalizer<Resource> localizer)
+    IStringLocalizer<ResourceMain> localizer)
 {
-    private readonly IStringLocalizer<Resource> _localizer =
+    private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));

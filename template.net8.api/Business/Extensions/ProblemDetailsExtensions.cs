@@ -45,7 +45,8 @@ internal static class ProblemDetailsExtensions
     ///     </paramref>
     ///     is not found.
     /// </exception>
-    internal static ProblemDetails AddErrors(this ProblemDetails problemDetails, IStringLocalizer<Resource> localizer,
+    internal static ProblemDetails AddErrors(this ProblemDetails problemDetails,
+        IStringLocalizer<ResourceMain> localizer,
         ValidationException vex)
     {
         var errorsCollection = HttpResultUtils.CreateErrorsCollection(vex);

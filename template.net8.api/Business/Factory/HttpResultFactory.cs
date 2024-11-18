@@ -35,7 +35,7 @@ internal static class HttpResultFactory
     ///     .
     /// </exception>
     internal static BadRequestResult CreateValidationResult(
-        ValidationException vex, IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        ValidationException vex, IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
         var httpStatusCode = HttpResultUtils.GetStatusCode(vex);
         return ManageValidationResultCreation(httpStatusCode, vex, localizer, features);
@@ -43,7 +43,7 @@ internal static class HttpResultFactory
 
     private static BadRequestResult ManageValidationResultCreation(HttpStatusCode httpStatusCode,
         ValidationException vex,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
         return httpStatusCode switch
         {
@@ -62,7 +62,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateBadRequestResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsBadRequest(exception, localizer);
@@ -71,7 +71,7 @@ internal static class HttpResultFactory
     }
 
     private static BadRequestResult CreateValidationResult(HttpStatusCode statusCode, ValidationException exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
         var clientProblemDetails =
             ProblemDetailsFactoryCore.CreateProblemDetailsByHttpStatusCode(statusCode, exception, localizer);
@@ -87,7 +87,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateUnauthorizedResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsUnauthorized(exception, localizer);
@@ -102,7 +102,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateForbiddenResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsForbidden(exception, localizer);
@@ -116,7 +116,7 @@ internal static class HttpResultFactory
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    internal static BadRequestResult CreateNotFoundResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateNotFoundResult(Exception exception, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsNotFound(exception, localizer);
@@ -131,7 +131,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateRequestTimeoutResult(Exception exception,
-        IStringLocalizer<Resource> localizer, IFeatureCollection features)
+        IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsRequestTimeout(exception, localizer);
         features.Set(clientProblemDetails);
@@ -144,7 +144,7 @@ internal static class HttpResultFactory
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    internal static BadRequestResult CreateConflictResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateConflictResult(Exception exception, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsConflict(exception, localizer);
@@ -158,7 +158,7 @@ internal static class HttpResultFactory
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    internal static BadRequestResult CreateGoneResult(Exception exception, IStringLocalizer<Resource> localizer,
+    internal static BadRequestResult CreateGoneResult(Exception exception, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsGone(exception, localizer);
@@ -173,7 +173,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateUnprocessableEntityResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails =
@@ -189,7 +189,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateInternalServerErrorResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails =
@@ -205,7 +205,7 @@ internal static class HttpResultFactory
     ///     is <see langword="null" />.
     /// </exception>
     internal static BadRequestResult CreateNotImplementedResult(Exception exception,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var clientProblemDetails =

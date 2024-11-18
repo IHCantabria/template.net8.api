@@ -27,15 +27,14 @@ namespace template.net8.api.Controllers.V1;
 [CoreLibrary]
 public sealed class ApplicationSystem(
     IMediator mediator,
-    IStringLocalizer<Resource> localizer,
+    IStringLocalizer<ResourceMain> localizer,
     ILogger<ApplicationSystem> logger)
     : MyControllerBase(mediator, localizer, logger)
 {
     /// <summary>
     ///     Get the Application Code Errors.
     /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="localizer"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
@@ -66,9 +65,9 @@ public sealed class ApplicationSystem(
     )]
     [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.System.GetErrorCodes.Ok,
         typeof(IEnumerable<ErrorCodeResource>), MediaTypeNames.Application.Json)]
-    public Task<IActionResult> GetErrorCodes(CancellationToken cancellationToken)
+    public Task<IActionResult> GetErrorCodes(IStringLocalizer<ResourceDictionaryErrorCode> localizer)
     {
-        var resources = Localizer.GetAllStrings().Filter(s =>
+        var resources = localizer.GetAllStrings().Filter(s =>
                 s.Name.StartsWith(BusinessConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
             .ToList();
         var result = new Result<IEnumerable<LocalizedString>>(resources);

@@ -13,7 +13,7 @@ namespace template.net8.api.Controllers;
 [CoreLibrary]
 public class MyControllerBase : ControllerBase
 {
-    internal readonly IStringLocalizer<Resource> Localizer;
+    internal readonly IStringLocalizer<ResourceMain> Localizer;
     internal readonly ILogger Logger;
 
     internal readonly IMediator Mediator;
@@ -25,7 +25,7 @@ public class MyControllerBase : ControllerBase
     /// <param name="localizer"></param>
     /// <param name="logger"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    protected MyControllerBase(IMediator mediator, IStringLocalizer<Resource> localizer,
+    protected MyControllerBase(IMediator mediator, IStringLocalizer<ResourceMain> localizer,
         ILogger<MyControllerBase> logger)
     {
         Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));

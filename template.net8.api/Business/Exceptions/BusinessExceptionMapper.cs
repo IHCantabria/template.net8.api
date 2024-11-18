@@ -32,7 +32,7 @@ internal enum ExceptionType
 internal static class BusinessExceptionMapper
 {
     private static readonly Dictionary<ExceptionType,
-            Func<Exception, IStringLocalizer<Resource>, IFeatureCollection, IActionResult>>
+            Func<Exception, IStringLocalizer<ResourceMain>, IFeatureCollection, IActionResult>>
         ActionResultHandlers = new()
         {
             {
@@ -105,7 +105,7 @@ internal static class BusinessExceptionMapper
     /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static IActionResult MapExceptionToResult(Exception ex, IStringLocalizer<Resource> localizer,
+    internal static IActionResult MapExceptionToResult(Exception ex, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         var exceptionType = GetExceptionType(ex);
@@ -125,7 +125,7 @@ internal static class BusinessExceptionMapper
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static HttpStatusCode ExceptionToHttpStatusCode(Exception ex, IStringLocalizer<Resource> localizer)
+    internal static HttpStatusCode ExceptionToHttpStatusCode(Exception ex, IStringLocalizer<ResourceMain> localizer)
     {
         var exceptionType = GetExceptionType(ex);
         if (exceptionType is ExceptionType.NotSupported)

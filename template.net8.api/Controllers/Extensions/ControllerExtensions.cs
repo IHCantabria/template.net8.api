@@ -22,7 +22,7 @@ internal static class ControllerExtensions
     ///     resource
     /// </exception>
     internal static IActionResult ToActionResult<TResult, TContract>(this Result<TResult> result,
-        ActionResultPayload<TResult, TContract> action, IStringLocalizer<Resource> localizer,
+        ActionResultPayload<TResult, TContract> action, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         return result.Match(obj =>
@@ -53,7 +53,7 @@ internal static class ControllerExtensions
     }
 
     private static IActionResult ManageExceptionActionResult(Exception ex,
-        IStringLocalizer<Resource> localizer,
+        IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
         if (ex is BusinessException or ValidationException)

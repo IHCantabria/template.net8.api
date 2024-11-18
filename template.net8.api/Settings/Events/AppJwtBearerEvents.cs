@@ -8,6 +8,7 @@ using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Authorization;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
+using template.net8.api.Core.Factory;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Options;
 
@@ -17,12 +18,12 @@ namespace template.net8.api.Settings.Events;
 ///     App Jwt Bearer Events
 /// </summary>
 [CoreLibrary]
-public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocalizer<Resource> localizer)
+public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocalizer<ResourceMain> localizer)
     : JwtBearerEvents
 {
     private readonly IOptions<JwtOptions> _config = config ?? throw new ArgumentNullException(nameof(config));
 
-    private readonly IStringLocalizer<Resource> _localizer =
+    private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     /// <summary>
@@ -30,9 +31,38 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     /// </summary>
     /// <param name="context"></param>
     /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public override Task AuthenticationFailed(AuthenticationFailedContext context)
     {
-        return HandleTokenAuthenticationFailedAsync();
+        ArgumentNullException.ThrowIfNull(context);
+        var clientProblemDetails =
+            ProblemDetailsFactoryCore.CreateProblemDetailsUnauthorizedProcessFail(context.Exception, localizer);
+        context.HttpContext.Features.Set(clientProblemDetails);
+        return base.AuthenticationFailed(context);
+    }
+
+    /// <summary>
+    ///     AuthenticationFailed event handler
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    public override Task Forbidden(ForbiddenContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsForbiddenAccess(localizer);
+        context.HttpContext.Features.Set(clientProblemDetails);
+        return base.Forbidden(context);
     }
 
     /// <summary>

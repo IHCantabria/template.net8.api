@@ -17,7 +17,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsByHttpStatusCode(HttpStatusCode httpStatusCode, Exception ex,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         return httpStatusCode switch
         {
@@ -65,20 +65,20 @@ internal static class ProblemDetailsFactoryCore
     ///     produces duplicate keys for two elements.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsBadRequestValidationPayload(ModelStateDictionary modelState,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var errors = modelState.ToDictionary(
             kvp => kvp.Key,
             kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage)
         );
-        return IsRootFileFail(modelState.Keys)
+        return ProblemDetailsFactoryCoreUtils.IsRootFileFail(modelState.Keys)
             ? CreateProblemDetailsBadRequestValidationJsonMalformed(errors, localizer)
             : CreateProblemDetailsBadRequestValidationJsonInvalid(errors, localizer);
     }
 
     private static ProblemDetails CreateProblemDetailsBadRequestValidationJsonMalformed(
         Dictionary<string, IEnumerable<string>?> errors,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -95,7 +95,7 @@ internal static class ProblemDetailsFactoryCore
 
     private static ProblemDetails CreateProblemDetailsBadRequestValidationJsonInvalid(
         Dictionary<string, IEnumerable<string>?> errors,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -116,7 +116,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsBadRequest(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -135,7 +135,8 @@ internal static class ProblemDetailsFactoryCore
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    internal static ProblemDetails CreateProblemDetailsBadRequestHttpNotSupported(IStringLocalizer<Resource> localizer)
+    internal static ProblemDetails CreateProblemDetailsBadRequestHttpNotSupported(
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -155,7 +156,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsUnauthorized(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -174,8 +175,47 @@ internal static class ProblemDetailsFactoryCore
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    internal static ProblemDetails CreateProblemDetailsUnauthorizedProcessFail(Exception exception,
+        IStringLocalizer<ResourceMain> localizer)
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Title = localizer["ProblemDetailsUnauthorizedProcessFailTitle"],
+            Detail = exception.Message,
+            Type = "https://tools.ietf.org/html/rfc9110#name-401-unauthorized",
+            Status = StatusCodes.Status401Unauthorized
+        };
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnauthorizedProcessFailCode"].Value);
+        return problemDetails;
+    }
+
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    internal static ProblemDetails CreateProblemDetailsForbiddenAccess(IStringLocalizer<ResourceMain> localizer)
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Title = localizer["ProblemDetailsForbiddenAccessTitle"],
+            Detail = localizer["ProblemDetailsForbiddenAccessDetail"],
+            Type = "https://tools.ietf.org/html/rfc9110#name-403-forbidden",
+            Status = StatusCodes.Status403Forbidden
+        };
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsForbiddenAccessCode"].Value);
+        return problemDetails;
+    }
+
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     internal static ProblemDetails CreateProblemDetailsForbidden(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -195,7 +235,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsNotFound(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -209,7 +249,7 @@ internal static class ProblemDetailsFactoryCore
     }
 
     private static ProblemDetails CreateProblemDetailsMethodNotAllowed(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -229,7 +269,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsRequestTimeout(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -249,7 +289,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsConflict(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -269,7 +309,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsGone(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -283,7 +323,7 @@ internal static class ProblemDetailsFactoryCore
     }
 
     private static ProblemDetails CreateProblemDetailsUnsupportedMediaType(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -303,7 +343,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsUnprocessableEntity(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -317,7 +357,7 @@ internal static class ProblemDetailsFactoryCore
     }
 
     private static ProblemDetails CreateProblemDetailsTooManyRequest(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -337,7 +377,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsInternalServerError(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -357,7 +397,7 @@ internal static class ProblemDetailsFactoryCore
     ///     is <see langword="null" />.
     /// </exception>
     internal static ProblemDetails CreateProblemDetailsNotImplemented(Exception exception,
-        IStringLocalizer<Resource> localizer)
+        IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -369,8 +409,20 @@ internal static class ProblemDetailsFactoryCore
         problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsNotImplementedCode"].Value);
         return problemDetails;
     }
+}
 
-    private static bool IsRootFileFail(ModelStateDictionary.KeyEnumerable keys)
+/// <summary>
+///     Problem Details Factory Core Utils
+/// </summary>
+public static class ProblemDetailsFactoryCoreUtils
+{
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    internal static bool IsRootFileFail(ModelStateDictionary.KeyEnumerable keys)
     {
         return keys.Contains("$");
     }
