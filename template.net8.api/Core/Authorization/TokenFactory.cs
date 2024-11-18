@@ -146,7 +146,7 @@ internal static class TokenFactory
         claims.AddClaimIfNotNull(ClaimCoreConstants.RoleClaim, user.RoleName);
         claims.AddClaimIfNotNull(JwtRegisteredClaimNames.FamilyName, user.LastName);
         claims.AddClaimIfNotNull(JwtRegisteredClaimNames.GivenName, user.FirstName);
-        return claims.Append(AddClimportPrivileges(user.Scope.Claims.Select(c => c.Name))).ToList();
+        return claims.Append(AddApplicationPrivileges(user.Scope.GetClaims())).ToList();
     }
 
     private static void AddClaimIfNotNull(this ICollection<Claim> claims, string claimType, string? value)
@@ -219,7 +219,7 @@ internal static class TokenFactory
         ];
     }
 
-    private static List<Claim> AddClimportPrivileges(IEnumerable<string> privileges)
+    private static List<Claim> AddApplicationPrivileges(IEnumerable<string> privileges)
     {
         return privileges.Select(privilege => new Claim(ClaimCoreConstants.ApplicationPrivilegesClaim, privilege))
             .ToList();

@@ -185,7 +185,7 @@ public abstract record UserAccessTokenWithScopeBaseDto : IDto,
     /// <summary>
     ///     Scope
     /// </summary>
-    public virtual UserScopeBaseDto? Scope { get; init; }
+    public virtual UserScopeBaseDto? Scope { get; }
 }
 
 /// <summary>
@@ -254,6 +254,21 @@ public abstract record UserScopeBaseDto : IDto,
     ///     Claims
     /// </summary>
     public virtual IEnumerable<ClaimBaseDto> Claims { get; init; } = [];
+
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     or
+    ///     <paramref>
+    ///         <name>selector</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    internal virtual IEnumerable<string> GetClaims()
+    {
+        return Claims.Select(claim => claim.Name);
+    }
 }
 
 /// <summary>
