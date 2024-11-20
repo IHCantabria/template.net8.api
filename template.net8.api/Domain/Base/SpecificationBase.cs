@@ -225,7 +225,7 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
 
     /// <summary>
     /// </summary>
-    public Tuple<int, TakeType>? TakeRows { get; }
+    public Tuple<int, TakeType>? TakeRows { get; private set; }
 
     /// <summary>
     /// </summary>
@@ -268,6 +268,15 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="rows"></param>
+    /// <param name="takeType"></param>
+    protected void AddTakeRows(int rows, TakeType takeType)
+    {
+        TakeRows = new Tuple<int, TakeType>(rows, takeType);
     }
 
     /// <summary>
