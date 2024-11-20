@@ -239,6 +239,19 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
+    ///     Asynchronously inserts the collection entities.
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<bool>> InsertBulkAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+    {
+        await _dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
+        return true;
+    }
+
+    /// <summary>
     ///     Asynchronously deletes the entity by its id
     /// </summary>
     /// <param name="entityId"></param>

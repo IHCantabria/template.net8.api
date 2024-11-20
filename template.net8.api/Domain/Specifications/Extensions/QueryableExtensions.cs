@@ -36,6 +36,7 @@ internal static class QueryableExtensions
         query = query.ApplyIncludes(specification.Includes);
         query = query.ApplyOrderBys(specification.OrderBys);
         query = query.ApplyGroupBy(specification.GroupBy);
+        query = query.ApplyTakeRows(specification.TakeRows);
         query = query.ApplyQuerySplitStrategy(specification.QuerySplitStrategy);
         query = query.ApplyQueryTrackStrategyy(specification.QueryTrackStrategy);
 
@@ -54,6 +55,7 @@ internal static class QueryableExtensions
         query = query.ApplyFilters(specification.Filters);
         query = query.ApplyOrderBys(specification.OrderBys);
         query = query.ApplyGroupBy(specification.GroupBy);
+        query = query.ApplyTakeRows(specification.TakeRows);
         query = query.ApplyQuerySplitStrategy(specification.QuerySplitStrategy);
         query = query.ApplyQueryTrackStrategyy(specification.QueryTrackStrategy);
 
@@ -99,6 +101,19 @@ internal static class QueryableExtensions
         Expression<Func<TEntity, object>>? groupBy) where TEntity : class, IEntity
     {
         return groupBy != null ? queryable.GroupBy(groupBy).SelectMany(x => x) : queryable;
+    }
+
+    private static IQueryable<TEntity> ApplyTakeRows<TEntity>(this IQueryable<TEntity> queryable,
+        Tuple<int, TakeType>? takeRows) where TEntity : class, IEntity
+    {
+        if (takeRows is null) return queryable;
+
+        return takeRows.Item2 switch
+        {
+            TakeType.First => queryable.Take(takeRows.Item1),
+            TakeType.Last => queryable.TakeLast(takeRows.Item1),
+            _ => queryable.Take(takeRows.Item1)
+        };
     }
 
     private static IQueryable<TEntity> ApplyQuerySplitStrategy<TEntity>(this IQueryable<TEntity> queryable,

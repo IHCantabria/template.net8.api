@@ -26,6 +26,24 @@ public enum OrderByType
 }
 
 /// <summary>
+///     Enumeration for Take and Take Last for the Query Specification Pattern Implementation for Querying Data with EF
+///     EF
+/// </summary>
+[CoreLibrary]
+public enum TakeType
+{
+    /// <summary>
+    ///     Ascending Order
+    /// </summary>
+    First = 0,
+
+    /// <summary>
+    ///     Descending Order
+    /// </summary>
+    Last = 1
+}
+
+/// <summary>
 ///     Interface for Verification Pattern Implementation for Querying Data with EF Core Queryable Extensions.
 /// </summary>
 /// <typeparam name="TEntity"></typeparam>
@@ -66,6 +84,12 @@ public interface ISpecification<TEntity> : IVerification<TEntity> where TEntity 
     Expression<Func<TEntity, object>>? GroupBy { get; }
 
     /// <summary>
+    ///     Partial Take expression for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
+    ///     Extensions.
+    /// </summary>
+    Tuple<int, TakeType>? TakeRows { get; }
+
+    /// <summary>
     ///     Query Split Strategy for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
     ///     Extensions. Default is SingleQuery.
     /// </summary>
@@ -94,6 +118,12 @@ public interface ISpecification<TEntity, TDto> : IVerification<TEntity>
     ///     Extensions.
     /// </summary>
     Expression<Func<TEntity, object>>? GroupBy { get; }
+
+    /// <summary>
+    ///     Partial Take expression for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
+    ///     Extensions.
+    /// </summary>
+    Tuple<int, TakeType>? TakeRows { get; }
 
     /// <summary>
     ///     Query Split Strategy for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable

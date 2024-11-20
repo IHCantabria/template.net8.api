@@ -96,6 +96,10 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
 
     /// <summary>
     /// </summary>
+    public Tuple<int, TakeType>? TakeRows { get; private set; }
+
+    /// <summary>
+    /// </summary>
     public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } = [];
 
     /// <summary>
@@ -131,6 +135,15 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="rows"></param>
+    /// <param name="takeType"></param>
+    protected void AddTakeRows(int rows, TakeType takeType)
+    {
+        TakeRows = new Tuple<int, TakeType>(rows, takeType);
     }
 
     /// <summary>
@@ -193,6 +206,7 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// </summary>
     public ICollection<Expression<Func<TEntity, object>>> Includes { get; } = [];
 
+
     /// <summary>
     /// </summary>
     public QuerySplittingBehavior QuerySplitStrategy { get; private set; } = QuerySplittingBehavior.SingleQuery;
@@ -208,6 +222,10 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// <summary>
     /// </summary>
     public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } = [];
+
+    /// <summary>
+    /// </summary>
+    public Tuple<int, TakeType>? TakeRows { get; }
 
     /// <summary>
     /// </summary>

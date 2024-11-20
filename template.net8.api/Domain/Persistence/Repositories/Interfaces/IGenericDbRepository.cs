@@ -128,6 +128,14 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     Task<Result<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken);
 
     /// <summary>
+    ///     Asynchronously inserts the colelction entities.
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<Result<bool>> InsertBulkAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken);
+
+    /// <summary>
     ///     Synchronously deletes the entity
     /// </summary>
     /// <param name="entity"></param>
