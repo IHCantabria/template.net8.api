@@ -40,13 +40,13 @@ public sealed class ExceptionsControlInstaller : IServiceInstaller
 
     private static void CustomizeProblemDetails(IHostEnvironment env, ProblemDetailsContext ctx)
     {
-        var clientProblemDetails =
+        var httpContextProblemDetails =
             ctx.HttpContext.Features.Get<ProblemDetails>();
         ctx.AddInstanceField();
         ctx.AddMethodField();
         ctx.AddTraceIdField();
         ctx.AddCodeField();
-        if (clientProblemDetails is not null) ctx.UseClientProblemDetails(clientProblemDetails);
+        if (httpContextProblemDetails is not null) ctx.UseHttpContextProblemDetails(httpContextProblemDetails);
 
         //Details Error Removed for server errors in Production
         ctx.HiddenDetails(env);

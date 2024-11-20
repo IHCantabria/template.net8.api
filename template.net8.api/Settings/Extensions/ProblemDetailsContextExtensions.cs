@@ -63,7 +63,8 @@ internal static class ProblemDetailsContextExtensions
         ctx.ProblemDetails.Extensions.TryAdd("code", code);
     }
 
-    internal static void UseClientProblemDetails(this ProblemDetailsContext ctx, ProblemDetails clientProblemDetails)
+    internal static void UseHttpContextProblemDetails(this ProblemDetailsContext ctx,
+        ProblemDetails clientProblemDetails)
     {
         ctx.ProblemDetails.Status = clientProblemDetails.Status ?? ctx.ProblemDetails.Status;
         ctx.HttpContext.Response.StatusCode = clientProblemDetails.Status ?? StatusCodes.Status400BadRequest;
