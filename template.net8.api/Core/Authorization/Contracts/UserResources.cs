@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using template.net8.api.Core.Interfaces;
 
-namespace template.net8.api.Core.Contracts;
+namespace template.net8.api.Core.Authorization.Contracts;
 
 /// <summary>
 ///     User Access Token Resource

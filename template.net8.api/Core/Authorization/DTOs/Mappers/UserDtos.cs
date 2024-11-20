@@ -1,5 +1,5 @@
 ﻿using JetBrains.Annotations;
-using template.net8.api.Core.Contracts;
+using template.net8.api.Core.Authorization.Contracts;
 
 namespace template.net8.api.Core.Authorization.DTOs;
 
