@@ -1,6 +1,6 @@
-﻿using template.net8.api.Core.DTOs;
+﻿using template.net8.api.Core.Geometries.DTOs;
 
-namespace template.net8.api.Core.Contracts;
+namespace template.net8.api.Core.Geometries.Contracts;
 
 /// <summary>
 ///     Create Extent Resource

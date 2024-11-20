@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
-using template.net8.api.Core.Contracts;
+using template.net8.api.Core.Geometries.Contracts;
 
-namespace template.net8.api.Core.DTOs;
+namespace template.net8.api.Core.Geometries.DTOs;
 
 /// <summary>
 ///     Extent DTO

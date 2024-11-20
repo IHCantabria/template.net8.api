@@ -2,7 +2,7 @@
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
 
-namespace template.net8.api.Core.DTOs;
+namespace template.net8.api.Core.Geometries.DTOs;
 
 /// <summary>
 ///     Extent DTO
