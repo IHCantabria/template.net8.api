@@ -56,8 +56,8 @@ internal static class ControllerExtensions
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
-        if (ex is BusinessException or ValidationException)
-            return BusinessExceptionMapper.MapExceptionToResult(ex, localizer, features);
+        if (ex is CoreException or ValidationException)
+            return ExceptionMapper.MapExceptionToResult(ex, localizer, features);
 
         //Exception not Controlled
         //Important: Only Write details for Business Exceptions

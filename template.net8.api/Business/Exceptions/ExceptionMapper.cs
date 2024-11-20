@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Factory;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Exceptions;
 using template.net8.api.Localize.Resources;
+using NotImplementedException = template.net8.api.Core.Exceptions.NotImplementedException;
 
 namespace template.net8.api.Business.Exceptions;
 
@@ -29,7 +31,7 @@ internal enum ExceptionType
 }
 
 [CoreLibrary]
-internal static class BusinessExceptionMapper
+internal static class ExceptionMapper
 {
     private static readonly Dictionary<ExceptionType,
             Func<Exception, IStringLocalizer<ResourceMain>, IFeatureCollection, IActionResult>>

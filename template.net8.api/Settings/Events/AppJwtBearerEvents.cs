@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using template.net8.api.Business.Exceptions;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Authorization;
 using template.net8.api.Core.Exceptions;
