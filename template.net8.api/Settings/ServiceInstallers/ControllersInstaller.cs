@@ -2,9 +2,9 @@
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Json;
+using template.net8.api.Settings.ActionResult;
 using template.net8.api.Settings.Attributes;
 using template.net8.api.Settings.Interfaces;
-using template.net8.api.Settings.Result;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 

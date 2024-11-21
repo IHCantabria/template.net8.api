@@ -4,7 +4,7 @@ using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Factory;
 using template.net8.api.Localize.Resources;
 
-namespace template.net8.api.Settings.Result;
+namespace template.net8.api.Settings.ActionResult;
 
 /// <summary>
 ///     Validation Problem Details Result Action
