@@ -15,7 +15,7 @@
 {PROJECT_NAMESPACE}/package.json
 
 # local Appsettings
-{PROJECT_NAMESPACE}/appsettings.Local.json
+{PROJECT_NAMESPACE}/appsettings.local.json
 
 # User-specific files
 *.rsuser
