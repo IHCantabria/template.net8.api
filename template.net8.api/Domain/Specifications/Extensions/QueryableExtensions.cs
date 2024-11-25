@@ -104,16 +104,9 @@ internal static class QueryableExtensions
     }
 
     private static IQueryable<TEntity> ApplyTakeRows<TEntity>(this IQueryable<TEntity> queryable,
-        Tuple<int, TakeType>? takeRows) where TEntity : class, IEntity
+        int? takeRows) where TEntity : class, IEntity
     {
-        if (takeRows is null) return queryable;
-
-        return takeRows.Item2 switch
-        {
-            TakeType.First => queryable.Take(takeRows.Item1),
-            TakeType.Last => queryable.TakeLast(takeRows.Item1),
-            _ => queryable.Take(takeRows.Item1)
-        };
+        return takeRows is null ? queryable : queryable.Take(takeRows.Value);
     }
 
     private static IQueryable<TEntity> ApplyQuerySplitStrategy<TEntity>(this IQueryable<TEntity> queryable,

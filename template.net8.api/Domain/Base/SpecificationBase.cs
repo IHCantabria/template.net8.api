@@ -96,7 +96,7 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
 
     /// <summary>
     /// </summary>
-    public Tuple<int, TakeType>? TakeRows { get; private set; }
+    public int? TakeRows { get; private set; }
 
     /// <summary>
     /// </summary>
@@ -140,10 +140,9 @@ public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity 
     /// <summary>
     /// </summary>
     /// <param name="rows"></param>
-    /// <param name="takeType"></param>
-    protected void AddTakeRows(int rows, TakeType takeType)
+    protected void AddTakeRows(int rows)
     {
-        TakeRows = new Tuple<int, TakeType>(rows, takeType);
+        TakeRows = rows;
     }
 
     /// <summary>
@@ -225,7 +224,7 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
 
     /// <summary>
     /// </summary>
-    public Tuple<int, TakeType>? TakeRows { get; private set; }
+    public int? TakeRows { get; private set; }
 
     /// <summary>
     /// </summary>
@@ -273,10 +272,9 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     /// <summary>
     /// </summary>
     /// <param name="rows"></param>
-    /// <param name="takeType"></param>
-    protected void AddTakeRows(int rows, TakeType takeType)
+    protected void AddTakeRows(int rows)
     {
-        TakeRows = new Tuple<int, TakeType>(rows, takeType);
+        TakeRows = rows;
     }
 
     /// <summary>
