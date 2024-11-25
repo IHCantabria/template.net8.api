@@ -17,6 +17,12 @@
 # local Appsettings
 {PROJECT_NAMESPACE}/appsettings.local.json
 
+# test Appsettings
+{PROJECT_NAMESPACE}/appsettings.test.json
+
+# File log misconfigured
+{PROJECT_NAMESPACE}/\#{HOST_API_LOG_INTERNAL_FILE}\#
+
 # User-specific files
 *.rsuser
 *.suo

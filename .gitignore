@@ -17,6 +17,12 @@ template.net8.api/package.json
 # local Appsettings
 template.net8.api/appsettings.Local.json
 
+# test Appsettings
+template.net8.api/appsettings.test.json
+
+# File log misconfigured
+template.net8.api/\#{HOST_API_LOG_INTERNAL_FILE}\#
+
 # User-specific files
 *.rsuser
 *.suo
