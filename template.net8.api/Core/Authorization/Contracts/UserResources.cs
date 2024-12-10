@@ -38,7 +38,8 @@ public sealed record AccessTokenResource : IPublicApiContract,
 /// <summary>
 ///     User Id Token Resource
 /// </summary>
-public sealed record IdTokenResource : IPublicApiContract, IEqualityOperators<IdTokenResource, IdTokenResource, bool>
+public sealed record IdTokenResource : IPublicApiContract,
+    IEqualityOperators<IdTokenResource, IdTokenResource, bool>
 {
     /// <summary>
     ///     Jwt Id Token

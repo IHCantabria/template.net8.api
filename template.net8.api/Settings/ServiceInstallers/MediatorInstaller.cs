@@ -5,7 +5,7 @@ using template.net8.api.Settings.Interfaces;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Meidator Service Installer
+///     Mediator Service Installer
 /// </summary>
 [CoreLibrary]
 public sealed class MediatorInstaller : IServiceInstaller
