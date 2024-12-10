@@ -13,7 +13,7 @@ namespace template.net8.api.Settings.Filters;
 ///     Documentation Operation Filter
 /// </summary>
 [CoreLibrary]
-public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
+public sealed class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
 {
     /// <summary>
     ///     Default Constructor
@@ -68,6 +68,7 @@ public class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
     }
 
     /// <summary>
+    ///     Order of the filter
     /// </summary>
     public int Order { get; }
 }

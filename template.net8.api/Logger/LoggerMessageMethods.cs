@@ -25,26 +25,44 @@ internal static partial class LoggerMessageMethods
     internal static partial void LogExceptionServer(this ILogger logger, string message);
 
     [LoggerMessage(EventId = 6, Level = LogLevel.Information,
+        Message = LoggerMessageDefinitions.ActionRequestReceived)]
+    internal static partial void LogActionRequestReceived(this ILogger logger, string? methodName, string? requestPath);
+
+    [LoggerMessage(EventId = 7, Level = LogLevel.Information,
+        Message = LoggerMessageDefinitions.ActionRequestParameter)]
+    internal static partial void LogActionRequestParameter(this ILogger logger, string key, string value);
+
+    [LoggerMessage(EventId = 8, Level = LogLevel.Error,
+        Message = LoggerMessageDefinitions.ActionRequestResponseError)]
+    internal static partial void LogActionRequestResponseError(this ILogger logger, string jsonError);
+
+    [LoggerMessage(EventId = 9, Level = LogLevel.Information,
+        Message = LoggerMessageDefinitions.ActionRequestResponsed)]
+    internal static partial void
+        LogActionRequestResponsed(this ILogger logger, string? methodName, string? requestPath);
+
+    [LoggerMessage(EventId = 10, Level = LogLevel.Information,
         Message = LoggerMessageDefinitions.HandlingRequest)]
     internal static partial void LogHandlingRequest(this ILogger logger, string requestType);
 
-    [LoggerMessage(EventId = 7, Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandledRequestSuccess)]
+    [LoggerMessage(EventId = 11, Level = LogLevel.Information,
+        Message = LoggerMessageDefinitions.HandledRequestSuccess)]
     internal static partial void LogHandledRequestSuccess(this ILogger logger, string requestType, string time);
 
-    [LoggerMessage(EventId = 8, Level = LogLevel.Warning, Message = LoggerMessageDefinitions.HandledRequestEmpty)]
+    [LoggerMessage(EventId = 12, Level = LogLevel.Warning, Message = LoggerMessageDefinitions.HandledRequestEmpty)]
     internal static partial void LogHandledRequestIsEmpty(this ILogger logger, string requestType, string time);
 
-    [LoggerMessage(EventId = 9, Level = LogLevel.Warning, Message = LoggerMessageDefinitions.HandledRequestError)]
+    [LoggerMessage(EventId = 13, Level = LogLevel.Warning, Message = LoggerMessageDefinitions.HandledRequestError)]
     internal static partial void LogHandledRequestError(this ILogger logger, string requestType, string time);
 
-    [LoggerMessage(EventId = 10, Level = LogLevel.Warning, Message = LoggerMessageDefinitions.ExceptionClient)]
+    [LoggerMessage(EventId = 14, Level = LogLevel.Warning, Message = LoggerMessageDefinitions.ExceptionClient)]
     internal static partial void LogExceptionClient(this ILogger logger, string message);
 
-    [LoggerMessage(EventId = 11, Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandlingPostProcess)]
+    [LoggerMessage(EventId = 15, Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandlingPostProcess)]
     internal static partial void
         LogHandlingPostProcess(this ILogger logger, string postProcessType, string requestType);
 
-    [LoggerMessage(EventId = 12, Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandledPostProcess)]
+    [LoggerMessage(EventId = 16, Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandledPostProcess)]
     internal static partial void LogHandledPostProcess(this ILogger logger, string postProcessType, string requestType,
         string time);
 }

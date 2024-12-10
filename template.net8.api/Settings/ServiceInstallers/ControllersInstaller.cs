@@ -4,6 +4,7 @@ using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Json;
 using template.net8.api.Settings.ActionResult;
 using template.net8.api.Settings.Attributes;
+using template.net8.api.Settings.Filters;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
@@ -44,6 +45,7 @@ public sealed class ControllersInstaller : IServiceInstaller
             {
                 x.RespectBrowserAcceptHeader = true;
                 x.ReturnHttpNotAcceptable = true;
+                x.Filters.Add<RequestLogFilter>();
                 x.Conventions.Add(new ActionHidingConvention(builder.Environment.EnvironmentName));
             })
             .AddJsonOptions(x =>

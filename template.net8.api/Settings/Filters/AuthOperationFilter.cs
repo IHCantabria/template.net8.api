@@ -16,7 +16,7 @@ namespace template.net8.api.Settings.Filters;
 ///     Auth Operation Filter
 /// </summary>
 [CoreLibrary]
-public class AuthOperationFilter : IOperationFilter, IOrderedFilter
+public sealed class AuthOperationFilter : IOperationFilter, IOrderedFilter
 {
     private readonly IOptions<SwaggerSecurityOptions> _config;
 
@@ -120,6 +120,7 @@ public class AuthOperationFilter : IOperationFilter, IOrderedFilter
     }
 
     /// <summary>
+    ///     Order of the filter
     /// </summary>
     public int Order { get; }
 
