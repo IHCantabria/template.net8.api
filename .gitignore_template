@@ -23,6 +23,9 @@
 # File log misconfigured
 {PROJECT_NAMESPACE}/\#{HOST_API_LOG_INTERNAL_FILE}\#
 
+# Project Backup Files
+*Backup*.csproj
+
 # User-specific files
 *.rsuser
 *.suo
