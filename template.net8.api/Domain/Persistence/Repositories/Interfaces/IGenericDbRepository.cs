@@ -143,12 +143,12 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     Try<TEntity> Delete(TEntity entity);
 
     /// <summary>
-    ///     Asynchronously deletes the entity by its id
+    ///     Asynchronously deletes the entity by its key.
     /// </summary>
-    /// <param name="entityId"></param>
+    /// <param name="entityKey"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<Result<TEntity>> DeleteAsync(short entityId, CancellationToken cancellationToken);
+    Task<Result<TEntity>> DeleteAsync<TKey>(TKey? entityKey, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Synchronously updates the entity

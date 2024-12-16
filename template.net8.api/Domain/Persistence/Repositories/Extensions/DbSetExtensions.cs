@@ -8,7 +8,8 @@ namespace template.net8.api.Domain.Persistence.Repositories.Extensions;
 internal static class DbSetExtensions
 {
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    internal static async ValueTask<TEntity?> FindItemAsync<TEntity>(this DbSet<TEntity> set, params object[] keyValues)
+    internal static async ValueTask<TEntity?> FindItemAsync<TEntity>(this DbSet<TEntity> set,
+        params object?[] keyValues)
         where TEntity : class, IEntity
     {
         return keyValues[^1] is CancellationToken ct

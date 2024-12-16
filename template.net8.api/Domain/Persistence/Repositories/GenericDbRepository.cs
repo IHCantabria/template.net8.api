@@ -252,25 +252,6 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     }
 
     /// <summary>
-    ///     Asynchronously deletes the entity by its id
-    /// </summary>
-    /// <param name="entityId"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TEntity>> DeleteAsync(short entityId, CancellationToken cancellationToken)
-    {
-        var entity = await _dbSet.FindItemAsync(entityId, cancellationToken).ConfigureAwait(false);
-        if (entity is null)
-        {
-            return new Result<TEntity>(new CoreException("Entity with id:({entityId}) not found"));
-        }
-
-        var entityResult = Delete(entity).Try();
-        return entityResult;
-    }
-
-    /// <summary>
     ///     Asynchronously executes the query procedure.
     /// </summary>
     /// <param name="procedureName"></param>
@@ -478,6 +459,25 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
             var dto = projection.FirstOrDefault();
             return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
         };
+    }
+
+    /// <summary>
+    ///     Asynchronously deletes the entity by its key
+    /// </summary>
+    /// <param name="entityKey"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public async Task<Result<TEntity>> DeleteAsync<TKey>(TKey? entityKey, CancellationToken cancellationToken)
+    {
+        var entity = await _dbSet.FindItemAsync(entityKey, cancellationToken).ConfigureAwait(false);
+        if (entity is null)
+        {
+            return new Result<TEntity>(new CoreException($"Entity with key:({entityKey}) not found"));
+        }
+
+        var entityResult = Delete(entity).Try();
+        return entityResult;
     }
 
     private IQueryable<TEntity> PrepareProcedureQueryable(string procedureName, params object[] parameters)
