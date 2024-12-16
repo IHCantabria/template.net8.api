@@ -31,7 +31,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ILogger<GenericDbRepositoryScopedDbContext<TDbContext, TEntity>> logger)
     : DbRepositoryScopedDbContextBase(context, logger),
         IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
-    where TDbContext : DbContext where TEntity : class, IEntity
+    where TDbContext : DbContext where TEntity : class, IEntity, IAsyncDisposable
 {
     private const string EmptyQuery = "Query return empty result";
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
@@ -261,7 +261,10 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     public async Task<Result<TEntity>> DeleteAsync(short entityId, CancellationToken cancellationToken)
     {
         var entity = await _dbSet.FindItemAsync(entityId, cancellationToken).ConfigureAwait(false);
-        if (entity is null) return new Result<TEntity>(new CoreException("Entity with id:({entityId}) not found"));
+        if (entity is null)
+        {
+            return new Result<TEntity>(new CoreException("Entity with id:({entityId}) not found"));
+        }
 
         var entityResult = Delete(entity).Try();
         return entityResult;
@@ -408,7 +411,11 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     {
         return () =>
         {
-            if (Context.Entry(entity).State == EntityState.Detached) _dbSet.Attach(entity);
+            if (Context.Entry(entity).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entity);
+            }
+
             _dbSet.Remove(entity);
             return entity;
         };
@@ -436,7 +443,11 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
             var entry = Context.Attach(entity);
             var unchangedEntities = Context.ChangeTracker.Entries().Where(ee => ee.State == EntityState.Unchanged);
             //Should be Serial
-            foreach (var ee in unchangedEntities) ee.State = EntityState.Modified;
+            foreach (var ee in unchangedEntities)
+            {
+                ee.State = EntityState.Modified;
+            }
+
             return entry.Entity;
         };
     }
@@ -565,7 +576,9 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
             var taskResponse = await VerificateDataAsync(model.IsUnique, model.Verification, cancellationToken)
                 .ConfigureAwait(false);
             if (taskResponse is Result<bool> sucessResult && sucessResult.ExtractData() != model.ExpecteResult)
+            {
                 validationErrors.Add(model.Msg);
+            }
         }
 
         return validationErrors.Count == 0
@@ -637,7 +650,10 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     {
         //Get Ancestor Type until reach BaseSpecification
         while (IsSpecificationBaseType(type))
+        {
             type = type?.BaseType!;
+        }
+
         return type;
     }
 
@@ -795,11 +811,20 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     /// <summary>
-    ///     Get the current DbContext.
+    ///     Create a new DbContext.
     /// </summary>
-    public TDbContext DbContext()
+    public TDbContext CreateDbContext()
     {
         return _dbContextFactory.CreateDbContext();
+    }
+
+    /// <summary>
+    ///     Create a new DbContext Async.
+    /// </summary>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public Task<TDbContext> CreateDbContextAsync(CancellationToken cancellationToken)
+    {
+        return _dbContextFactory.CreateDbContextAsync(cancellationToken);
     }
 
     /// <summary>
@@ -818,8 +843,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     public async Task<Result<bool>> VerificateAsync(IVerification<TEntity>? verification,
         CancellationToken cancellationToken)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityExist = await query.AnyAsync(cancellationToken).ConfigureAwait(false);
@@ -842,8 +866,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     public async Task<Result<bool>> VerificateSingleAsync(IVerification<TEntity>? verification,
         CancellationToken cancellationToken)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityUniqueExist =
@@ -867,8 +890,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     public async Task<Result<ICollection<TEntity>>> GetAsync(
         ISpecification<TEntity>? specification, CancellationToken cancellationToken)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entities = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -893,8 +915,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -927,8 +948,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     public async Task<Result<TEntity>> GetSingleAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entity = await query.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -959,8 +979,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -987,8 +1006,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     public async Task<Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entity = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
@@ -1013,8 +1031,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -1121,7 +1138,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     {
         return () =>
         {
-            using var context = _dbContextFactory.CreateDbContext();
+            using var context = CreateDbContext();
             var queryable = context.Set<TEntity>().AsQueryable();
             var query = queryable.ApplyVerification(verification);
             var entityExist = query.Any();
@@ -1146,7 +1163,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     {
         return () =>
         {
-            using var context = _dbContextFactory.CreateDbContext();
+            using var context = CreateDbContext();
             var queryable = context.Set<TEntity>().AsQueryable();
             var query = queryable.ApplySpecification(specification);
             var projection = specification is null
@@ -1160,7 +1177,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
 
     private IQueryable<TEntity> PrepareProcedureQueryable(string procedureName, params object[] parameters)
     {
-        using var context = _dbContextFactory.CreateDbContext();
+        using var context = CreateDbContext();
         var queryable = context.Set<TEntity>().FromSql($"{procedureName} {parameters}");
         return queryable;
     }
@@ -1186,11 +1203,20 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     /// <summary>
-    ///     Get the current DbContext.
+    ///     Create a new DbContext.
     /// </summary>
-    public TDbContext DbContext()
+    public TDbContext CreateDbContext()
     {
         return _dbContextFactory.CreateDbContext();
+    }
+
+    /// <summary>
+    ///     Create a new DbContext Async.
+    /// </summary>
+    /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
+    public Task<TDbContext> CreateDbContextAsync(CancellationToken cancellationToken)
+    {
+        return _dbContextFactory.CreateDbContextAsync(cancellationToken);
     }
 
     /// <summary>
@@ -1258,7 +1284,9 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
             var taskResponse = await VerificateDataAsync(model.IsUnique, model.Verification, cancellationToken)
                 .ConfigureAwait(false);
             if (taskResponse is Result<bool> sucessResult && sucessResult.ExtractData() != model.ExpecteResult)
+            {
                 validationErrors.Add(model.Msg);
+            }
         }
 
         return validationErrors.Count == 0
@@ -1330,7 +1358,10 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     {
         //Get Ancestor Type until reach BaseSpecification
         while (IsSpecificationBaseType(type))
+        {
             type = type?.BaseType!;
+        }
+
         return type;
     }
 
@@ -1368,8 +1399,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
         ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken)
         where TEntity : class, IEntity where TDto : class, IDto
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -1406,8 +1436,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
         ISpecification<TEntity, TDto> specification, CancellationToken cancellationToken)
         where TEntity : class, IEntity where TDto : class, IDto
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -1434,8 +1463,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     public async Task<Result<bool>> VerificateAsync<TEntity>(IVerification<TEntity>? verification,
         CancellationToken cancellationToken) where TEntity : class, IEntity
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityExist = await query.AnyAsync(cancellationToken).ConfigureAwait(false);
@@ -1458,8 +1486,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     public async Task<Result<bool>> VerificateSingleAsync<TEntity>(IVerification<TEntity>? verification,
         CancellationToken cancellationToken) where TEntity : class, IEntity
     {
-        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        await using var _ = context.ConfigureAwait(false);
+        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityUniqueExist =

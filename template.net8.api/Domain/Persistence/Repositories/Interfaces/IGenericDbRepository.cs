@@ -235,15 +235,23 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext> where TDbCo
 /// <typeparam name="TEntity"></typeparam>
 /// <typeparam name="TDbContext"></typeparam>
 [CoreLibrary]
-public interface IGenericDbRepositoryTransientDbContext<out TDbContext, TEntity>
+public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     where TDbContext : DbContext where TEntity : class, IEntity
 {
     /// <summary>
-    ///     Get the current DbContext.
+    ///     Create a new DbContext.
     /// </summary>
     /// <returns></returns>
     [MustDisposeResource]
-    TDbContext DbContext();
+    TDbContext CreateDbContext();
+
+    /// <summary>
+    ///     Create a new DbContext Async.
+    /// </summary>
+    /// <returns></returns>
+    /// T
+    [MustDisposeResource]
+    Task<TDbContext> CreateDbContextAsync(CancellationToken cancellationToken);
 
     /// <summary>
     ///     Synchronously verifies the entity that satisfies the verification.
@@ -383,15 +391,23 @@ public interface IGenericDbRepositoryTransientDbContext<out TDbContext, TEntity>
 /// </summary>
 /// <typeparam name="TDbContext"></typeparam>
 [CoreLibrary]
-public interface IGenericDbRepositoryTransientDbContext<out TDbContext>
+public interface IGenericDbRepositoryTransientDbContext<TDbContext>
     where TDbContext : DbContext
 {
     /// <summary>
-    ///     Get the current DbContext.
+    ///     Create a new DbContext.
     /// </summary>
     /// <returns></returns>
     [MustDisposeResource]
-    TDbContext DbContext();
+    TDbContext CreateDbContext();
+
+    /// <summary>
+    ///     Create a new DbContext Async.
+    /// </summary>
+    /// <returns></returns>
+    /// T
+    [MustDisposeResource]
+    Task<TDbContext> CreateDbContextAsync(CancellationToken cancellationToken);
 
     /// <summary>
     ///     Asynchronously gets the composed DTOs.
