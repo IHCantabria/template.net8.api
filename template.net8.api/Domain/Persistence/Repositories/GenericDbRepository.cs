@@ -31,7 +31,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ILogger<GenericDbRepositoryScopedDbContext<TDbContext, TEntity>> logger)
     : DbRepositoryScopedDbContextBase(context, logger),
         IGenericDbRepositoryScopedDbContext<TDbContext, TEntity>
-    where TDbContext : DbContext where TEntity : class, IEntity, IAsyncDisposable
+    where TDbContext : DbContext where TEntity : class, IEntity
 {
     private const string EmptyQuery = "Query return empty result";
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
