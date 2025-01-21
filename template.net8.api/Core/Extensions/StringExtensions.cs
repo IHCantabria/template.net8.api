@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 using template.net8.api.Core.Attributes;
 
@@ -64,13 +65,36 @@ internal static class StringExtensions
             return cleaned;
         }
 
-        // Remove additional characters
         StringBuilder finalCleaned = new(cleaned.Length);
-        foreach (var c in cleaned.Where(c => !additionalCharsToRemove.Contains(c)))
+        foreach (var c in cleaned.Where(c =>
+                     !additionalCharsToRemove.Contains(c, StringComparison.InvariantCulture)))
         {
             finalCleaned.Append(c);
         }
 
         return finalCleaned.ToString();
+    }
+
+    /// <summary>
+    ///     Remove the Diacritics characters from a string.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>values</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    /// <exception cref="ArgumentException">The current instance contains invalid Unicode characters.</exception>
+    internal static string RemoveDiacritics(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return text;
+        }
+
+        return string.Concat(
+            text.Normalize(NormalizationForm.FormD)
+                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+        ).Normalize(NormalizationForm.FormC);
     }
 }
