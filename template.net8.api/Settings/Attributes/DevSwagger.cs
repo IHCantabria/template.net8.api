@@ -4,6 +4,7 @@ using template.net8.api.Core.Attributes;
 namespace template.net8.api.Settings.Attributes;
 
 /// <summary>
+///     Dev Swagger Attribute
 /// </summary>
 [CoreLibrary]
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
@@ -18,23 +19,24 @@ internal sealed class ActionHidingConvention(string envName) : IActionModelConve
         action.ApiExplorer.IsVisible = ShouldDisplaySwagger(action);
     }
 
-    private bool ShouldDisplaySwagger(ActionModel action)
+    private bool ShouldDisplaySwagger(ICommonModel action)
     {
         // Swagger is visible by default. Only hide if DevSwagger attribute is present and _isDevelopment is false.
         return _isDevelopment || !HasDevSwaggerAttribute(action);
     }
 
-    private static bool HasDevSwaggerAttribute(ActionModel action)
+    private static bool HasDevSwaggerAttribute(ICommonModel action)
     {
         return ControllerHasDevSwaggerAttribute(action) || ActionHasDevSwaggerAttribute(action);
     }
 
-    private static bool ControllerHasDevSwaggerAttribute(ActionModel action)
+    private static bool ControllerHasDevSwaggerAttribute(ICommonModel action)
     {
-        return action.Controller.Attributes.Any(IsDevSwaggerAttribute);
+        var actionModel = (ActionModel)action;
+        return actionModel.Controller.Attributes.Any(IsDevSwaggerAttribute);
     }
 
-    private static bool ActionHasDevSwaggerAttribute(ActionModel action)
+    private static bool ActionHasDevSwaggerAttribute(ICommonModel action)
     {
         return action.Attributes.Any(IsDevSwaggerAttribute);
     }
