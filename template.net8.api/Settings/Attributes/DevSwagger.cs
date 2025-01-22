@@ -11,7 +11,7 @@ public sealed class DevSwaggerAttribute : Attribute;
 
 internal sealed class ActionHidingConvention(string envName) : IActionModelConvention
 {
-    private readonly bool _isDevelopment = envName is Envs.Development or Envs.Local;
+    private readonly bool _isDevelopment = envName is Envs.Development or Envs.Local or Envs.Test;
 
     public void Apply(ActionModel action)
     {
@@ -34,7 +34,7 @@ internal sealed class ActionHidingConvention(string envName) : IActionModelConve
         return action.Controller.Attributes.Any(IsDevSwaggerAttribute);
     }
 
-    private static bool ActionHasDevSwaggerAttribute(ICommonModel action)
+    private static bool ActionHasDevSwaggerAttribute(ActionModel action)
     {
         return action.Attributes.Any(IsDevSwaggerAttribute);
     }

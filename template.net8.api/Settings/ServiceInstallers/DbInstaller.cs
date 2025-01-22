@@ -57,7 +57,7 @@ public sealed class DbInstaller : IServiceInstaller
         //Add a scoped service to create a new context instance, used for direct ProjectDBContext access
         builder.Services.AddScoped(sp =>
             sp.GetRequiredService<IDbContextFactory<ProjectDbContext>>().CreateDbContext());
-        if (builder.Environment.EnvironmentName is Envs.Development or Envs.Local)
+        if (builder.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }
 
@@ -66,7 +66,7 @@ public sealed class DbInstaller : IServiceInstaller
     {
         if (options.IsConfigured) return;
 
-        if (builder.Environment.EnvironmentName is Envs.Development or Envs.Local)
+        if (builder.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
         {
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
@@ -86,7 +86,7 @@ public sealed class DbInstaller : IServiceInstaller
         ProjectDbOptions connectionOptions)
     {
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionOptions.DecodedConnectionString);
-        if (env.EnvironmentName is Envs.Development or Envs.Local)
+        if (env.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
             dataSourceBuilder.EnableParameterLogging();
         dataSourceBuilder.UseNetTopologySuite();
 

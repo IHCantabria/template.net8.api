@@ -49,6 +49,7 @@ public sealed class CorsInstaller : IServiceInstaller
                 switch (builder.Environment.EnvironmentName)
                 {
                     case Envs.Local:
+                    case Envs.Test:
                         policyBuilder.AllowAnyOrigin().AllowAnyMethod();
                         break;
                     case Envs.Development:

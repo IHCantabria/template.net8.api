@@ -51,6 +51,17 @@
         "ASPNETCORE_ENVIRONMENT": "local"
       }
     },
+    "{PROJECT_NAME} (Test)": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "hotReloadEnabled": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7187;http://localhost:5290",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "test"
+      }
+    },
     "{PROJECT_NAME} (DEV)": {
       "commandName": "Project",
       "dotnetRunMessages": true,

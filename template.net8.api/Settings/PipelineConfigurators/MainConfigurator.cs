@@ -66,7 +66,8 @@ public sealed class MainConfigurator : IPipelineConfigurator
         app.UseHttpsRedirection();
 
         // Configure specific not Production behaviour exception page.
-        if (app.Environment.EnvironmentName is Envs.Development or Envs.Local) app.UseDeveloperExceptionPage();
+        if (app.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
+            app.UseDeveloperExceptionPage();
 
         //Configure enforce Https
         if (app.Environment.EnvironmentName is Envs.PreProduction or Envs.Production) app.UseHsts();

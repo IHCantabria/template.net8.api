@@ -56,6 +56,40 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    public override Task Challenge(JwtBearerChallengeContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        return base.Challenge(context);
+    }
+
+    /// <summary>
+    ///     AuthenticationFailed event handler
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    public override Task TokenValidated(TokenValidatedContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        return base.TokenValidated(context);
+    }
+
+    /// <summary>
+    ///     AuthenticationFailed event handler
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public override Task Forbidden(ForbiddenContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -117,17 +151,12 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
         return Task.CompletedTask;
     }
 
-    private static Task HandleTokenAuthenticationFailedAsync()
-    {
-        return Task.CompletedTask;
-    }
-
     private static bool ShouldAuthenticate(MessageReceivedContext? context, JwtOptions? config)
     {
         if (context is null) return true;
         if (config is null) return true;
 
-        var isDev = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is not Envs.Production;
+        var isDev = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is Envs.Local or Envs.Test;
 
         return !string.IsNullOrEmpty(context.HttpContext.Request.Headers.Authorization) || !isDev;
     }

@@ -7,6 +7,8 @@ internal static class Envs
 {
     internal const string Local = "local";
 
+    internal const string Test = "test";
+
     internal const string Development = "dev";
 
     internal const string PreProduction = "pre";
