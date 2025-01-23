@@ -65,7 +65,7 @@ public sealed class ApplicationSystem(
     )]
     [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.System.GetErrorCodes.Ok,
         typeof(IEnumerable<ErrorCodeResource>), MediaTypeNames.Application.Json)]
-    public Task<IActionResult> GetErrorCodes(IStringLocalizer<ResourceDictionaryErrorCode> localizer)
+    public Task<IActionResult> GetErrorCodesAsync(IStringLocalizer<ResourceDictionaryErrorCode> localizer)
     {
         var resources = localizer.GetAllStrings().Filter(s =>
                 s.Name.StartsWith(BusinessConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
@@ -98,7 +98,7 @@ public sealed class ApplicationSystem(
     )]
     [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.System.GetVersion.Ok,
         typeof(VersionResource), MediaTypeNames.Application.Json)]
-    public async Task<IActionResult> GetVersion(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetVersionAsync(CancellationToken cancellationToken)
     {
         var query = new QueryGetVersion();
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);

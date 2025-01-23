@@ -48,7 +48,7 @@ public sealed class HealthInstaller : IServiceInstaller
         return Task.CompletedTask;
     }
 
-    private static void AddHealthChecks(IHostApplicationBuilder builder, ProjectDbOptions? connectionOptions)
+    private static void AddHealthChecks(WebApplicationBuilder builder, ProjectDbOptions? connectionOptions)
     {
         var healthChecksBuilder = builder.Services.AddHealthChecks();
 

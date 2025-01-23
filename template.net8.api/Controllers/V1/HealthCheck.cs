@@ -26,7 +26,7 @@ public sealed class Health(
     /// <returns></returns>
     [HttpGet]
     [Route(ApiRoutes.Health.HealthCheck)]
-    public Task<IActionResult> HealthCheck()
+    public Task<IActionResult> HealthCheckAsync()
     {
         return Task.FromResult<IActionResult>(Ok("Service is running"));
     }

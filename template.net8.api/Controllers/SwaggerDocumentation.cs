@@ -12,7 +12,7 @@ internal static class SwaggerDocumentation
         {
             internal const string Summary = "Get the Dummies.";
             internal const string Description = "Get the dummies in the system.";
-            internal const string Id = "GetDummies";
+            internal const string Id = "GetDummiesAsync";
             internal const string Ok = "Return the dummies in the system.";
         }
 
@@ -20,7 +20,7 @@ internal static class SwaggerDocumentation
         {
             internal const string Summary = "Get Dummy.";
             internal const string Description = "Get data about a Dummy based on its Key(key).";
-            internal const string Id = "GetDummy";
+            internal const string Id = "GetDummyAsync";
             internal const string Ok = "Return the dummy with the specified key in the system.";
 
             internal const string BadRequest =
@@ -34,7 +34,7 @@ internal static class SwaggerDocumentation
         {
             internal const string Summary = "Create Dummy.";
             internal const string Description = "Create a new Dummy in the system.";
-            internal const string Id = "CreateDummy";
+            internal const string Id = "CreateDummyAsync";
             internal const string Ok = "Return the dummy created in the system.";
 
             internal const string UnprocessableEntity =
@@ -51,7 +51,7 @@ internal static class SwaggerDocumentation
         {
             internal const string Summary = "Get Error Codes.";
             internal const string Description = "Get the error codes and their description managed for the system.";
-            internal const string Id = "GetErrorCodes";
+            internal const string Id = "GetErrorCodesAsync";
             internal const string Ok = "Return the error codes and their description managed for the system.";
         }
 
@@ -59,7 +59,7 @@ internal static class SwaggerDocumentation
         {
             internal const string Summary = "Get Version";
             internal const string Description = "Get the current system version.";
-            internal const string Id = "GetVersion";
+            internal const string Id = "GetVersionAsync";
             internal const string Ok = "Return the current system version.";
         }
     }

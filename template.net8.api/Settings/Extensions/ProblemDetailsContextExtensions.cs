@@ -77,11 +77,11 @@ internal static class ProblemDetailsContextExtensions
             : ctx.ProblemDetails.Extensions;
     }
 
-    private static IDictionary<string, object?> MergeExtensions(IDictionary<string, object?> serverExtensions,
+    private static Dictionary<string, object?> MergeExtensions(IDictionary<string, object?> serverExtensions,
         IDictionary<string, object?> clientExtensions)
     {
         // Create a new dictionary to hold the merged extensions
-        IDictionary<string, object?> mergedExtensions = new Dictionary<string, object?>(serverExtensions);
+        Dictionary<string, object?> mergedExtensions = new(serverExtensions);
 
         // Merge or override serverExtensions with clientExtensions
         //Should be Serial
