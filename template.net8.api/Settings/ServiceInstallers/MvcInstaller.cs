@@ -37,8 +37,10 @@ public sealed class MvcInstaller : IServiceInstaller
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.Configure<MvcOptions>(_ =>
+        builder.Services.Configure<MvcOptions>(options =>
         {
+            options.SuppressAsyncSuffixInActionNames = false;
+
             var culture = CultureInfo.InvariantCulture;
 
             CultureInfo.DefaultThreadCurrentCulture = culture;
