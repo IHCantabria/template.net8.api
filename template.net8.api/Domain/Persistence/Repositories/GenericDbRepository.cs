@@ -4,7 +4,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using JetBrains.Annotations;
 using LanguageExt;
-using LanguageExt.Common;
 using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
@@ -81,7 +80,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> VerificateAsync(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateAsync(IVerification<TEntity>? verification,
         CancellationToken cancellationToken)
     {
         var queryable = _dbSet.AsQueryable();
@@ -103,7 +102,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> VerificateSingleAsync(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateSingleAsync(IVerification<TEntity>? verification,
         CancellationToken cancellationToken)
     {
         var queryable = _dbSet.AsQueryable();
@@ -126,7 +125,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<ICollection<TEntity>>> GetAsync(
+    public async Task<LanguageExt.Common.Result<ICollection<TEntity>>> GetAsync(
         ISpecification<TEntity>? specification, CancellationToken cancellationToken)
     {
         var queryable = _dbSet.AsQueryable();
@@ -149,7 +148,8 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<IEnumerable<TDto>>> GetAsync<TDto>(ISpecification<TEntity, TDto>? specification,
+    public async Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TDto>(
+        ISpecification<TEntity, TDto>? specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
@@ -182,13 +182,13 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     contains more than one element.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TEntity>> GetSingleAsync(ISpecification<TEntity> specification,
+    public async Task<LanguageExt.Common.Result<TEntity>> GetSingleAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
         var queryable = _dbSet.AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entity = await query.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return entity ?? new Result<TEntity>(new CoreException(EmptyQuery));
+        return entity ?? new LanguageExt.Common.Result<TEntity>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     contains more than one element.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    public async Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
@@ -222,7 +222,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
             : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                 specification.MembersToExpand.ToArray());
         var dto = await projection.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+        return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -232,7 +232,8 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<TEntity>> InsertAsync(TEntity entity,
+        CancellationToken cancellationToken)
     {
         var newEntity = await _dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
         return newEntity.Entity;
@@ -245,7 +246,8 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> InsertBulkAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> InsertBulkAsync(IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken)
     {
         await _dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
         return true;
@@ -265,7 +267,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
+    public async Task<LanguageExt.Common.Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
         CancellationToken cancellationToken, params object[] parameters)
     {
         ArgumentNullException.ThrowIfNull(parameters);
@@ -289,7 +291,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
+    public async Task<LanguageExt.Common.Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
         ISpecification<TEntity>? specification,
         CancellationToken cancellationToken,
         params object[] parameters)
@@ -317,7 +319,8 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
+    public async Task<LanguageExt.Common.Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(
+        string procedureName,
         ISpecification<TEntity, TDto>? specification,
         CancellationToken cancellationToken,
         params object[] parameters) where TDto : class, IDto
@@ -346,13 +349,13 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
+    public async Task<LanguageExt.Common.Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
         var queryable = _dbSet.AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entity = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return entity ?? new Result<TEntity>(new CoreException(EmptyQuery));
+        return entity ?? new LanguageExt.Common.Result<TEntity>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -369,7 +372,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    public async Task<LanguageExt.Common.Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
@@ -380,7 +383,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
             : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                 specification.MembersToExpand.ToArray());
         var dto = await projection.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+        return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -392,10 +395,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     {
         return () =>
         {
-            if (Context.Entry(entity).State == EntityState.Detached)
-            {
-                _dbSet.Attach(entity);
-            }
+            if (Context.Entry(entity).State == EntityState.Detached) _dbSet.Attach(entity);
 
             _dbSet.Remove(entity);
             return entity;
@@ -424,10 +424,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
             var entry = Context.Attach(entity);
             var unchangedEntities = Context.ChangeTracker.Entries().Where(ee => ee.State == EntityState.Unchanged);
             //Should be Serial
-            foreach (var ee in unchangedEntities)
-            {
-                ee.State = EntityState.Modified;
-            }
+            foreach (var ee in unchangedEntities) ee.State = EntityState.Modified;
 
             return entry.Entity;
         };
@@ -457,7 +454,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
                 : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                     specification.MembersToExpand.ToArray());
             var dto = projection.FirstOrDefault();
-            return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+            return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
         };
     }
 
@@ -468,13 +465,13 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext, TEntity>(
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<TEntity>> DeleteAsync<TKey>(TKey? entityKey, CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<TEntity>> DeleteAsync<TKey>(TKey? entityKey,
+        CancellationToken cancellationToken)
     {
         var entity = await _dbSet.FindItemAsync(entityKey, cancellationToken).ConfigureAwait(false);
         if (entity is null)
-        {
-            return new Result<TEntity>(new CoreException($"Entity with key:({entityKey}) not found"));
-        }
+            return new LanguageExt.Common.Result<TEntity>(
+                new CoreException($"Entity with key:({entityKey}) not found"));
 
         var entityResult = Delete(entity).Try();
         return entityResult;
@@ -525,7 +522,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     /// </exception>
     /// <exception cref="AmbiguousMatchException">More than one property is found with the specified name.</exception>
     /// <exception cref="ArgumentException">Condition.</exception>
-    public async Task<Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
+    public async Task<LanguageExt.Common.Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
         IEnumerable<Tuple<string, object>> entitiesSpecifications, CancellationToken cancellationToken)
         where TDtoComposed : class, IDto, new()
     {
@@ -565,7 +562,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     ///     The length of the resulting string overflows the maximum allowed length (
     ///     <see cref="System.Int32.MaxValue">Int32.MaxValue</see>).
     /// </exception>
-    public async Task<Result<bool>> VerificateComposedAsync(
+    public async Task<LanguageExt.Common.Result<bool>> VerificateComposedAsync(
         IEnumerable<VerificationModel> entitiesVerifications, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entitiesVerifications);
@@ -575,15 +572,14 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
         {
             var taskResponse = await VerificateDataAsync(model.IsUnique, model.Verification, cancellationToken)
                 .ConfigureAwait(false);
-            if (taskResponse is Result<bool> sucessResult && sucessResult.ExtractData() != model.ExpecteResult)
-            {
+            if (taskResponse is LanguageExt.Common.Result<bool> sucessResult &&
+                sucessResult.ExtractData() != model.ExpecteResult)
                 validationErrors.Add(model.Msg);
-            }
         }
 
         return validationErrors.Count == 0
-            ? new Result<bool>(new CoreException(string.Join(";", validationErrors)))
-            : new Result<bool>(true);
+            ? new LanguageExt.Common.Result<bool>(new CoreException(string.Join(";", validationErrors)))
+            : new LanguageExt.Common.Result<bool>(true);
     }
 
     private async Task ProcessEntitySpecificationAsync<TDtoComposed>(
@@ -649,10 +645,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     private static Type GetSpecificationBase(Type type)
     {
         //Get Ancestor Type until reach BaseSpecification
-        while (IsSpecificationBaseType(type))
-        {
-            type = type?.BaseType!;
-        }
+        while (IsSpecificationBaseType(type)) type = type?.BaseType!;
 
         return type;
     }
@@ -687,7 +680,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     [UsedImplicitly]
-    public async Task<Result<IEnumerable<TDto>>> GetAsync<TEntity, TDto>(
+    public async Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TEntity, TDto>(
         ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken)
         where TEntity : class, IEntity where TDto : class, IDto
     {
@@ -723,7 +716,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     [UsedImplicitly]
-    public async Task<Result<TDto>> GetSingleAsync<TEntity, TDto>(
+    public async Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TEntity, TDto>(
         ISpecification<TEntity, TDto> specification, CancellationToken cancellationToken)
         where TEntity : class, IEntity where TDto : class, IDto
     {
@@ -734,7 +727,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
             : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                 specification.MembersToExpand.ToArray());
         var dto = await projection.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+        return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
     }
 
 
@@ -753,7 +746,7 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     ///     is <see langword="null" />.
     /// </exception>
     [UsedImplicitly]
-    public async Task<Result<bool>> VerificateAsync<TEntity>(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateAsync<TEntity>(IVerification<TEntity>? verification,
         CancellationToken cancellationToken) where TEntity : class, IEntity
     {
         var queryable = Context.Set<TEntity>().AsQueryable();
@@ -778,7 +771,8 @@ public sealed class GenericDbRepositoryScopedDbContext<TDbContext>(
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     [UsedImplicitly]
-    public async Task<Result<bool>> VerificateSingleAsync<TEntity>(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateSingleAsync<TEntity>(
+        IVerification<TEntity>? verification,
         CancellationToken cancellationToken) where TEntity : class, IEntity
     {
         var queryable = Context.Set<TEntity>().AsQueryable();
@@ -840,10 +834,11 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public async Task<Result<bool>> VerificateAsync(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateAsync(IVerification<TEntity>? verification,
         CancellationToken cancellationToken)
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityExist = await query.AnyAsync(cancellationToken).ConfigureAwait(false);
@@ -863,10 +858,11 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public async Task<Result<bool>> VerificateSingleAsync(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateSingleAsync(IVerification<TEntity>? verification,
         CancellationToken cancellationToken)
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityUniqueExist =
@@ -887,10 +883,11 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public async Task<Result<ICollection<TEntity>>> GetAsync(
+    public async Task<LanguageExt.Common.Result<ICollection<TEntity>>> GetAsync(
         ISpecification<TEntity>? specification, CancellationToken cancellationToken)
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entities = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -911,11 +908,13 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public async Task<Result<IEnumerable<TDto>>> GetAsync<TDto>(ISpecification<TEntity, TDto>? specification,
+    public async Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TDto>(
+        ISpecification<TEntity, TDto>? specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -945,14 +944,15 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     contains more than one element.
     /// </exception>
-    public async Task<Result<TEntity>> GetSingleAsync(ISpecification<TEntity> specification,
+    public async Task<LanguageExt.Common.Result<TEntity>> GetSingleAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entity = await query.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return entity ?? new Result<TEntity>(new CoreException(EmptyQuery));
+        return entity ?? new LanguageExt.Common.Result<TEntity>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -975,11 +975,12 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     contains more than one element.
     /// </exception>
-    public async Task<Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    public async Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -987,7 +988,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
             : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                 specification.MembersToExpand.ToArray());
         var dto = await projection.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+        return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -1003,14 +1004,15 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public async Task<Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
+    public async Task<LanguageExt.Common.Result<TEntity>> GetFirstAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var entity = await query.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return entity ?? new Result<TEntity>(new CoreException(EmptyQuery));
+        return entity ?? new LanguageExt.Common.Result<TEntity>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -1027,11 +1029,12 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    public async Task<Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    public async Task<LanguageExt.Common.Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
         CancellationToken cancellationToken)
         where TDto : class, IDto
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -1039,7 +1042,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
             : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                 specification.MembersToExpand.ToArray());
         var dto = await projection.FirstOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+        return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -1056,7 +1059,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
+    public async Task<LanguageExt.Common.Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
         CancellationToken cancellationToken,
         params object[] parameters)
     {
@@ -1080,7 +1083,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
+    public async Task<LanguageExt.Common.Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
         ISpecification<TEntity>? specification,
         CancellationToken cancellationToken,
         params object[] parameters)
@@ -1107,7 +1110,8 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
+    public async Task<LanguageExt.Common.Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(
+        string procedureName,
         ISpecification<TEntity, TDto>? specification,
         CancellationToken cancellationToken,
         params object[] parameters) where TDto : class, IDto
@@ -1171,7 +1175,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext, TEntity>(
                 : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                     specification.MembersToExpand.ToArray());
             var dto = projection.FirstOrDefault();
-            return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+            return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
         };
     }
 
@@ -1234,7 +1238,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     ///     is <see langword="null" />.
     /// </exception>
     /// <exception cref="ArgumentException">Condition.</exception>
-    public async Task<Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
+    public async Task<LanguageExt.Common.Result<TDtoComposed>> GetComposedAsync<TDtoComposed>(
         IEnumerable<Tuple<string, object>> entitiesSpecifications, CancellationToken cancellationToken)
         where TDtoComposed : class, IDto, new()
     {
@@ -1274,7 +1278,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     ///     The length of the resulting string overflows the maximum allowed length (
     ///     <see cref="System.Int32.MaxValue">Int32.MaxValue</see>).
     /// </exception>
-    public async Task<Result<bool>> VerificateComposedAsync(
+    public async Task<LanguageExt.Common.Result<bool>> VerificateComposedAsync(
         IEnumerable<VerificationModel> entitiesVerifications, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entitiesVerifications);
@@ -1283,15 +1287,14 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
         {
             var taskResponse = await VerificateDataAsync(model.IsUnique, model.Verification, cancellationToken)
                 .ConfigureAwait(false);
-            if (taskResponse is Result<bool> sucessResult && sucessResult.ExtractData() != model.ExpecteResult)
-            {
+            if (taskResponse is LanguageExt.Common.Result<bool> sucessResult &&
+                sucessResult.ExtractData() != model.ExpecteResult)
                 validationErrors.Add(model.Msg);
-            }
         }
 
         return validationErrors.Count == 0
-            ? new Result<bool>(new CoreException(string.Join(";", validationErrors)))
-            : new Result<bool>(true);
+            ? new LanguageExt.Common.Result<bool>(new CoreException(string.Join(";", validationErrors)))
+            : new LanguageExt.Common.Result<bool>(true);
     }
 
     private async Task ProcessEntitySpecificationAsync<TDtoComposed>(
@@ -1357,10 +1360,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     private static Type GetSpecificationBase(Type type)
     {
         //Get Ancestor Type until reach BaseSpecification
-        while (IsSpecificationBaseType(type))
-        {
-            type = type?.BaseType!;
-        }
+        while (IsSpecificationBaseType(type)) type = type?.BaseType!;
 
         return type;
     }
@@ -1395,11 +1395,12 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     ///     is <see langword="null" />.
     /// </exception>
     [UsedImplicitly]
-    public async Task<Result<IEnumerable<TDto>>> GetAsync<TEntity, TDto>(
+    public async Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TEntity, TDto>(
         ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken)
         where TEntity : class, IEntity where TDto : class, IDto
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -1432,11 +1433,12 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     ///     contains more than one element.
     /// </exception>
     [UsedImplicitly]
-    public async Task<Result<TDto>> GetSingleAsync<TEntity, TDto>(
+    public async Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TEntity, TDto>(
         ISpecification<TEntity, TDto> specification, CancellationToken cancellationToken)
         where TEntity : class, IEntity where TDto : class, IDto
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplySpecification(specification);
         var projection = specification is null
@@ -1444,7 +1446,7 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
             : query.ProjectTo(_mapper.ConfigurationProvider, specification.MapperObjectParams,
                 specification.MembersToExpand.ToArray());
         var dto = await projection.SingleOrDefaultAsync(cancellationToken).ConfigureAwait(false);
-        return dto ?? new Result<TDto>(new CoreException(EmptyQuery));
+        return dto ?? new LanguageExt.Common.Result<TDto>(new CoreException(EmptyQuery));
     }
 
     /// <summary>
@@ -1460,10 +1462,11 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     ///     is <see langword="null" />.
     /// </exception>
     [UsedImplicitly]
-    public async Task<Result<bool>> VerificateAsync<TEntity>(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateAsync<TEntity>(IVerification<TEntity>? verification,
         CancellationToken cancellationToken) where TEntity : class, IEntity
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityExist = await query.AnyAsync(cancellationToken).ConfigureAwait(false);
@@ -1483,10 +1486,12 @@ public sealed class GenericDbRepositoryTransientDbContext<TDbContext>(
     ///     is <see langword="null" />.
     /// </exception>
     [UsedImplicitly]
-    public async Task<Result<bool>> VerificateSingleAsync<TEntity>(IVerification<TEntity>? verification,
+    public async Task<LanguageExt.Common.Result<bool>> VerificateSingleAsync<TEntity>(
+        IVerification<TEntity>? verification,
         CancellationToken cancellationToken) where TEntity : class, IEntity
     {
-        await using var context = await CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var context = await _dbContextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        await using var _ = context.ConfigureAwait(false);
         var queryable = context.Set<TEntity>().AsQueryable();
         var query = queryable.ApplyVerification(verification);
         var entityUniqueExist =

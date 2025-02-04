@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using LanguageExt.Common;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
@@ -13,7 +12,7 @@ namespace template.net8.api.Behaviors;
 internal sealed class ValidationBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators,
     IStringLocalizer<ResourceMain> localizer)
-    : IPipelineBehavior<TRequest, Result<TResponse>>
+    : IPipelineBehavior<TRequest, LanguageExt.Common.Result<TResponse>>
     where TRequest : notnull
 {
     private readonly IStringLocalizer<ResourceMain> _localizer =
@@ -22,19 +21,20 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
     private readonly IEnumerable<IValidator<TRequest>> _validators =
         validators ?? throw new ArgumentNullException(nameof(validators));
 
-    public Task<Result<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<TResponse>> next,
+    public Task<LanguageExt.Common.Result<TResponse>> Handle(TRequest request,
+        RequestHandlerDelegate<LanguageExt.Common.Result<TResponse>> next,
         CancellationToken cancellationToken)
     {
         return BehaviorLogicAsync(request, next, cancellationToken);
     }
 
-    private async Task<Result<TResponse>> BehaviorLogicAsync(TRequest request,
-        RequestHandlerDelegate<Result<TResponse>> next,
+    private async Task<LanguageExt.Common.Result<TResponse>> BehaviorLogicAsync(TRequest request,
+        RequestHandlerDelegate<LanguageExt.Common.Result<TResponse>> next,
         CancellationToken cancellationToken = default)
     {
         var failures = await ValidateRequestAsync(request, cancellationToken).ConfigureAwait(false);
         return failures.Count > 0
-            ? new Result<TResponse>(new ValidationException(failures))
+            ? new LanguageExt.Common.Result<TResponse>(new ValidationException(failures))
             : await next().ConfigureAwait(false);
     }
 

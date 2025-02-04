@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Options;
+using Path = System.IO.Path;
 
 namespace template.net8.api.Services.Base;
 

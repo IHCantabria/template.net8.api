@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using template.net8.api.Domain.Persistence.Models;
 using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Domain.Persistence.Context;
@@ -13,6 +14,12 @@ public class ProjectDbContext(DbContextOptions<ProjectDbContext> options, IOptio
     : DbContext(options)
 {
     private readonly ProjectDbOptions _config = config.Value ?? throw new ArgumentNullException(nameof(config));
+
+    /// <summary>
+    ///     Campaign DbSet
+    /// </summary>
+    [UsedImplicitly]
+    public virtual DbSet<Dummy> Dummies { get; set; }
 
     /// <summary>
     ///     OnModelCreating method to configure the models

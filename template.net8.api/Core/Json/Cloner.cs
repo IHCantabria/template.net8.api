@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using LanguageExt;
-using LanguageExt.Common;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
@@ -27,7 +26,7 @@ internal static class Cloner
             var serializeResult = Serialize(obj).Try();
             return serializeResult.IsSuccess
                 ? Deserialize<T>(serializeResult.ExtractData()).Try()
-                : new Result<T>(serializeResult.ExtractException());
+                : new LanguageExt.Common.Result<T>(serializeResult.ExtractException());
         };
     }
 
@@ -43,7 +42,8 @@ internal static class Cloner
             var obj = JsonSerializer.Deserialize<T>(stringObj, Options);
             return obj is not null
                 ? obj
-                : new Result<T>(new CoreException("The response received from the Deserializer is empty"));
+                : new LanguageExt.Common.Result<T>(
+                    new CoreException("The response received from the Deserializer is empty"));
         };
     }
 }

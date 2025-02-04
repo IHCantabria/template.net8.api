@@ -1,5 +1,4 @@
-﻿using LanguageExt.Common;
-using template.net8.api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.File;
 
@@ -41,7 +40,7 @@ internal static class FileReader
     ///     </paramref>
     ///     .
     /// </exception>
-    internal static async Task<Result<byte[]>> ConvertFileToByteArrayAsync(IFormFile file,
+    internal static async Task<LanguageExt.Common.Result<byte[]>> ConvertFileToByteArrayAsync(IFormFile file,
         CancellationToken cancellationToken,
         int bufferSize = 65536)
     {
@@ -96,7 +95,7 @@ internal static class FileReader
     ///     </paramref>
     ///     .
     /// </exception>
-    internal static Result<byte[]> ConvertFileToByteArray(IFormFile file,
+    internal static LanguageExt.Common.Result<byte[]> ConvertFileToByteArray(IFormFile file,
         int bufferSize = 65536)
     {
         using var memoryStream = new MemoryStream();

@@ -123,7 +123,7 @@ public interface ISpecification<TEntity, TDto> : IVerification<TEntity>
     ///     Members to Expand in the Dto Projection for the Query Specification Pattern Implementation for Querying Data with
     ///     EF Core Queryable Extensions. Used for Projection Dto with AutoMapper.
     /// </summary>
-    ICollection<Expression<Func<TDto, object?>>> MembersToExpand { get; }
+    ICollection<Expression<Func<TDto, object>>> MembersToExpand { get; }
 
     /// <summary>
     ///     Mapper Object Params for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable

@@ -2,7 +2,6 @@
 using System.Numerics;
 using FluentValidation;
 using JetBrains.Annotations;
-using LanguageExt.Common;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Domain.DTOs;
@@ -13,21 +12,22 @@ namespace template.net8.api.Features.Querys;
 /// <summary>
 ///     Query Get Dummy CQRS
 /// </summary>
-public sealed record QueryGetDummy(QueryGetDummyParamsDto QueryParams) : IRequest<Result<DummyDto>>,
+public sealed record QueryGetDummy(QueryGetDummyParamsDto QueryParams) : IRequest<LanguageExt.Common.Result<DummyDto>>,
     IEqualityOperators<QueryGetDummy, QueryGetDummy, bool>;
 
 [UsedImplicitly]
-internal sealed class GetDummyHandlerQuery : IRequestHandler<QueryGetDummy, Result<DummyDto>>
+internal sealed class GetDummyHandlerQuery : IRequestHandler<QueryGetDummy, LanguageExt.Common.Result<DummyDto>>
 {
     /// <summary>
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<DummyDto>> Handle(QueryGetDummy request,
+    public Task<LanguageExt.Common.Result<DummyDto>> Handle(QueryGetDummy request,
         CancellationToken cancellationToken)
     {
-        return Task.FromResult(new Result<DummyDto>(new DummyDto { Key = request.QueryParams.Key, Text = "Dummy 1" }));
+        return Task.FromResult(new LanguageExt.Common.Result<DummyDto>(new DummyDto
+            { Key = request.QueryParams.Key, Text = "Dummy 1" }));
     }
 }
 

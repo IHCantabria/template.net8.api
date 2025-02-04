@@ -1,5 +1,4 @@
-﻿using LanguageExt.Common;
-using template.net8.api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
 
@@ -28,13 +27,14 @@ internal static class ParallelUtils
     ///     Result is not a failure! Use ExtractData method instead and
     ///     Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractData method
     /// </exception>
-    internal static async Task<Result<IEnumerable<T>>> ExecuteInParallelAsync<T>(IEnumerable<Task<Result<T>>> tasks,
+    internal static async Task<LanguageExt.Common.Result<IEnumerable<T>>> ExecuteInParallelAsync<T>(
+        IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
         CancellationTokenSource cts)
     {
         var taskResults = await HandleTaskCompletionAsync(tasks, cts).ConfigureAwait(false);
         return taskResults.IsSuccess
-            ? new Result<IEnumerable<T>>(taskResults.ExtractData())
-            : new Result<IEnumerable<T>>(taskResults.ExtractException());
+            ? new LanguageExt.Common.Result<IEnumerable<T>>(taskResults.ExtractData())
+            : new LanguageExt.Common.Result<IEnumerable<T>>(taskResults.ExtractException());
     }
 
     private static async Task HandleTaskCompletionAsync(IEnumerable<Task> tasks,
@@ -85,7 +85,8 @@ internal static class ParallelUtils
         return completedResults;
     }
 
-    private static async Task<Result<IEnumerable<T>>> HandleTaskCompletionAsync<T>(IEnumerable<Task<Result<T>>> tasks,
+    private static async Task<LanguageExt.Common.Result<IEnumerable<T>>> HandleTaskCompletionAsync<T>(
+        IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
         CancellationTokenSource cts)
     {
         var completedResults = new List<T>();
@@ -105,7 +106,7 @@ internal static class ParallelUtils
             {
                 // cancel all other tasks
                 await cts.CancelAsync().ConfigureAwait(false);
-                return new Result<IEnumerable<T>>(completedTask.IsFaulted
+                return new LanguageExt.Common.Result<IEnumerable<T>>(completedTask.IsFaulted
                     ? completedTask.Exception
                     : taskResult.ExtractException());
             }

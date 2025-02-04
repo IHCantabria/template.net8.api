@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using HotChocolate.AspNetCore;
+using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
@@ -33,6 +34,7 @@ public sealed class UiConfigurator : IPipelineConfigurator
         ArgumentNullException.ThrowIfNull(app);
         UseSwagger(app);
         UseReDoc(app);
+        UseBananaCakePop(app);
 
         return Task.CompletedTask;
     }
@@ -66,5 +68,18 @@ public sealed class UiConfigurator : IPipelineConfigurator
             c.DocumentTitle = reDocConfiguration.DocumentTitle;
             c.SpecUrl = reDocConfiguration.SpecUrl.ToString();
         });
+    }
+
+    private static void UseBananaCakePop(WebApplication app)
+    {
+        // Enable middleware to serve the GraphQL IDE.
+        app.MapGraphQL().WithOptions(
+            new GraphQLServerOptions
+            {
+                Tool =
+                {
+                    Enable = true
+                }
+            });
     }
 }

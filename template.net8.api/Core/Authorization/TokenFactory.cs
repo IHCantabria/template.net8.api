@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using LanguageExt;
-using LanguageExt.Common;
 using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Authorization.DTOs;
@@ -32,7 +31,7 @@ internal static class TokenFactory
         return () =>
         {
             if (user.Scope is null)
-                return new Result<AccessTokenDto>(
+                return new LanguageExt.Common.Result<AccessTokenDto>(
                     new UnauthorizedException(
                         "You dont have a valid scope assigned to your user so you dont access to the system."));
 
@@ -81,7 +80,7 @@ internal static class TokenFactory
         {
             var result = GenerateGenieAccessToken(config).Try();
             if (result.IsFaulted)
-                return new Result<AccessTokenDto>(result.ExtractException());
+                return new LanguageExt.Common.Result<AccessTokenDto>(result.ExtractException());
 
             var accessToken = result.ExtractData();
             return new AccessTokenDto

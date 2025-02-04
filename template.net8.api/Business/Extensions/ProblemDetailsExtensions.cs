@@ -38,7 +38,7 @@ internal static class ProblemDetailsExtensions
     ///     </see>
     ///     is read-only.
     /// </exception>
-    /// <exception cref="KeyNotFoundException">
+    /// <exception cref="System.Collections.Generic.KeyNotFoundException">
     ///     The property is retrieved and
     ///     <paramref>
     ///         <name>key</name>

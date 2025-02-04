@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using FluentValidation;
-using LanguageExt.Common;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -21,7 +20,7 @@ internal static class ControllerExtensions
     ///     Error Creating the Http Action Result. Error mapping action endpoint response to
     ///     resource
     /// </exception>
-    internal static IActionResult ToActionResult<TResult, TContract>(this Result<TResult> result,
+    internal static IActionResult ToActionResult<TResult, TContract>(this LanguageExt.Common.Result<TResult> result,
         ActionResultPayload<TResult, TContract> action, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {

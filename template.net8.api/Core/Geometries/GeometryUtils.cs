@@ -1,5 +1,4 @@
 ﻿using LanguageExt;
-using LanguageExt.Common;
 using NetTopologySuite.Geometries;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
@@ -17,7 +16,7 @@ internal static class GeometryUtils
         {
             // Check that the input array has exactly four coordinates
             if (!extent.IsValid())
-                return new Result<Geometry>(new CoreException("Extent is not valid"));
+                return new LanguageExt.Common.Result<Geometry>(new CoreException("Extent is not valid"));
 
             var linearRing = new LinearRing([
                 new Coordinate((double)extent.LonMin, (double)extent.LatMin),
@@ -37,7 +36,7 @@ internal static class GeometryUtils
         {
             // Check that the input array has exactly four coordinates
             if (!point.IsValid())
-                return new Result<Geometry>(new CoreException("Point is not valid"));
+                return new LanguageExt.Common.Result<Geometry>(new CoreException("Point is not valid"));
 
             var geom = new Point(
                 new Coordinate((double)point.Lon, (double)point.Lat)
@@ -64,7 +63,7 @@ internal static class GeometryUtils
         return () =>
         {
             if (geometry == null || geometry.IsEmpty)
-                return new Result<ExtentDto>(new CoreException("Input geometry is null or empty."));
+                return new LanguageExt.Common.Result<ExtentDto>(new CoreException("Input geometry is null or empty."));
 
             // Extract the Envelope from the Geometry
             var envelope = geometry.Envelope;
@@ -80,7 +79,7 @@ internal static class GeometryUtils
                     LonMax = new decimal(coordinates[2].X),
                     LatMax = new decimal(coordinates[2].Y)
                 }
-                : new Result<ExtentDto>(new CoreException("Input geometry is not a valid extent"));
+                : new LanguageExt.Common.Result<ExtentDto>(new CoreException("Input geometry is not a valid extent"));
         };
     }
 
@@ -102,7 +101,7 @@ internal static class GeometryUtils
         return () =>
         {
             if (geometry == null || geometry.IsEmpty)
-                return new Result<PointDto>(new CoreException("Input geometry is null or empty."));
+                return new LanguageExt.Common.Result<PointDto>(new CoreException("Input geometry is null or empty."));
 
             // Extract the Envelope from the Geometry
             var envelope = geometry.Envelope;
@@ -117,7 +116,7 @@ internal static class GeometryUtils
                     Lon = new decimal(coordinates[0].X),
                     Lat = new decimal(coordinates[0].Y)
                 }
-                : new Result<PointDto>(new CoreException("Input geometry is not a valid point"));
+                : new LanguageExt.Common.Result<PointDto>(new CoreException("Input geometry is not a valid point"));
         };
     }
 }

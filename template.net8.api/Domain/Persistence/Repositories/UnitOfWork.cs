@@ -1,5 +1,4 @@
-﻿using LanguageExt.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
@@ -22,10 +21,7 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     public async ValueTask DisposeAsync()
     {
-        if (_transaction != null)
-        {
-            await _transaction.DisposeAsync().ConfigureAwait(false);
-        }
+        if (_transaction != null) await _transaction.DisposeAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -47,7 +43,7 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     ///     This is usually because the data in the database has been modified since it was loaded into memory.
     /// </exception>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> SaveChangesAsync(CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> SaveChangesAsync(CancellationToken cancellationToken)
     {
         await Context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return true;
@@ -58,12 +54,10 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> BeginTransactionAsync(CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> BeginTransactionAsync(CancellationToken cancellationToken)
     {
         if (_transaction is not null)
-        {
-            return new Result<bool>(new CoreException("There is a transaction already open!"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is a transaction already open!"));
 
         _transaction = await context.Database.BeginTransactionAsync(cancellationToken).ConfigureAwait(false);
         return true;
@@ -74,12 +68,10 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> CommitTransactionAsync(CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> CommitTransactionAsync(CancellationToken cancellationToken)
     {
         if (_transaction is null)
-        {
-            return new Result<bool>(new CoreException("There is not a transaction active"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is not a transaction active"));
 
         await _transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
         return true;
@@ -90,12 +82,10 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> RollbackTransactionAsync(CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> RollbackTransactionAsync(CancellationToken cancellationToken)
     {
         if (_transaction is null)
-        {
-            return new Result<bool>(new CoreException("There is not a transaction active"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is not a transaction active"));
 
         await _transaction.RollbackAsync(cancellationToken).ConfigureAwait(false);
         return true;
@@ -105,12 +95,10 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     ///     Release the transaction.
     /// </summary>
     /// <returns></returns>
-    public async Task<Result<bool>> ReleaseTransactionAsync(CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> ReleaseTransactionAsync(CancellationToken cancellationToken)
     {
         if (_transaction is null)
-        {
-            return new Result<bool>(new CoreException("There is not a transaction active"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is not a transaction active"));
 
         await _transaction.DisposeAsync().ConfigureAwait(false);
         _transaction = null;
@@ -122,12 +110,11 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> AddSavepointAsync(string name, CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> AddSavepointAsync(string name,
+        CancellationToken cancellationToken)
     {
         if (_transaction is null)
-        {
-            return new Result<bool>(new CoreException("There is not a transaction active"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is not a transaction active"));
 
         await _transaction.CreateSavepointAsync(name, cancellationToken).ConfigureAwait(false);
         return true;
@@ -138,12 +125,11 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> RollbackToSavepointAsync(string name, CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> RollbackToSavepointAsync(string name,
+        CancellationToken cancellationToken)
     {
         if (_transaction is null)
-        {
-            return new Result<bool>(new CoreException("There is not a transaction active"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is not a transaction active"));
 
         await _transaction.RollbackToSavepointAsync(name, cancellationToken).ConfigureAwait(false);
         return true;
@@ -154,12 +140,11 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     /// </summary>
     /// <returns></returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
-    public async Task<Result<bool>> ReleaseSavepointAsync(string name, CancellationToken cancellationToken)
+    public async Task<LanguageExt.Common.Result<bool>> ReleaseSavepointAsync(string name,
+        CancellationToken cancellationToken)
     {
         if (_transaction is null)
-        {
-            return new Result<bool>(new CoreException("There is not a transaction active"));
-        }
+            return new LanguageExt.Common.Result<bool>(new CoreException("There is not a transaction active"));
 
         await _transaction.ReleaseSavepointAsync(name, cancellationToken).ConfigureAwait(false);
         return true;

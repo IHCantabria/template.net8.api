@@ -2,7 +2,6 @@
 using System.Numerics;
 using FluentValidation;
 using JetBrains.Annotations;
-using LanguageExt.Common;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
@@ -15,11 +14,12 @@ namespace template.net8.api.Features.Commands;
 /// <summary>
 ///     Command Create Dummy CQRS
 /// </summary>
-public sealed record CommandCreateDummy(CommandCreateDummyParamsDto CommandParams) : IRequest<Result<Dummy>>,
-    IEqualityOperators<CommandCreateDummy, CommandCreateDummy, bool>;
+public sealed record CommandCreateDummy(CommandCreateDummyParamsDto CommandParams)
+    : IRequest<LanguageExt.Common.Result<Dummy>>,
+        IEqualityOperators<CommandCreateDummy, CommandCreateDummy, bool>;
 
 [UsedImplicitly]
-internal sealed class CreateDummyHandlerCommand : IRequestHandler<CommandCreateDummy, Result<Dummy>>
+internal sealed class CreateDummyHandlerCommand : IRequestHandler<CommandCreateDummy, LanguageExt.Common.Result<Dummy>>
 {
     /// <summary>
     ///     Handle the Create Dummy Command request
@@ -27,10 +27,10 @@ internal sealed class CreateDummyHandlerCommand : IRequestHandler<CommandCreateD
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<Dummy>> Handle(CommandCreateDummy request,
+    public Task<LanguageExt.Common.Result<Dummy>> Handle(CommandCreateDummy request,
         CancellationToken cancellationToken)
     {
-        return Task.FromResult(new Result<Dummy>(new Dummy
+        return Task.FromResult(new LanguageExt.Common.Result<Dummy>(new Dummy
         {
             Key = "1",
             Text = request.CommandParams.Text

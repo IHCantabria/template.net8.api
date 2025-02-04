@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using LanguageExt.Common;
 using MediatR;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.DTOs;
@@ -10,11 +9,11 @@ namespace template.net8.api.Features.Querys;
 ///     Query Get Version CQRS
 /// </summary>
 [CoreLibrary]
-public sealed record QueryGetVersion : IRequest<Result<VersionDto>>,
+public sealed record QueryGetVersion : IRequest<LanguageExt.Common.Result<VersionDto>>,
     IEqualityOperators<QueryGetVersion, QueryGetVersion, bool>;
 
 [CoreLibrary]
-internal sealed class QueryGetVersionHandler : IRequestHandler<QueryGetVersion, Result<VersionDto>>
+internal sealed class QueryGetVersionHandler : IRequestHandler<QueryGetVersion, LanguageExt.Common.Result<VersionDto>>
 {
     /// <summary>
     ///     Handle the Get Version Query request
@@ -22,9 +21,10 @@ internal sealed class QueryGetVersionHandler : IRequestHandler<QueryGetVersion, 
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<Result<VersionDto>> Handle(QueryGetVersion request, CancellationToken cancellationToken)
+    public Task<LanguageExt.Common.Result<VersionDto>> Handle(QueryGetVersion request,
+        CancellationToken cancellationToken)
     {
-        return Task.FromResult(new Result<VersionDto>(new VersionDto
+        return Task.FromResult(new LanguageExt.Common.Result<VersionDto>(new VersionDto
         {
             Name = "Dummy",
             Tag = "0.0.0",

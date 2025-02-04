@@ -1,5 +1,4 @@
-﻿using LanguageExt.Common;
-using MediatR;
+﻿using MediatR;
 using template.net8.api.Behaviors;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.DTOs;
@@ -24,7 +23,8 @@ internal static class MediatRServiceConfigurationExtensions
         this MediatRServiceConfiguration config) where TRequest : notnull
     {
         return config
-            .AddBehavior<IPipelineBehavior<TRequest, Result<TResponse>>, ValidationBehavior<TRequest, TResponse>>();
+            .AddBehavior<IPipelineBehavior<TRequest, LanguageExt.Common.Result<TResponse>>,
+                ValidationBehavior<TRequest, TResponse>>();
     }
 
 

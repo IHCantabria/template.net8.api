@@ -216,7 +216,7 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
 
     /// <summary>
     /// </summary>
-    public ICollection<Expression<Func<TDto, object?>>> MembersToExpand { get; } = [];
+    public ICollection<Expression<Func<TDto, object>>> MembersToExpand { get; } = [];
 
     /// <summary>
     /// </summary>
@@ -334,7 +334,7 @@ public class SpecificationBase<TEntity, TDto> : ISpecification<TEntity, TDto>
     ///     </see>
     ///     is read-only.
     /// </exception>
-    protected void AddMember(Expression<Func<TDto, object?>> memberExpression)
+    protected void AddMember(Expression<Func<TDto, object>> memberExpression)
     {
         MembersToExpand.Add(memberExpression);
     }

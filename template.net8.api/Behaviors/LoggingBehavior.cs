@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using LanguageExt.Common;
 using MediatR;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Logger;
@@ -11,11 +11,11 @@ namespace template.net8.api.Behaviors;
 internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
-    private const string IsBottom = nameof(Result<bool>.IsBottom);
+    private const string IsBottom = nameof(LanguageExt.Common.Result<bool>.IsBottom);
 
-    private const string IsSuccess = nameof(Result<bool>.IsSuccess);
+    private const string IsSuccess = nameof(LanguageExt.Common.Result<bool>.IsSuccess);
 
-    private const string IsFaulted = nameof(Result<bool>.IsBottom);
+    private const string IsFaulted = nameof(LanguageExt.Common.Result<bool>.IsBottom);
 
     private const string Exception = "exception";
 
@@ -90,6 +90,10 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
         _logger.LogHandledRequestError(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
     }
 
+    [SuppressMessage("Security",
+        "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+        Justification =
+            "Access to the non-public field is necessary because the logic in this file is used to solve an integration problem between the Automapper and HotChocolate libraries.")]
     private void LogResult(TResponse result, TimeSpan delta)
     {
         var type = result?.GetType();

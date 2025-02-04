@@ -1,5 +1,4 @@
 ﻿using System.Net.Mime;
-using LanguageExt.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
@@ -70,7 +69,7 @@ public sealed class ApplicationSystem(
         var resources = localizer.GetAllStrings().Filter(s =>
                 s.Name.StartsWith(BusinessConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
             .ToList();
-        var result = new Result<IEnumerable<LocalizedString>>(resources);
+        var result = new LanguageExt.Common.Result<IEnumerable<LocalizedString>>(resources);
         var action =
             new ActionResultPayload<IEnumerable<LocalizedString>, IEnumerable<ErrorCodeResource>>(obj =>
                 ErrorCodeResource.ToCollection(obj.ToList()));
