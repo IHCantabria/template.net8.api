@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
 using template.net8.api.Domain.Persistence.Models.Interfaces;
-using template.net8.api.Domain.Specifications.Interfaces;
 
 namespace template.net8.api.Domain.Persistence.Repositories.Interfaces;
 

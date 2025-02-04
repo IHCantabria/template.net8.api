@@ -2,10 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Core.Interfaces;
 using template.net8.api.Domain.Persistence.Models.Interfaces;
 
-namespace template.net8.api.Domain.Specifications.Interfaces;
+namespace template.net8.api.Core.Interfaces;
 
 /// <summary>
 ///     Enumeration for Query Splitting Behavior for the Query Specification Pattern Implementation for Querying Data with
