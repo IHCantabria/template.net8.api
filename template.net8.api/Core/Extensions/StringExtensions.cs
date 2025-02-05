@@ -22,10 +22,7 @@ internal static class StringExtensions
     /// <returns>A string with unwanted characters removed.</returns>
     private static string RemoveUnwantedCharacters(string input)
     {
-        if (string.IsNullOrWhiteSpace(input))
-        {
-            return string.Empty;
-        }
+        if (string.IsNullOrWhiteSpace(input)) return string.Empty;
 
         // Trim spaces and remove unwanted characters using regex
         var trimmedInput = input.AsSpan().Trim();
@@ -54,23 +51,19 @@ internal static class StringExtensions
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    internal static string CleanString(this string input, string? additionalCharsToRemove = null)
+    internal static string CleanString(this string input, char[]? additionalCharsToRemove = null)
     {
         // Remove unwanted characters first
         var cleaned = RemoveUnwantedCharacters(input);
 
         // If no additional characters to remove, return the result
-        if (string.IsNullOrEmpty(additionalCharsToRemove))
-        {
+        if (additionalCharsToRemove is not { Length: not 0 })
             return cleaned;
-        }
 
+        // Remove additional characters
         StringBuilder finalCleaned = new(cleaned.Length);
-        foreach (var c in cleaned.Where(c =>
-                     !additionalCharsToRemove.Contains(c, StringComparison.InvariantCulture)))
-        {
+        foreach (var c in cleaned.Where(c => !additionalCharsToRemove.Contains(c)))
             finalCleaned.Append(c);
-        }
 
         return finalCleaned.ToString();
     }
@@ -87,10 +80,7 @@ internal static class StringExtensions
     /// <exception cref="ArgumentException">The current instance contains invalid Unicode characters.</exception>
     internal static string RemoveDiacritics(string text)
     {
-        if (string.IsNullOrWhiteSpace(text))
-        {
-            return text;
-        }
+        if (string.IsNullOrWhiteSpace(text)) return text;
 
         return string.Concat(
             text.Normalize(NormalizationForm.FormD)
