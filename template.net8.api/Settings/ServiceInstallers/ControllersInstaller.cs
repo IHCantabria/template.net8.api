@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Json;
@@ -31,31 +32,11 @@ public sealed class ControllersInstaller : IServiceInstaller
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    /// <exception cref="InvalidOperationException">This property is set after serialization or deserialization has occurred.</exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.AddControllers(x =>
-            {
-                x.RespectBrowserAcceptHeader = true;
-                x.ReturnHttpNotAcceptable = true;
-                x.Filters.Add<RequestLogFilter>();
-                x.Conventions.Add(new ActionHidingConvention(builder.Environment.EnvironmentName));
-            })
-            .AddJsonOptions(x =>
-            {
-                x.JsonSerializerOptions.AddCoreOptions();
-                x.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
-                x.JsonSerializerOptions.Converters.Add(new NamingPolicyConverter(new HttpContextAccessor()));
-                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            })
+        builder.Services.AddControllers(x => ConfigureControllers(x, builder))
+            .AddJsonOptions(ConfigureJsonOptions)
             .ConfigureApiBehaviorOptions(x =>
             {
                 x.InvalidModelStateResponseFactory = _ => new ValidationProblemDetailsResult();
@@ -64,5 +45,21 @@ public sealed class ControllersInstaller : IServiceInstaller
         //TODO: Add OutputFormatter default with msg Header negotiation fail
         //.AddMvcOptions(options => options.OutputFormatters.Add(new FallBackOutputFormatter()));
         return Task.CompletedTask;
+    }
+
+    private static void ConfigureControllers(MvcOptions options, WebApplicationBuilder builder)
+    {
+        options.RespectBrowserAcceptHeader = true;
+        options.ReturnHttpNotAcceptable = true;
+        options.Filters.Add<RequestLogFilter>();
+        options.Conventions.Add(new ActionHidingConvention(builder.Environment.EnvironmentName));
+    }
+
+    private static void ConfigureJsonOptions(JsonOptions options)
+    {
+        options.JsonSerializerOptions.AddCoreOptions();
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
+        options.JsonSerializerOptions.Converters.Add(new NamingPolicyConverter(new HttpContextAccessor()));
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
 }
