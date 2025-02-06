@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Json;
@@ -53,6 +54,7 @@ public sealed class ControllersInstaller : IServiceInstaller
                 x.JsonSerializerOptions.AddCoreOptions();
                 x.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
                 x.JsonSerializerOptions.Converters.Add(new NamingPolicyConverter(new HttpContextAccessor()));
+                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             })
             .ConfigureApiBehaviorOptions(x =>
             {
