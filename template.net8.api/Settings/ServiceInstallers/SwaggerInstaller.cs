@@ -44,21 +44,33 @@ public sealed class SwaggerInstaller : IServiceInstaller
         return Task.CompletedTask;
     }
 
-    private static void AddSwaggerGen(IHostApplicationBuilder builder, SwaggerOptions? swaggerOptions,
+    private static void AddSwaggerGen(WebApplicationBuilder builder, SwaggerOptions? swaggerOptions,
         SwaggerSecurityOptions? swaggerSecurityOptions, string version)
     {
         if (swaggerOptions is null) return;
         // Register the swagger generator, defining 1 or more swagger documents
         builder.Services.AddSwaggerGen(c =>
         {
-            AddSwaggerDoc(c, swaggerOptions, version);
-            //Commented because it is not used in this project template
-            //if (swaggerSecurityOptions is not null)
-            //    AddSwaggerSecurity(c, swaggerSecurityOptions);
-            //c.OperationFilter<AuthOperationFilter>();
-            c.OperationFilter<DocumentationOperationFilter>();
-            AddSwaggeConfig(c, swaggerOptions);
+            ConfigureSwaggerGen(c, swaggerOptions, swaggerSecurityOptions, version);
         });
+    }
+
+    private static void ConfigureSwaggerGen(SwaggerGenOptions c, SwaggerOptions swaggerOptions,
+        SwaggerSecurityOptions? swaggerSecurityOptions, string version)
+    {
+        AddSwaggerDoc(c, swaggerOptions, version);
+
+        //Commented because it is not used in this project template
+        //if (swaggerSecurityOptions is not null)
+        //    AddSwaggerSecurity(c, swaggerSecurityOptions);
+        //c.OperationFilter<AuthOperationFilter>();
+        c.CustomSchemaIds(type => type.ToString()); // Avoid problems with nested models
+        c.IgnoreObsoleteActions(); // Ignoring obsolete methods to improve performance
+        c.IgnoreObsoleteProperties();
+        c.OperationFilter<DocumentationOperationFilter>();
+        c.UseInlineDefinitionsForEnums();
+        c.DocumentFilter<RemoveSystemTypesDocumentFilter>();
+        AddSwaggeConfig(c, swaggerOptions);
     }
 
     private static void AddSwaggerDoc(SwaggerGenOptions swagger, SwaggerOptions swaggerOptions, string version)
