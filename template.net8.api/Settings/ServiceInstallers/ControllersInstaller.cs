@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Json;
+using template.net8.api.Core.Logger;
 using template.net8.api.Settings.ActionResult;
 using template.net8.api.Settings.Attributes;
 using template.net8.api.Settings.Filters;
@@ -32,6 +33,20 @@ public sealed class ControllersInstaller : IServiceInstaller
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    /// <exception cref="InvalidOperationException">
+    ///     There is no service of type
+    ///     <typeparamref>
+    ///         <name>T</name>
+    ///     </typeparamref>
+    ///     .
+    /// </exception>
+    /// <exception cref="NotSupportedException">
+    ///     There is no compatible <see cref="System.Text.Json.Serialization.JsonConverter" /> for
+    ///     <typeparamref>
+    ///         <name>TValue</name>
+    ///     </typeparamref>
+    ///     or its serializable members.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -39,7 +54,17 @@ public sealed class ControllersInstaller : IServiceInstaller
             .AddJsonOptions(ConfigureJsonOptions)
             .ConfigureApiBehaviorOptions(x =>
             {
-                x.InvalidModelStateResponseFactory = _ => new ValidationProblemDetailsResult();
+                x.InvalidModelStateResponseFactory = context =>
+                {
+                    var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                    RequestLogger.LogActionRequest(context, logger);
+
+                    var problemDetails = new ValidationProblemDetailsResult();
+
+                    RequestLogger.LogActionResponse(context, problemDetails, logger);
+
+                    return problemDetails;
+                };
             });
         //TODO: fix Body params Json Serializer error with missing properties
         //TODO: Add OutputFormatter default with msg Header negotiation fail

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using template.net8.api.Core.Attributes;
 
@@ -14,6 +15,9 @@ internal static class ProblemDetailsContextExtensions
             ctx.ProblemDetails.Detail = null;
     }
 
+    /// <summary>
+    ///     This method will add a method field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>dictionary</name>
@@ -34,6 +38,26 @@ internal static class ProblemDetailsContextExtensions
             ctx.ProblemDetails.Instance = GetInstance(ctx.HttpContext);
     }
 
+    /// <summary>
+    ///     This method will add a requestId field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    internal static void AddRequestIdField(this ProblemDetailsContext ctx)
+    {
+        if (ContainsRequestId(ctx.ProblemDetails.Extensions)) return;
+
+        var requestId = Activity.Current?.Id ?? ctx.HttpContext.TraceIdentifier;
+        ctx.ProblemDetails.Extensions.TryAdd("requestId", requestId);
+    }
+
+    /// <summary>
+    ///     This method will add a traceId field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>dictionary</name>
@@ -44,11 +68,15 @@ internal static class ProblemDetailsContextExtensions
     {
         if (ContainsTraceId(ctx.ProblemDetails.Extensions)) return;
 
-        var traceId = Activity.Current?.Id ?? ctx.HttpContext.TraceIdentifier;
-        ctx.ProblemDetails.Extensions.TryAdd("traceId", traceId);
+        var activityFeature = ctx.HttpContext.Features.Get<IHttpActivityFeature>();
+        var activity = activityFeature?.Activity;
+        if (activity is not null)
+            ctx.ProblemDetails.Extensions.TryAdd("traceId", activity);
     }
 
-
+    /// <summary>
+    ///     This method will add a code field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>dictionary</name>
@@ -93,6 +121,11 @@ internal static class ProblemDetailsContextExtensions
     private static bool ShouldHiddenDetails(IHostEnvironment env, int? status)
     {
         return env.IsProduction() && status >= StatusCodes.Status500InternalServerError;
+    }
+
+    private static bool ContainsRequestId(IDictionary<string, object?> extensions)
+    {
+        return extensions.ContainsKey("requestId");
     }
 
     private static bool ContainsTraceId(IDictionary<string, object?> extensions)

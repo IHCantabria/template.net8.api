@@ -65,7 +65,7 @@ public record ProblemDetailsBaseResource : IPublicApiContract,
         "A unique reference that identifies the specific occurrence of the problem for a moment and consumer.")]
     [JsonPropertyOrder(-1)]
     [JsonRequired]
-    public required string TraceId { get; init; }
+    public required string RequestId { get; init; }
 }
 
 /// <summary>

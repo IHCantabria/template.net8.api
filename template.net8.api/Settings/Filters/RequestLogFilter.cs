@@ -1,9 +1,6 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Logger;
+using template.net8.api.Core.Logger;
 
 namespace template.net8.api.Settings.Filters;
 
@@ -48,48 +45,19 @@ public sealed class RequestLogFilter : IAsyncActionFilter, IOrderedFilter
     {
         ArgumentNullException.ThrowIfNull(context);
         ArgumentNullException.ThrowIfNull(next);
-        var methodName = context.ActionDescriptor.DisplayName;
-        var requestPath = context.HttpContext?.Request.Path;
-        _logger.LogActionRequestReceived(methodName, requestPath);
-        var jsonOptions = new JsonSerializerOptions
-        {
-            ReferenceHandler = ReferenceHandler.IgnoreCycles,
-            NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
-            WriteIndented = true
-        };
-        LogRequestParameters(context, jsonOptions);
+
+        //Log the action request
+        RequestLogger.LogActionRequest(context, _logger);
 
         // Await the action result
         var result = await next().ConfigureAwait(false);
 
-        // Cast the result to an Mvc ObjectResult and add the value to the log if the result is a error response and not a FileContentResult
-
-        if (result.Result is ObjectResult { Value: not FileContentResult, StatusCode: >= 400 } response)
-        {
-            _logger.LogActionRequestResponseError(JsonSerializer.Serialize(response.Value, jsonOptions));
-        }
-
-        _logger.LogActionRequestResponsed(methodName, requestPath);
+        //Log the action response
+        RequestLogger.LogActionResponse(result, _logger);
     }
 
     /// <summary>
     ///     Order of the filter
     /// </summary>
     public int Order { get; }
-
-    private void LogRequestParameters(ActionExecutingContext context, JsonSerializerOptions jsonOptions)
-    {
-        // Add the request parameters 
-        var requestParameters = context.ActionArguments;
-        foreach (var param in requestParameters)
-        {
-            // Skip CancellationToken properties
-            if (param.Value is CancellationToken)
-            {
-                continue;
-            }
-
-            _logger.LogActionRequestParameter(param.Key, JsonSerializer.Serialize(param.Value, jsonOptions));
-        }
-    }
 }

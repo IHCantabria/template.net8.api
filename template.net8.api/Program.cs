@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using NLog;
 using NLog.Web;
 using template.net8.api.Business;
-using template.net8.api.Logger;
+using template.net8.api.Core.Logger;
 using template.net8.api.Settings.Extensions;
 
 [assembly: ComVisible(false), CLSCompliant(false)]

@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
+using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Logger;
+namespace template.net8.api.Core.Logger;
 
+[CoreLibrary]
 internal static class MainLoggerMethods
 {
     internal static void LogMainInitConfig(NLog.Logger logger, string name)

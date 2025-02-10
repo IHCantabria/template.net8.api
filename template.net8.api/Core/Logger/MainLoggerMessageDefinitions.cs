@@ -1,6 +1,6 @@
 ﻿using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Logger;
+namespace template.net8.api.Core.Logger;
 
 [CoreLibrary]
 internal static class MainLoggerMessageDefinitions

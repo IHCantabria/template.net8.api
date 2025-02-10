@@ -70,7 +70,7 @@ internal static class ProblemDetailsFactoryCore
         var errors = modelState.ToDictionary(
             kvp => kvp.Key,
             kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage)
-        );
+        ).Where(k => k.Value is not null && k.Value.Any()).ToDictionary();
         return ProblemDetailsFactoryCoreUtils.IsRootFileFail(modelState.Keys)
             ? CreateProblemDetailsBadRequestValidationJsonMalformed(errors, localizer)
             : CreateProblemDetailsBadRequestValidationJsonInvalid(errors, localizer);

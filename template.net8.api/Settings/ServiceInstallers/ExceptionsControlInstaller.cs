@@ -44,6 +44,7 @@ public sealed class ExceptionsControlInstaller : IServiceInstaller
             ctx.HttpContext.Features.Get<ProblemDetails>();
         ctx.AddInstanceField();
         ctx.AddMethodField();
+        ctx.AddRequestIdField();
         ctx.AddTraceIdField();
         ctx.AddCodeField();
         if (httpContextProblemDetails is not null) ctx.UseHttpContextProblemDetails(httpContextProblemDetails);
