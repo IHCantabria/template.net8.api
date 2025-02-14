@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BE-CD-EV-001" xml:space="preserve">
+    <value>El campo texto al crear un dummy es obligatorio.</value>
+  </data>
+  <data name="BE-GD-EV-001" xml:space="preserve">
+    <value>No existe el Dummy con el identificador enviado en la petición.</value>
+  </data>
+  <data name="BE-R-E-001" xml:space="preserve">
+    <value>Esta API no permite conexiones usando HTTP, use el protocolo HTTPS</value>
+  </data>
+  <data name="BE-R-E-400" xml:space="preserve">
+    <value>Hay algo que está mal en la petición, revísela antes de volver a intentarlo.</value>
+  </data>
+  <data name="BE-R-E-401" xml:space="preserve">
+    <value>Acceso no autorizado. Debe presentar credenciales válidas para acceder.</value>
+  </data>
+  <data name="BE-R-E-403" xml:space="preserve">
+    <value>Acceso prohibido. No tiene permisos para acceder.</value>
+  </data>
+  <data name="BE-R-E-404" xml:space="preserve">
+    <value>El elemento que busca no existe en el sistema.</value>
+  </data>
+  <data name="BE-R-E-405" xml:space="preserve">
+    <value>El verbo HTTP que está usando no está permitido para este método.</value>
+  </data>
+  <data name="BE-R-E-408" xml:space="preserve">
+    <value>Se ha alcanzado el tiempo máximo de espera en la petición, vuelva a intentarlo.</value>
+  </data>
+  <data name="BE-R-E-409" xml:space="preserve">
+    <value>La petición puede provocar un conflicto y no puede llevarse a cabo.</value>
+  </data>
+  <data name="BE-R-E-410" xml:space="preserve">
+    <value>El elemento que busca ya no existe en el sistema y se ha borrado.</value>
+  </data>
+  <data name="BE-R-E-415" xml:space="preserve">
+    <value>La cabecera content-type en la petición no tiene un valor admitido por la API para el método requerido.</value>
+  </data>
+  <data name="BE-R-E-422" xml:space="preserve">
+    <value>La petición está bien formada, pero uno de los valores no es correcto. Cámbielo antes de volver a intentarlo.</value>
+  </data>
+  <data name="BE-R-E-429" xml:space="preserve">
+    <value>Está sobrepasando el límite de peticiones que puede gestionar la API. Reduzca el ritmo de peticiones y esperé unos minutos antes de continuar.</value>
+  </data>
+  <data name="BE-R-E-500" xml:space="preserve">
+    <value>Se ha producido un error en el servidor, esperé unos minutos. Si el error persiste, contacte con IH-IT.</value>
+  </data>
+  <data name="BE-R-E-501" xml:space="preserve">
+    <value>Estamos trabajando en ello.</value>
+  </data>
+  <data name="BE-R-EV-001" xml:space="preserve">
+    <value>La petición presenta varios errores de validación, resuélvalos antes de volver a intentarlo.</value>
+  </data>
+  <data name="BE-R-EV-002" xml:space="preserve">
+    <value>El fichero JSON de la petición está malformado, revíselo antes de volver a intentarlo.</value>
+  </data>
+  <data name="BE-R-EV-003" xml:space="preserve">
+    <value>El fichero JSON de la petición está bien formado, pero no cumple el contrato expuesto por la API. Revise el contrato y el JSON antes de volver a intentarlo.</value>
+  </data>
+  <data name="BE-BROKEN-ARROW" xml:space="preserve">
+    <value>Algo ha ido terriblemente mal y este error no esta controlado. Reporte este JSON de respuesta completo a IT.</value>
+  </data>
+  <data name="BE-R-E-002" xml:space="preserve">
+    <value>Tu token no tiene privilegios para acceder aquí.</value>
+  </data>
+  <data name="BE-R-E-003" xml:space="preserve">
+    <value>Tu token no ha superado la validación inicial, el token es inválido para esta aplicación.</value>
+  </data>
+</root>

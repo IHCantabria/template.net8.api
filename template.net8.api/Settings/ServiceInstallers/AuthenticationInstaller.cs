@@ -37,16 +37,22 @@ public sealed class AuthenticationInstaller : IServiceInstaller
         // configure strongly typed settings objects
         //var authenticationOptions = builder.Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
         //_config = authenticationOptions;
+        //var environment = builder.Environment;
+        //if (environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
+        //{
+        //    IdentityModelEventSource.ShowPII = true;
+        //    IdentityModelEventSource.LogCompleteSecurityArtifact = true;
+        //}
         //builder.Services.AddAuthentication(x =>
         //    {
         //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         //    })
-        //    .AddJwtBearer(ConfigureJwtBearer);
+        //    .AddJwtBearer(x => ConfigureJwtBearer(x, environment));
         return Task.CompletedTask;
     }
 
-    //private void ConfigureJwtBearer(JwtBearerOptions options)
+    //private void ConfigureJwtBearer(JwtBearerOptions options, IWebHostEnvironment environment)
     //{
     //    options.TokenValidationParameters = new TokenValidationParameters
     //    {
@@ -60,6 +66,8 @@ public sealed class AuthenticationInstaller : IServiceInstaller
     //        ValidateLifetime = true,
     //        LifetimeValidator = LifetimeValidator
     //    };
+    //    if (environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
+    //        options.RequireHttpsMetadata = false;
     //    options.SaveToken = true;
     //    options.IncludeErrorDetails = true;
     //    options.EventsType = typeof(AppJwtBearerEvents);
