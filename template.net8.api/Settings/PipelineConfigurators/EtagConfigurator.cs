@@ -1,8 +1,11 @@
 ﻿using Delta;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Business;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.Persistence.Context;
 using template.net8.api.Settings.Interfaces;
+using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Settings.PipelineConfigurators;
 
@@ -22,9 +25,28 @@ public sealed class EtagConfigurator : IPipelineConfigurator
     /// </summary>
     /// <param name="app"></param>
     /// <returns></returns>
+    /// <exception cref="InvalidOperationException">
+    ///     There is no service of type
+    ///     <typeparamref>
+    ///         <name>T</name>
+    ///     </typeparamref>
+    ///     .
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     public Task ConfigurePipelineAsync(WebApplication app)
     {
+        ArgumentNullException.ThrowIfNull(app);
         DeltaExtensions.UseResponseDiagnostics = true;
+
+        //Get swagger configuration from service with strongly typed options object.
+        var configuration = app.Services.GetRequiredService<IOptions<ProjectDbOptions>>().Value;
+        if (configuration.ConnectionString.IsNullOrEmpty()) return Task.CompletedTask;
+
         app.UseDelta<ProjectDbContext>(_ => BusinessConstants.ApiName);
 
         //Beware of caching on permission-segregated data, use logic similar to this:

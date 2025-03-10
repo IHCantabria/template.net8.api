@@ -13,9 +13,9 @@ internal static class LoggerMessageDefinitions
 
     [CoreLibrary] internal const string WebClientInjected = "Web Client {webClientType} injected successfully";
 
-    [CoreLibrary] internal const string ExceptionServer = "Server Exception occurred, trace:{message}";
+    [CoreLibrary] internal const string ExceptionServer = "Server Exception occurred.";
 
-    [CoreLibrary] internal const string ExceptionClient = "Client Exception occurred, trace:{message}";
+    [CoreLibrary] internal const string ExceptionClient = "Client Exception occurred.";
 
     [CoreLibrary]
     internal const string ActionRequestReceived = "Action Request Received: {methodName} at path {requestPath}";

@@ -5,31 +5,31 @@ using Path = System.IO.Path;
 namespace template.net8.api.Settings.Attributes;
 
 /// <summary>
-///     Local Absolute Path Attribute
+///     Relative Path Attribute
 /// </summary>
 [CoreLibrary]
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
-public sealed class LocalAbsolutePathAttribute : ValidationAttribute
+public sealed class LocalRelativePathAttribute : ValidationAttribute
 {
     /// <summary>
-    ///     Is the path a local absolute path
+    ///     Checks if the path is a relative path
     /// </summary>
     /// <param name="value"></param>
     /// <param name="validationContext"></param>
     /// <returns></returns>
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value is not string path) return new ValidationResult("Invalid type for local absolute path validation.");
+        if (value is not string path) return new ValidationResult("Invalid type for relative path validation.");
 
-        return IsLocalAbsolutePath(path)
+        return IsRelativePath(path)
             ? ValidationResult.Success
             : new ValidationResult(GetErrorMessage(path));
     }
 
-    private static bool IsLocalAbsolutePath(string path)
+    private static bool IsRelativePath(string path)
     {
-        // Check if the path is rooted and not a UNC path
-        return Path.IsPathRooted(path) && !IsUncPath(path) && !path.EndsWith(Path.DirectorySeparatorChar);
+        // Check if the path is NOT rooted, meaning it is relative
+        return !Path.IsPathRooted(path) && !IsUncPath(path);
     }
 
     private static bool IsUncPath(string path)
@@ -40,8 +40,6 @@ public sealed class LocalAbsolutePathAttribute : ValidationAttribute
 
     private static string GetErrorMessage(string path)
     {
-        return path.EndsWith(Path.DirectorySeparatorChar)
-            ? "Path must not end with '/'. Please remove the trailing slash."
-            : $"Invalid local absolute path: {path}";
+        return $"Invalid relative path: {path}. The path must not be absolute or a UNC path.";
     }
 }

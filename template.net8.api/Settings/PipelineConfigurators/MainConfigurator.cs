@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.Extensions.Options;
+using Serilog;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Extensions;
 using template.net8.api.Settings.Interfaces;
@@ -49,6 +50,9 @@ public sealed class MainConfigurator : IPipelineConfigurator
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
+
+        //Enable Serilog Request Logging.
+        app.UseSerilogRequestLogging();
 
         // Enable middleware Block Http Request.
         app.UseMiddleware<HttpRejectMiddleware>();

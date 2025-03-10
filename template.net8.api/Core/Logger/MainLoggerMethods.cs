@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Serilog;
+using template.net8.api.Business;
 using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Logger;
@@ -6,23 +7,23 @@ namespace template.net8.api.Core.Logger;
 [CoreLibrary]
 internal static class MainLoggerMethods
 {
-    internal static void LogMainInitConfig(NLog.Logger logger, string name)
+    internal static void LogMainInitConfig()
     {
-        logger.Info(CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.StartingConfig, name);
+        Log.Information(MainLoggerMessageDefinitions.StartingConfig, BusinessConstants.ApiName);
     }
 
-    internal static void LogMainEndConfig(NLog.Logger logger, string name)
+    internal static void LogMainEndConfig()
     {
-        logger.Info(CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.CompletedConfig, name);
+        Log.Information(MainLoggerMessageDefinitions.CompletedConfig, BusinessConstants.ApiName);
     }
 
-    internal static void LogCriticalError(NLog.Logger logger, Exception ex, string name)
+    internal static void LogCriticalError(Exception ex)
     {
-        logger.Error(ex, CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.CriticalError, name);
+        Log.Error(ex, MainLoggerMessageDefinitions.CriticalError, BusinessConstants.ApiName);
     }
 
-    internal static void LogMainShutdown(NLog.Logger logger, string name)
+    internal static void LogMainShutdown()
     {
-        logger.Info(CultureInfo.InvariantCulture, MainLoggerMessageDefinitions.Shutdown, name);
+        Log.Information(MainLoggerMessageDefinitions.Shutdown, BusinessConstants.ApiName);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Timeout;
@@ -46,7 +47,7 @@ public sealed class DbInstaller : IServiceInstaller
     private static void AddDbContextPool(IHostApplicationBuilder builder, ProjectDbOptions? connectionOptions)
     {
         // Register a pooling context factory as a Singleton service
-        if (connectionOptions is null) return;
+        if (connectionOptions is null || connectionOptions.ConnectionString.IsNullOrEmpty()) return;
 
         builder.Services.AddPooledDbContextFactory<ProjectDbContext>(options =>
         {

@@ -82,7 +82,7 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
     private void LogResponseError(Exception ex, TimeSpan delta)
     {
         LogResponseError(delta);
-        _logger.LogExceptionClient(ex.ToString());
+        _logger.LogExceptionClient(ex);
     }
 
     private void LogResponseError(TimeSpan delta)

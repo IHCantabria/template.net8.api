@@ -1,11 +1,13 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
+using template.net8.api.Core.Factory;
 using template.net8.api.Core.Json;
 using template.net8.api.Core.Logger;
-using template.net8.api.Settings.ActionResult;
+using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
 using template.net8.api.Settings.Filters;
 using template.net8.api.Settings.Interfaces;
@@ -47,6 +49,12 @@ public sealed class ControllersInstaller : IServiceInstaller
     ///     </typeparamref>
     ///     or its serializable members.
     /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     <paramref>
+    ///         <name>keySelector</name>
+    ///     </paramref>
+    ///     produces duplicate keys for two elements.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -59,11 +67,13 @@ public sealed class ControllersInstaller : IServiceInstaller
                     var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
                     RequestLogger.LogActionRequest(context, logger);
 
-                    var problemDetails = new ValidationProblemDetailsResult();
-
+                    var localizer = context.HttpContext.RequestServices
+                        .GetRequiredService<IStringLocalizer<ResourceMain>>();
+                    var problemDetails =
+                        ProblemDetailsFactoryCore.CreateProblemDetailsBadRequestValidationPayload(context.ModelState,
+                            localizer);
                     RequestLogger.LogActionResponse(context, problemDetails, logger);
-
-                    return problemDetails;
+                    return new ObjectResult(problemDetails) { StatusCode = problemDetails.Status };
                 };
             });
         //TODO: fix Body params Json Serializer error with missing properties

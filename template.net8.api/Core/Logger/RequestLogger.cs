@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Logger;
-using template.net8.api.Settings.ActionResult;
 
 namespace template.net8.api.Core.Logger;
 
@@ -70,12 +69,12 @@ internal static class RequestLogger
     ///     </typeparamref>
     ///     or its serializable members.
     /// </exception>
-    internal static void LogActionResponse(ActionContext context, ValidationProblemDetailsResult problemDetails,
+    internal static void LogActionResponse(ActionContext context,
+        ProblemDetails problemDetails,
         ILogger<Program> logger)
     {
         var methodName = context.ActionDescriptor.DisplayName;
         var requestPath = context.HttpContext?.Request.Path;
-
         logger.LogActionRequestResponseError(JsonSerializer.Serialize(problemDetails, Options));
 
         logger.LogActionRequestResponsed(methodName, requestPath);

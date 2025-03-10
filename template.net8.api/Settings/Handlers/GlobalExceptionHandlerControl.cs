@@ -24,6 +24,9 @@ internal sealed class GlobalExceptionHandlerControl(
     private readonly IProblemDetailsService _problemDetailsService =
         problemDetailsService ?? throw new ArgumentNullException(nameof(problemDetailsService));
 
+    /// <summary>
+    ///     Try Handle Async
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>dictionary</name>
@@ -36,7 +39,7 @@ internal sealed class GlobalExceptionHandlerControl(
         CancellationToken cancellationToken)
     {
         //TODO: Add exception handling specific, read https://adnanrafiq.com/blog/a-complete-guide-to-all-asp-dot-net-builtin-middlewares-part3/
-        _logger.LogExceptionServer(exception.ToString());
+        _logger.LogExceptionServer(exception);
         var problemDetails =
             ProblemDetailsFactoryCore.CreateProblemDetailsByHttpStatusCode(
                 (HttpStatusCode)httpContext.Response.StatusCode, exception,

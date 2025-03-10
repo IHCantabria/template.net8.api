@@ -54,6 +54,9 @@ public sealed class SettingsInstaller : IServiceInstaller
 
         builder.Services.Configure<ProjectOptions>(config);
         builder.Services.AddSingleton<IValidateOptions<ProjectOptions>, ProjectOptionsValidator>();
+
+        builder.Services.Configure<OpenTelemetryOptions>(config);
+        builder.Services.AddSingleton<IValidateOptions<OpenTelemetryOptions>, OpenTelemetryOptionsValidator>();
     }
 
     private static void InstallUiOptionsServices(IHostApplicationBuilder builder, ConfigurationManager config)

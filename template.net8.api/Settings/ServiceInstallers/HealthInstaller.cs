@@ -1,5 +1,6 @@
 ﻿using HealthChecks.ApplicationStatus.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.HealthChecks;
 using template.net8.api.Settings.Interfaces;
@@ -71,7 +72,7 @@ public sealed class HealthInstaller : IServiceInstaller
 
         builder.AddCheck<MemoryHealthCheck>("Feedback Service Memory Check", HealthStatus.Unhealthy,
             ServiceMemoryTags);
-        if (connectionOptions is not null)
+        if (connectionOptions is not null && !connectionOptions.ConnectionString.IsNullOrEmpty())
             builder.AddNpgSql(connectionOptions.DecodedConnectionString, "select 1",
                 name: "PostgreSql Server Project DB", failureStatus: HealthStatus.Unhealthy, tags: DbTags);
     }
