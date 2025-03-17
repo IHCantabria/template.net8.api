@@ -40,8 +40,7 @@ internal static class ControllerExtensions
                     throw new CoreException(
                         "Error Creating the Http Action Result. Error mapping action endpoint response to resource");
 
-                if (action.IsFileResult)
-                    return HandleFileContentResult((IFileContract)response);
+                if (response is IFileContract fileResponse) return HandleFileContentResult(fileResponse);
 
                 if (action.AddLocationHeader)
                     return HandleCreatedAtActionResult(response, action);
@@ -95,10 +94,9 @@ internal static class ControllerExtensions
 internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperators<
     ActionResultPayload<TResult, TContract>, ActionResultPayload<TResult, TContract>, bool>
 {
-    public ActionResultPayload(Func<TResult, TContract> mapper, bool isFileResult = false)
+    public ActionResultPayload(Func<TResult, TContract> mapper)
     {
         Mapper = mapper;
-        IsFileResult = isFileResult;
     }
 
     public ActionResultPayload()
@@ -113,12 +111,10 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         ActionPath = actionPath;
         ActionParams = actionKeyParam;
         AddLocationHeader = true;
-        IsFileResult = false;
         IsEmptyResult = isEmptyResult;
     }
 
     internal bool AddLocationHeader { get; }
-    internal bool IsFileResult { get; }
     internal bool IsEmptyResult { get; }
     internal (string, string) ActionParams { get; }
     internal (string, string)? ActionPath { get; }
