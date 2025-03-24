@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
@@ -11,6 +12,7 @@ namespace template.net8.api.Domain.Persistence.Repositories;
 ///     Unit of Work pattern implementation.
 /// </summary>
 [CoreLibrary]
+[MustDisposeResource]
 public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWork<TDbContext>> logger)
     : DbRepositoryScopedDbContextBase(context, logger), IUnitOfWork<TDbContext>, IAsyncDisposable
     where TDbContext : DbContext
@@ -18,6 +20,7 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     private IDbContextTransaction? _transaction;
 
     /// <summary>
+    ///     Dispose the Unit of Work.
     /// </summary>
     public async ValueTask DisposeAsync()
     {
@@ -34,6 +37,7 @@ public sealed class UnitOfWork<TDbContext>(TDbContext context, ILogger<UnitOfWor
     }
 
     /// <summary>
+    ///     Save the pending changes in the repository.
     /// </summary>
     /// <returns></returns>
     /// <exception cref="DbUpdateException">An error is encountered while saving to the database.</exception>

@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using template.net8.api.Core.Attributes;
@@ -40,8 +41,22 @@ public sealed class DbInstaller : IServiceInstaller
         var connectionOptions = builder.Configuration
             .GetSection(ProjectDbOptions.ProjectDb)
             .Get<ProjectDbOptions>();
+
+        ValidateProjectDbOptions(connectionOptions);
         AddDbContextPool(builder, connectionOptions);
         return Task.CompletedTask;
+    }
+
+    private static void ValidateProjectDbOptions(ProjectDbOptions? config)
+    {
+        var optionsValidator = new ProjectDbOptionsValidator();
+        if (config is null)
+            throw new InvalidConfigurationException(
+                "The Project Db configuration in the appsettings file is incorrect");
+
+        var validation = optionsValidator.Validate(null, config);
+        if (validation.Failed)
+            throw new InvalidConfigurationException(validation.FailureMessage);
     }
 
     private static void AddDbContextPool(IHostApplicationBuilder builder, ProjectDbOptions? connectionOptions)

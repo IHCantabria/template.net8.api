@@ -3,7 +3,6 @@ using System.Numerics;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Settings.Attributes;
 
 namespace template.net8.api.Settings.Options;
 
@@ -33,13 +32,6 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
     /// </summary>
     [Required]
     public required Uri LogEndpointUrl { get; set; }
-
-    /// <summary>
-    ///     Log Fallback File Path
-    /// </summary>
-    [Required]
-    [LocalRelativePath]
-    public required string LogFallbackFilePath { get; set; }
 
     internal bool UseHeaderApiKey()
     {

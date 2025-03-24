@@ -1,6 +1,7 @@
-﻿using Serilog;
+﻿using Microsoft.IdentityModel.Protocols.Configuration;
+using Serilog;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Settings.Extensions;
+using template.net8.api.Core.Logger;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
@@ -25,6 +26,10 @@ public sealed class LoggerInstaller : IServiceInstaller
     ///         <name>argument</name>
     ///     </paramref>
     ///     is <see langword="null" />.
+    /// </exception>
+    /// <exception cref="InvalidConfigurationException">
+    ///     The OpenTelemetry configuration in the appsettings file is incorrect.
+    ///     There was a problem trying to connecte to the OpenTelemetry endpoint
     /// </exception>
     /// <exception cref="IOException">Condition.</exception>
     /// <exception cref="InvalidOperationException">Condition.</exception>
@@ -58,14 +63,8 @@ public sealed class LoggerInstaller : IServiceInstaller
         builder.Logging.SetMinimumLevel(LogLevel.Trace);
         //Define Serilog like default logger.
 
-        builder.Services.AddSerilog((services, lc) =>
-        {
-            lc.ReadFrom.Services(services)
-                .EnrichLog()
-                .ConfigureMinLevels()
-                .ReadFrom.Configuration(builder.Configuration);
-            lc.ConfigureSinks(builder.Configuration);
-        });
+        builder.Services.AddSerilog();
+        SerilogLoggersFactory.RealApplicationLogFactory(builder.Configuration);
         return Task.CompletedTask;
     }
 }

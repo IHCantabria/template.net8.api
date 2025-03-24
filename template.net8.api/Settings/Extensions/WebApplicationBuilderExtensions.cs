@@ -6,6 +6,9 @@ namespace template.net8.api.Settings.Extensions;
 [CoreLibrary]
 internal static class WebApplicationBuilderExtensions
 {
+    /// <summary>
+    ///     Install the services in the assembly.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>

@@ -1,4 +1,5 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using Microsoft.IdentityModel.Protocols.Configuration;
+using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
 
@@ -34,6 +35,7 @@ public sealed class CorsInstaller : IServiceInstaller
         // Configure strongly typed options objects.
         var config = builder.Configuration;
         var apiOptions = config.GetSection(ApiOptions.Api).Get<ApiOptions>();
+        ValidateApiOptions(apiOptions);
         AddCors(builder, apiOptions);
         return Task.CompletedTask;
     }
@@ -64,5 +66,17 @@ public sealed class CorsInstaller : IServiceInstaller
                         break;
                 }
             }));
+    }
+
+    private static void ValidateApiOptions(ApiOptions? config)
+    {
+        var optionsValidator = new ApiOptionsValidator();
+        if (config is null)
+            throw new InvalidConfigurationException(
+                "The Api configuration in the appsettings file is incorrect");
+
+        var validation = optionsValidator.Validate(null, config);
+        if (validation.Failed)
+            throw new InvalidConfigurationException(validation.FailureMessage);
     }
 }

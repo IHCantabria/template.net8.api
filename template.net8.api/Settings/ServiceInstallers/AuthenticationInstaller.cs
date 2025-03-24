@@ -1,6 +1,8 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Protocols.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
+using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
@@ -36,6 +38,7 @@ public sealed class AuthenticationInstaller : IServiceInstaller
         //builder.Services.AddScoped<AppJwtBearerEvents>();
         // configure strongly typed settings objects
         //var authenticationOptions = builder.Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
+        //ValidateJwtOptions(authenticationOptions);
         //_config = authenticationOptions;
         //var environment = builder.Environment;
         //if (environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
@@ -79,5 +82,17 @@ public sealed class AuthenticationInstaller : IServiceInstaller
         TokenValidationParameters validationParameters)
     {
         return expires != null && expires > DateTime.Now;
+    }
+
+    private static void ValidateJwtOptions(JwtOptions? config)
+    {
+        var optionsValidator = new JwtOptionsValidator();
+        if (config is null)
+            throw new InvalidConfigurationException(
+                "The Jwt configuration in the appsettings file is incorrect");
+
+        var validation = optionsValidator.Validate(null, config);
+        if (validation.Failed)
+            throw new InvalidConfigurationException(validation.FailureMessage);
     }
 }

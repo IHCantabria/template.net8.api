@@ -14,6 +14,7 @@ public sealed record GraphQLQueryGetDummies : IRequest<IQueryable<Dummy>>,
     IEqualityOperators<GraphQLQueryGetDummies, GraphQLQueryGetDummies, bool>;
 
 [UsedImplicitly]
+[MustDisposeResource]
 internal sealed class GraphQLGetDummiesHandlerQuery(IDbContextFactory<ProjectDbContext> context)
     : IRequestHandler<GraphQLQueryGetDummies, IQueryable<Dummy>>, IAsyncDisposable
 {
