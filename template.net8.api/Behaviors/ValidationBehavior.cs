@@ -35,7 +35,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
         var failures = await ValidateRequestAsync(request, cancellationToken).ConfigureAwait(false);
         return failures.Count > 0
             ? new LanguageExt.Common.Result<TResponse>(new ValidationException(failures))
-            : await next().ConfigureAwait(false);
+            : await next(cancellationToken).ConfigureAwait(false);
     }
 
     private async Task<ICollection<ValidationFailure>> ValidateRequestAsync(TRequest request,
