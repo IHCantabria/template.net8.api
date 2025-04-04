@@ -60,6 +60,8 @@ internal static class LoggerConfigurationExtensions
     /// </summary>
     /// <param name="lc"></param>
     /// <param name="builderConfiguration"></param>
+    /// <param name="envName"></param>
+    /// <param name="version"></param>
     /// <returns></returns>
     /// <exception cref="InvalidConfigurationException">
     ///     The OpenTelemetry configuration in the appsettings file is incorrect.
@@ -95,9 +97,10 @@ internal static class LoggerConfigurationExtensions
     ///     </paramref>
     /// </exception>
     internal static LoggerConfiguration ConfigureSinks(this LoggerConfiguration lc,
-        ConfigurationManager builderConfiguration)
+        ConfigurationManager builderConfiguration, string envName, string version)
     {
         var config = builderConfiguration.GetSection(OpenTelemetryOptions.OpenTelemetry).Get<OpenTelemetryOptions>();
+
         if (config is null)
             return lc.ConfigureSinkLocal();
 
@@ -105,12 +108,13 @@ internal static class LoggerConfigurationExtensions
         var useOpenTelemetry = IsOpenTelemetryAvailable(config);
         if (!useOpenTelemetry)
             throw new InvalidConfigurationException(
-                "The OpenTelemetry configuration in the appsettings file is incorrect. There was a problem trying to connecte to the OpenTelemetry endpoint");
+                "The OpenTelemetry configuration in the appsettings file is incorrect or the endpoint is down. There was a problem trying to connecte to the OpenTelemetry endpoint");
 
-        return lc.ConfigureSinkTelemetry(config);
+        return lc.ConfigureSinkTelemetry(config, envName, version);
     }
 
-    private static LoggerConfiguration ConfigureSinkTelemetry(this LoggerConfiguration lc, OpenTelemetryOptions config)
+    private static LoggerConfiguration ConfigureSinkTelemetry(this LoggerConfiguration lc, OpenTelemetryOptions config,
+        string envName, string version)
     {
         return lc.WriteTo.OpenTelemetry(x =>
         {
@@ -126,7 +130,9 @@ internal static class LoggerConfigurationExtensions
                 };
             x.ResourceAttributes = new Dictionary<string, object>
             {
-                ["service.name"] = BusinessConstants.ApiName
+                ["service.name"] = BusinessConstants.ApiName,
+                ["service.version"] = version,
+                ["service.environment"] = envName
             };
             x.FormatProvider = CultureInfo.InvariantCulture;
         });
@@ -191,12 +197,11 @@ internal static class LoggerConfigurationExtensions
             request.Headers.Add(config.LogEndpointApiKeyHeader!, config.LogEndpointApiKeyValue);
 
         // Send a minimal valid OpenTelemetry log entry
-        var logEntry = new byte[] { 0x0A, 0x02, 0x08, 0x01 }; // Example binary payload
-        request.Content = new ByteArrayContent(logEntry);
+        request.Content = new ByteArrayContent([]);
         request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-protobuf");
 
         // Check if client responds
-        var response = client.Send(request, HttpCompletionOption.ResponseHeadersRead);
+        using var response = client.Send(request, HttpCompletionOption.ResponseHeadersRead);
         return response.IsSuccessStatusCode;
     }
 }

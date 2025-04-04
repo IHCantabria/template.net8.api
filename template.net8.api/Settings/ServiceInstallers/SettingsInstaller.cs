@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
@@ -11,8 +12,6 @@ namespace template.net8.api.Settings.ServiceInstallers;
 [CoreLibrary]
 public sealed class SettingsInstaller : IServiceInstaller
 {
-    private const string PackageJsonFile = "package.json";
-
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
@@ -33,7 +32,7 @@ public sealed class SettingsInstaller : IServiceInstaller
         ArgumentNullException.ThrowIfNull(builder);
         var config = builder.Configuration;
         //Load extra config files
-        builder.Configuration.AddJsonFile(PackageJsonFile, false, false);
+        builder.Configuration.AddJsonFile(CoreConstants.PackageJsonFile, false, false);
         InstallCoreOptionsServices(builder, config);
         InstallUiOptionsServices(builder, config);
         //Commented because it is not implemented in the template

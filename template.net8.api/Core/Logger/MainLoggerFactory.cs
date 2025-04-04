@@ -65,14 +65,14 @@ internal static class SerilogLoggersFactory
     ///     The OpenTelemetry configuration in the appsettings file is incorrect.
     ///     There was a problem trying to connecte to the OpenTelemetry endpoint
     /// </exception>
-    internal static void RealApplicationLogFactory(
-        ConfigurationManager builderConfiguration)
+    internal static void RealApplicationLogFactory(ConfigurationManager builderConfiguration,
+        string envName, string version)
     {
         Log.Logger = new LoggerConfiguration()
             .EnrichLog()
             .ConfigureMinLevels()
             .ReadFrom.Configuration(builderConfiguration)
-            .ConfigureSinks(builderConfiguration)
+            .ConfigureSinks(builderConfiguration, envName, version)
             .CreateLogger();
 
         MemorySink.FlushToLogger(Log.Logger);

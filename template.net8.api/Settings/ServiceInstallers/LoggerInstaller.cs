@@ -1,8 +1,12 @@
-﻿using Microsoft.IdentityModel.Protocols.Configuration;
+﻿using System.Text.Json;
+using Microsoft.IdentityModel.Protocols.Configuration;
 using Serilog;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Logger;
 using template.net8.api.Settings.Interfaces;
+using Path = System.IO.Path;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
@@ -12,6 +16,8 @@ namespace template.net8.api.Settings.ServiceInstallers;
 [CoreLibrary]
 public sealed class LoggerInstaller : IServiceInstaller
 {
+    private static readonly JsonSerializerOptions Options = new JsonSerializerOptions().AddCoreOptions();
+
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
@@ -53,9 +59,10 @@ public sealed class LoggerInstaller : IServiceInstaller
     ///         <name>path</name>
     ///     </paramref>
     /// </exception>
-    public Task InstallServiceAsync(WebApplicationBuilder builder)
+    public async Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        var config = builder.Configuration;
         //Remove microsoft logger instances
         builder.Logging.ClearProviders();
         //Define log min level, this is the fallback value if this value is not defined in the appsettings file.
@@ -64,7 +71,23 @@ public sealed class LoggerInstaller : IServiceInstaller
         //Define Serilog like default logger.
 
         builder.Services.AddSerilog();
-        SerilogLoggersFactory.RealApplicationLogFactory(builder.Configuration);
-        return Task.CompletedTask;
+
+        var version = await ReadPackageJsonVersionAsync().ConfigureAwait(false);
+
+        SerilogLoggersFactory.RealApplicationLogFactory(config, builder.Environment.EnvironmentName, version);
+    }
+
+    private static async Task<string> ReadPackageJsonVersionAsync()
+    {
+        var ct = CancellationToken.None;
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), CoreConstants.PackageJsonFile);
+        if (!File.Exists(filePath)) return string.Empty;
+
+        using var reader = new StreamReader(filePath);
+        var jsonContent = await reader.ReadToEndAsync(ct).ConfigureAwait(false);
+
+        var jsonObject = JsonSerializer.Deserialize<JsonElement>(jsonContent, Options);
+
+        return jsonObject.TryGetProperty("version", out var version) ? version.GetString()! : string.Empty;
     }
 }
