@@ -38,6 +38,12 @@ public sealed class EtagConfigurator : IPipelineConfigurator
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     <paramref>
+    ///         <name>comparisonType</name>
+    ///     </paramref>
+    ///     is not a <see cref="StringComparison" /> value.
+    /// </exception>
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
@@ -47,13 +53,15 @@ public sealed class EtagConfigurator : IPipelineConfigurator
         var configuration = app.Services.GetRequiredService<IOptions<ProjectDbOptions>>().Value;
         if (configuration.ConnectionString.IsNullOrEmpty()) return Task.CompletedTask;
 
-        app.UseDelta<ProjectDbContext>(_ => BusinessConstants.ApiName);
+        app.UseDelta<ProjectDbContext>(_ => BusinessConstants.ApiName,
+            httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
 
         //Beware of caching on permission-segregated data, use logic similar to this:
         //app.UseDelta<ProjectDbContext>(httpContext =>
-        //    httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated
-        //        ? $"{BusinessConstants.ApiName}:{BusinessConstants.AuthenticatedUser}"
-        //        : $"{BusinessConstants.ApiName}:{BusinessConstants.AnonymousUser}");
+        //        httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated
+        //            ? $"{BusinessConstants.ApiName}:{BusinessConstants.AuthenticatedUser}"
+        //            : $"{BusinessConstants.ApiName}:{BusinessConstants.AnonymousUser}",
+        //    httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
 
         return Task.CompletedTask;
     }
