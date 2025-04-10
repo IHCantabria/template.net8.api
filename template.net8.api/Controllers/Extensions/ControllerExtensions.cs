@@ -15,6 +15,9 @@ namespace template.net8.api.Controllers.Extensions;
 [CoreLibrary]
 internal static class ControllerExtensions
 {
+    /// <summary>
+    ///     This extension method is used to convert a result to an IActionResult.
+    /// </summary>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     /// <exception cref="CoreException">
     ///     Error Creating the Http Action Result. Error mapping action endpoint response to
@@ -64,13 +67,16 @@ internal static class ControllerExtensions
         return new BadRequestResult();
     }
 
-    private static CreatedAtActionResult HandleCreatedAtActionResult<TResult, TContract>(object? response,
+    private static CreatedAtActionResult HandleCreatedAtActionResult<TResult, TContract>(TContract response,
         ActionResultPayload<TResult, TContract> action)
     {
         var dictionary = new RouteValueDictionary();
-        var propertyInfo = typeof(TContract).GetProperty(action.ActionParams.Item1);
-        var propertyValue = propertyInfo?.GetValue(response);
-        dictionary.Add(action.ActionParams.Item2, propertyValue?.ToString());
+        var type = typeof(TContract);
+        var propertyDelegate = (Func<TContract, object>)Delegate.CreateDelegate(
+            typeof(Func<TContract, object>), null, type.GetProperty(action.ActionParams.Item1)!.GetMethod!);
+        var value = propertyDelegate(response);
+
+        dictionary.Add(action.ActionParams.Item2, value.ToString());
         return action.IsEmptyResult
             ? new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, null)
             : new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, response);
