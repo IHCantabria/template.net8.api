@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using EntityFramework.Exceptions.PostgreSQL;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -94,7 +95,7 @@ public sealed class DbInstaller : IServiceInstaller
                 x.UseNetTopologySuite();
                 x.CommandTimeout(DbContextConstants.CommandTimeout);
                 x.EnableRetryOnFailure(DbContextConstants.MaxRetryCount, DbContextConstants.MaxRetryDelay, []);
-            });
+            }).UseExceptionProcessor();
     }
 
     [MustDisposeResource]

@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
@@ -18,10 +19,20 @@ internal static class QueryableExtensions
 
         // Modify the IQueryable
 
-        query = query.ApplyFilters(verification.Filters);
+        query = verification.Filters.Count > 0 ? query.ApplyFilters(verification.Filters) : query;
         return query;
     }
 
+    /// <summary>
+    ///     ApplySpecification
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    ///     The
+    ///     <see>
+    ///         <cref>P:System.Nullable`1.HasValue</cref>
+    ///     </see>
+    ///     property is <see langword="false" />.
+    /// </exception>
     [CoreLibrary]
     internal static IQueryable<TEntity> ApplySpecification<TEntity>(this IQueryable<TEntity> query,
         ISpecification<TEntity>? specification) where TEntity : class, IEntity
@@ -31,17 +42,27 @@ internal static class QueryableExtensions
 
         // Modify the IQueryable
 
-        query = query.ApplyFilters(specification.Filters);
-        query = query.ApplyIncludes(specification.Includes);
-        query = query.ApplyOrderBys(specification.OrderBys);
-        query = query.ApplyGroupBy(specification.GroupBy);
-        query = query.ApplyTakeRows(specification.TakeRows);
+        query = specification.Filters.Count > 0 ? query.ApplyFilters(specification.Filters) : query;
+        query = specification.Includes.Count > 0 ? query.ApplyIncludes(specification.Includes) : query;
+        query = specification.GroupBy is not null ? query.ApplyGroupBy(specification.GroupBy) : query;
+        query = specification.OrderBys.Count > 0 ? query.ApplyOrderBys(specification.OrderBys) : query;
+        query = specification.TakeRows.HasValue ? query.ApplyTakeRows(specification.TakeRows.Value) : query;
         query = query.ApplyQuerySplitStrategy(specification.QuerySplitStrategy);
-        query = query.ApplyQueryTrackStrategyy(specification.QueryTrackStrategy);
+        query = query.ApplyQueryTrackStrategy(specification.QueryTrackStrategy);
 
         return query;
     }
 
+    /// <summary>
+    ///     ApplySpecification
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    ///     The
+    ///     <see>
+    ///         <cref>P:System.Nullable`1.HasValue</cref>
+    ///     </see>
+    ///     property is <see langword="false" />.
+    /// </exception>
     [CoreLibrary]
     internal static IQueryable<TEntity> ApplySpecification<TEntity, TDto>(this IQueryable<TEntity> query,
         ISpecification<TEntity, TDto>? specification) where TEntity : class, IEntity where TDto : class, IDto
@@ -51,12 +72,12 @@ internal static class QueryableExtensions
 
         // Modify the IQueryable
 
-        query = query.ApplyFilters(specification.Filters);
-        query = query.ApplyOrderBys(specification.OrderBys);
-        query = query.ApplyGroupBy(specification.GroupBy);
-        query = query.ApplyTakeRows(specification.TakeRows);
+        query = specification.Filters.Count > 0 ? query.ApplyFilters(specification.Filters) : query;
+        query = specification.GroupBy is not null ? query.ApplyGroupBy(specification.GroupBy) : query;
+        query = specification.OrderBys.Count > 0 ? query.ApplyOrderBys(specification.OrderBys) : query;
+        query = specification.TakeRows.HasValue ? query.ApplyTakeRows(specification.TakeRows.Value) : query;
         query = query.ApplyQuerySplitStrategy(specification.QuerySplitStrategy);
-        query = query.ApplyQueryTrackStrategyy(specification.QueryTrackStrategy);
+        query = query.ApplyQueryTrackStrategy(specification.QueryTrackStrategy);
 
         return query;
     }
@@ -64,7 +85,11 @@ internal static class QueryableExtensions
     private static IQueryable<TEntity> ApplyFilters<TEntity>(this IQueryable<TEntity> queryable,
         ICollection<Expression<Func<TEntity, bool>>> filters) where TEntity : class, IEntity
     {
-        return filters.Aggregate(queryable, (current, filter) => current.Where(filter));
+        var predicate = PredicateBuilder.New<TEntity>();
+
+        predicate = filters.Aggregate(predicate, (current, filter) => current.And(filter));
+
+        return queryable.Where(predicate);
     }
 
     private static IQueryable<TEntity> ApplyIncludes<TEntity>(this IQueryable<TEntity> queryable,
@@ -91,21 +116,20 @@ internal static class QueryableExtensions
             OrderByType.Desc when !isFirstIteration && queryable is IOrderedQueryable<TEntity> orderedQueryable =>
                 orderedQueryable.ThenByDescending(expression),
             OrderByType.Desc => queryable.OrderByDescending(expression),
-            OrderByType.Asc => queryable.OrderBy(expression),
             _ => queryable.OrderBy(expression)
         };
     }
 
     private static IQueryable<TEntity> ApplyGroupBy<TEntity>(this IQueryable<TEntity> queryable,
-        Expression<Func<TEntity, object>>? groupBy) where TEntity : class, IEntity
+        Expression<Func<TEntity, object>> groupBy) where TEntity : class, IEntity
     {
-        return groupBy != null ? queryable.GroupBy(groupBy).SelectMany(x => x) : queryable;
+        return queryable.GroupBy(groupBy).SelectMany(x => x);
     }
 
     private static IQueryable<TEntity> ApplyTakeRows<TEntity>(this IQueryable<TEntity> queryable,
-        int? takeRows) where TEntity : class, IEntity
+        int takeRows) where TEntity : class, IEntity
     {
-        return takeRows is null ? queryable : queryable.Take(takeRows.Value);
+        return queryable.Take(takeRows);
     }
 
     private static IQueryable<TEntity> ApplyQuerySplitStrategy<TEntity>(this IQueryable<TEntity> queryable,
@@ -114,19 +138,17 @@ internal static class QueryableExtensions
         return querySplitStrategy switch
         {
             QuerySplittingBehavior.SplitQuery => queryable.AsSplitQuery(),
-            QuerySplittingBehavior.SingleQuery => queryable.AsSingleQuery(),
             _ => queryable.AsSingleQuery()
         };
     }
 
-    private static IQueryable<TEntity> ApplyQueryTrackStrategyy<TEntity>(this IQueryable<TEntity> queryable,
+    private static IQueryable<TEntity> ApplyQueryTrackStrategy<TEntity>(this IQueryable<TEntity> queryable,
         QueryTrackingBehavior queryTrackStrategy) where TEntity : class, IEntity
     {
         return queryTrackStrategy switch
         {
             QueryTrackingBehavior.NoTracking => queryable.AsNoTracking(),
             QueryTrackingBehavior.NoTrackingWithIdentityResolution => queryable.AsNoTrackingWithIdentityResolution(),
-            QueryTrackingBehavior.TrackAll => queryable.AsTracking(),
             _ => queryable.AsTracking()
         };
     }

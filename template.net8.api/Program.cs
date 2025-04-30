@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
+using LinqKit;
 using Serilog;
 using template.net8.api.Core.Logger;
 using template.net8.api.Core.Logger.Extensions;
@@ -8,6 +9,9 @@ using template.net8.api.Settings.Extensions;
 [assembly: ComVisible(false), CLSCompliant(false)]
 SerilogLoggersFactory.MainLogFactory();
 MainLoggerMethods.LogStartingMainService();
+
+//Configure Optimize LinqToSQL calls
+LinqKitExtension.QueryOptimizer = ExpressionOptimizer.visit;
 try
 {
     //Create the App Builder.
