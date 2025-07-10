@@ -33,7 +33,7 @@ public sealed class ExceptionsControlInstaller : IServiceInstaller
         builder.Services.AddExceptionHandler<GlobalExceptionHandlerControl>();
         builder.Services.AddProblemDetails(setup =>
         {
-            setup.CustomizeProblemDetails = ctx => { CustomizeProblemDetails(builder.Environment, ctx); };
+            setup.CustomizeProblemDetails = ctx => CustomizeProblemDetails(builder.Environment, ctx);
         });
         return Task.CompletedTask;
     }

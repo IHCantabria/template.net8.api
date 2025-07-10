@@ -2,6 +2,7 @@
 using Serilog;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Logger.Extensions;
+using template.net8.api.Core.Logger.Sinks;
 
 namespace template.net8.api.Core.Logger;
 

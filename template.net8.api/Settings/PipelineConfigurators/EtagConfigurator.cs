@@ -1,7 +1,6 @@
 ﻿using Delta;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using template.net8.api.Business;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Domain.Persistence.Context;
 using template.net8.api.Settings.Interfaces;
@@ -51,16 +50,16 @@ public sealed class EtagConfigurator : IPipelineConfigurator
 
         //Get swagger configuration from service with strongly typed options object.
         var configuration = app.Services.GetRequiredService<IOptions<ProjectDbOptions>>().Value;
-        if (configuration.ConnectionString.IsNullOrEmpty()) return Task.CompletedTask;
+        if (string.IsNullOrEmpty(configuration.ConnectionString)) return Task.CompletedTask;
 
-        app.UseDelta<ProjectDbContext>(_ => BusinessConstants.ApiName,
+        app.UseDelta<ProjectDbContext>(_ => CoreConstants.ApiName,
             httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
 
         //Beware of caching on permission-segregated data, use logic similar to this:
         //app.UseDelta<ProjectDbContext>(httpContext =>
         //        httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated
-        //            ? $"{BusinessConstants.ApiName}:{BusinessConstants.AuthenticatedUser}"
-        //            : $"{BusinessConstants.ApiName}:{BusinessConstants.AnonymousUser}",
+        //            ? $"{CoreConstants.ApiName}:{BusinessConstants.AuthenticatedUser}"
+        //            : $"{CoreConstants.ApiName}:{BusinessConstants.AnonymousUser}",
         //    httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
 
         return Task.CompletedTask;

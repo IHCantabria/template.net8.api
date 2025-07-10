@@ -8,9 +8,9 @@ using Serilog.Exceptions.Core;
 using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.OpenTelemetry;
-using template.net8.api.Business;
 using template.net8.api.Core.Attributes;
-using template.net8.api.Settings.Options;
+using template.net8.api.Core.Logger.Enrichers;
+using template.net8.api.Core.Logger.Options;
 
 namespace template.net8.api.Core.Logger.Extensions;
 
@@ -26,6 +26,8 @@ internal static class LoggerConfigurationExtensions
     internal static LoggerConfiguration EnrichLog(this LoggerConfiguration lc)
     {
         return lc.Enrich.FromLogContext()
+            .Enrich.With<ActivityEnricher>()
+            .Enrich.With<RequestIdentifierEnricher>()
             .Enrich.WithProcessId()
             .Enrich.WithThreadId()
             .Enrich.WithEnvironmentName()
@@ -49,7 +51,7 @@ internal static class LoggerConfigurationExtensions
             .MinimumLevel.Override("System", LogEventLevel.Information)
             .MinimumLevel.Override("Program", LogEventLevel.Information)
             .MinimumLevel.Override("Npgsql", LogEventLevel.Information)
-            .MinimumLevel.Override(BusinessConstants.ApiName, LogEventLevel.Information)
+            .MinimumLevel.Override(CoreConstants.ApiName, LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning);
@@ -130,7 +132,7 @@ internal static class LoggerConfigurationExtensions
                 };
             x.ResourceAttributes = new Dictionary<string, object>
             {
-                ["service.name"] = BusinessConstants.ApiName,
+                ["service.name"] = CoreConstants.ApiName,
                 ["service.version"] = version,
                 ["service.environment"] = envName
             };

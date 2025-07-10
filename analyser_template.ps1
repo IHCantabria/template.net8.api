@@ -9,11 +9,11 @@ if (-not (dotnet tool list --global | Select-String -Pattern "dotnet-sonarscanne
 
 # Example usage:
 # dotnet sonarscanner begin /k:"PROJECT_KEY" /d:sonar.host.url="http://ihsonarqube.ihcantabria.com:9000" /d:sonar.token="SONAR_TOKEN_KEY"
-dotnet sonarscanner begin /k:"{PROJECT_SONAR_REPO_KEY}" /d:sonar.host.url="http://ihsonarqube.ihcantabria.com:9000" /d:sonar.token="{PROJECT_ACCESS_TOKEN_KEY}"
+dotnet sonarscanner begin /k:"{PROJECT_KEY}" /d:sonar.host.url="http://ihsonarqube.ihcantabria.com:9000" /d:sonar.token="{SONAR_TOKEN_KEY}"
 
 # Build the project
 dotnet build
 
 # End the SonarQube analysis
 # dotnet sonarscanner end /d:sonar.token="SONAR_TOKEN_KEY"
-dotnet sonarscanner end /d:sonar.token="{PROJECT_ACCESS_TOKEN_KEY}"
+dotnet sonarscanner end /d:sonar.token="{SONAR_TOKEN_KEY}"

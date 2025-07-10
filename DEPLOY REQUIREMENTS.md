@@ -128,8 +128,8 @@ Select only if needed:
 
 **Do you need any other configuration?**
 
-- [ ] `Configuración de permisos en la carpeta Apilogs/{PROJECT_NAME}.Api para los logs de la api`
-- [ ] `Variables de entorno, sustituir los sigientes placeholders en los ficheros appsettings: HOST_API_URL, HOST_API_DOMAIN, HOST_API_LOG_PATH, HOST_API_LOG_INTERNAL_FILE`
+- [ ] `Configuración de Dashboard de logs en IH-Telemetry`
+- [ ] `Variables de entorno, sustituir los sigientes placeholders en los ficheros appsettings: HOST_API_URL, HOST_API_DOMAIN, OPEN_TELEMETRY_ENDPOINT_LOG_URL`
 
 <br>
 
@@ -144,4 +144,4 @@ Select only if needed:
 
 ## FAQ
 
-- Document provided by the system administrators [David del Prado](https://ihcantabria.com/directorio-personal/david-del-prado-secadas/) y [Luis Gutiérrez](https://ihcantabria.com/directorio-personal/luis-gutierrez-2/)
+- Document provided by the system administrators [David del Prado](https://ihcantabria.com/directorio-personal/david-del-prado-secadas/) y [Rafael Mayor](https://ihcantabria.com/directorio-personal/rafael-mayor/)

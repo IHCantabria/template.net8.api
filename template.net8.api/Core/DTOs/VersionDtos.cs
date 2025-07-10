@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using template.net8.api.Core.Attributes;
+﻿using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Core.DTOs;
@@ -8,7 +7,7 @@ namespace template.net8.api.Core.DTOs;
 ///     Version DTO
 /// </summary>
 [CoreLibrary]
-public sealed partial record VersionDto : IDto, IEqualityOperators<VersionDto, VersionDto, bool>
+public sealed partial record VersionDto : IDto
 {
     /// <summary>
     ///     id

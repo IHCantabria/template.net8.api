@@ -7,16 +7,16 @@ namespace template.net8.api.Core.Parallel;
 [CoreLibrary]
 internal static class ParallelUtils
 {
-    internal static Task ExecuteInParallelAsync(IEnumerable<Task> tasks,
+    internal static Task ExecuteDependentInParallelAsync(IEnumerable<Task> tasks,
         CancellationTokenSource cts)
     {
-        return HandleTaskCompletionAsync(tasks, cts);
+        return HandleTaskDependentCompletionAsync(tasks, cts);
     }
 
-    internal static Task<IEnumerable<T>> ExecuteInParallelAsync<T>(IEnumerable<Task<T>> tasks,
+    internal static Task<IEnumerable<T>> ExecuteDependentInParallelAsync<T>(IEnumerable<Task<T>> tasks,
         CancellationTokenSource cts)
     {
-        return HandleTaskCompletionAsync(tasks, cts);
+        return HandleTaskDependentCompletionAsync(tasks, cts);
     }
 
     /// <exception cref="ResultSuccessInvalidOperationException">
@@ -27,17 +27,17 @@ internal static class ParallelUtils
     ///     Result is not a failure! Use ExtractData method instead and
     ///     Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractData method
     /// </exception>
-    internal static async Task<LanguageExt.Common.Result<IEnumerable<T>>> ExecuteInParallelAsync<T>(
+    internal static async Task<LanguageExt.Common.Result<IEnumerable<T>>> ExecuteDependentInParallelAsync<T>(
         IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
         CancellationTokenSource cts)
     {
-        var taskResults = await HandleTaskCompletionAsync(tasks, cts).ConfigureAwait(false);
+        var taskResults = await HandleTaskDependentCompletionAsync(tasks, cts).ConfigureAwait(false);
         return taskResults.IsSuccess
             ? new LanguageExt.Common.Result<IEnumerable<T>>(taskResults.ExtractData())
             : new LanguageExt.Common.Result<IEnumerable<T>>(taskResults.ExtractException());
     }
 
-    private static async Task HandleTaskCompletionAsync(IEnumerable<Task> tasks,
+    private static async Task HandleTaskDependentCompletionAsync(IEnumerable<Task> tasks,
         CancellationTokenSource cts)
     {
         var tasksList = tasks.ToList();
@@ -56,7 +56,7 @@ internal static class ParallelUtils
         }
     }
 
-    private static async Task<IEnumerable<T>> HandleTaskCompletionAsync<T>(IEnumerable<Task<T>> tasks,
+    private static async Task<IEnumerable<T>> HandleTaskDependentCompletionAsync<T>(IEnumerable<Task<T>> tasks,
         CancellationTokenSource cts)
     {
         var completedResults = new List<T>();
@@ -71,7 +71,7 @@ internal static class ParallelUtils
 
             var taskResult = await completedTask.ConfigureAwait(false);
 
-            // Check if the completed task is Faulted or the result of the completed task is Faulted
+            // Check if the completed task is Faulted
             if (completedTask.IsFaulted)
             {
                 // cancel all other tasks
@@ -85,7 +85,7 @@ internal static class ParallelUtils
         return completedResults;
     }
 
-    private static async Task<LanguageExt.Common.Result<IEnumerable<T>>> HandleTaskCompletionAsync<T>(
+    private static async Task<LanguageExt.Common.Result<IEnumerable<T>>> HandleTaskDependentCompletionAsync<T>(
         IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
         CancellationTokenSource cts)
     {
@@ -112,6 +112,54 @@ internal static class ParallelUtils
             }
 
             completedResults.Add(taskResult.ExtractData());
+        }
+
+        return completedResults;
+    }
+
+    internal static Task ExecuteIndependentInParallelAsync(IEnumerable<Task> tasks,
+        CancellationTokenSource cts)
+    {
+        return HandleTaskIndependentCompletionAsync(tasks);
+    }
+
+    internal static Task<IEnumerable<LanguageExt.Common.Result<T>>> ExecuteIndependentInParallelAsync<T>(
+        IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
+        CancellationTokenSource cts)
+    {
+        return HandleTaskIndependentCompletionAsync(tasks);
+    }
+
+    private static async Task HandleTaskIndependentCompletionAsync(IEnumerable<Task> tasks)
+    {
+        var tasksList = tasks.ToList();
+        while (tasksList.Count > 0)
+        {
+            // Wait for any task to complete
+            var completedTask = await Task.WhenAny(tasksList).ConfigureAwait(false);
+
+            // Remove the completed task from the list
+            tasksList.Remove(completedTask);
+        }
+    }
+
+    private static async Task<IEnumerable<LanguageExt.Common.Result<T>>> HandleTaskIndependentCompletionAsync<T>(
+        IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks)
+    {
+        var completedResults = new List<LanguageExt.Common.Result<T>>();
+        var tasksList = tasks.ToList();
+        while (tasksList.Count > 0)
+        {
+            // Wait for any task to complete
+            var completedTask = await Task.WhenAny(tasksList).ConfigureAwait(false);
+
+            // Remove the completed task from the list
+            tasksList.Remove(completedTask);
+
+            var taskResult = await completedTask.ConfigureAwait(false);
+
+
+            completedResults.Add(taskResult);
         }
 
         return completedResults;

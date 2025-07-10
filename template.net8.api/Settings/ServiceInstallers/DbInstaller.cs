@@ -1,8 +1,8 @@
 ﻿using EntityFramework.Exceptions.PostgreSQL;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Protocols.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Timeout;
@@ -63,7 +63,7 @@ public sealed class DbInstaller : IServiceInstaller
     private static void AddDbContextPool(IHostApplicationBuilder builder, ProjectDbOptions? connectionOptions)
     {
         // Register a pooling context factory as a Singleton service
-        if (connectionOptions is null || connectionOptions.ConnectionString.IsNullOrEmpty()) return;
+        if (connectionOptions is null || string.IsNullOrEmpty(connectionOptions.ConnectionString)) return;
 
         builder.Services.AddPooledDbContextFactory<ProjectDbContext>(options =>
         {
@@ -87,6 +87,7 @@ public sealed class DbInstaller : IServiceInstaller
         {
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
+            options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
         }
 
         options.UseNpgsql(GetNpgsqlDataSource(builder.Environment, connectionOptions),

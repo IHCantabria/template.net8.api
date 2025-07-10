@@ -6,10 +6,8 @@ using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Factory;
 using template.net8.api.Core.Json;
-using template.net8.api.Core.Logger;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
-using template.net8.api.Settings.Filters;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
@@ -42,13 +40,6 @@ public sealed class ControllersInstaller : IServiceInstaller
     ///     </typeparamref>
     ///     .
     /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     There is no compatible <see cref="System.Text.Json.Serialization.JsonConverter" /> for
-    ///     <typeparamref>
-    ///         <name>TValue</name>
-    ///     </typeparamref>
-    ///     or its serializable members.
-    /// </exception>
     /// <exception cref="ArgumentException">
     ///     <paramref>
     ///         <name>keySelector</name>
@@ -64,15 +55,11 @@ public sealed class ControllersInstaller : IServiceInstaller
             {
                 x.InvalidModelStateResponseFactory = context =>
                 {
-                    var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-                    RequestLogger.LogActionRequest(context, logger);
-
                     var localizer = context.HttpContext.RequestServices
                         .GetRequiredService<IStringLocalizer<ResourceMain>>();
                     var problemDetails =
                         ProblemDetailsFactoryCore.CreateProblemDetailsBadRequestValidationPayload(context.ModelState,
                             localizer);
-                    RequestLogger.LogActionResponse(context, problemDetails, logger);
                     return new ObjectResult(problemDetails) { StatusCode = problemDetails.Status };
                 };
             });
@@ -86,7 +73,6 @@ public sealed class ControllersInstaller : IServiceInstaller
     {
         options.RespectBrowserAcceptHeader = true;
         options.ReturnHttpNotAcceptable = true;
-        options.Filters.Add<RequestLogFilter>();
         options.Conventions.Add(new ActionHidingConvention(builder.Environment.EnvironmentName));
     }
 

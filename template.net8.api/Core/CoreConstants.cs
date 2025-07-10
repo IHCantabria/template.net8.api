@@ -6,4 +6,8 @@ namespace template.net8.api.Core;
 internal static class CoreConstants
 {
     internal const string PackageJsonFile = "package.json";
+
+    internal const string ApiName = "template.net8.api";
+
+    internal const string ApiErrorCodesPrefix = "BE-";
 }

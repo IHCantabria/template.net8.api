@@ -10,7 +10,7 @@ namespace template.net8.api.Controllers.V1;
 /// <summary>
 ///     Health Check Controller
 /// </summary>
-[Route(ApiRoutes.Health.PathController)]
+[Route(ApiRoutes.HealthController.PathController)]
 [ApiController]
 [DevSwagger]
 [CoreLibrary]
@@ -25,7 +25,7 @@ public sealed class Health(
     /// </summary>
     /// <returns></returns>
     [HttpGet]
-    [Route(ApiRoutes.Health.HealthCheck)]
+    [Route(ApiRoutes.HealthController.HealthCheck)]
     public Task<IActionResult> HealthCheckAsync()
     {
         return Task.FromResult<IActionResult>(Ok("Service is running"));

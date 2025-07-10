@@ -71,7 +71,7 @@ internal static class ProblemDetailsContextExtensions
         var activityFeature = ctx.HttpContext.Features.Get<IHttpActivityFeature>();
         var activity = activityFeature?.Activity;
         if (activity is not null)
-            ctx.ProblemDetails.Extensions.TryAdd("traceId", activity);
+            ctx.ProblemDetails.Extensions.TryAdd("traceId", activity.TraceId.ToString());
     }
 
     /// <summary>

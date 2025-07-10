@@ -40,7 +40,7 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     {
         ArgumentNullException.ThrowIfNull(context);
         var clientProblemDetails =
-            ProblemDetailsFactoryCore.CreateProblemDetailsUnauthorizedProcessFail(context.Exception, localizer);
+            ProblemDetailsFactoryCore.CreateProblemDetailsUnauthorizedProcessFail(context.Exception, _localizer);
         context.HttpContext.Features.Set(clientProblemDetails);
         return base.AuthenticationFailed(context);
     }
@@ -93,7 +93,7 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     public override Task Forbidden(ForbiddenContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
-        var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsForbiddenAccess(localizer);
+        var clientProblemDetails = ProblemDetailsFactoryCore.CreateProblemDetailsForbiddenAccess(_localizer);
         context.HttpContext.Features.Set(clientProblemDetails);
         return base.Forbidden(context);
     }

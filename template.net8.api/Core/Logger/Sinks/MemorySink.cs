@@ -2,7 +2,7 @@
 using Serilog.Events;
 using ILogger = Serilog.ILogger;
 
-namespace template.net8.api.Core.Logger;
+namespace template.net8.api.Core.Logger.Sinks;
 
 internal sealed class MemorySink : ILogEventSink
 {

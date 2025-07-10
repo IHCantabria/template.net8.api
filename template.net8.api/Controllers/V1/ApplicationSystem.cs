@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
-using template.net8.api.Business;
 using template.net8.api.Controllers.Extensions;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Core.DTOs;
@@ -21,7 +21,7 @@ namespace template.net8.api.Controllers.V1;
 ///     Application System Controller
 /// </summary>
 [SwaggerTag(SwaggerDocumentation.System.ControllerDescription)]
-[Route(ApiRoutes.System.PathController)]
+[Route(ApiRoutes.SystemController.PathController)]
 [ApiController]
 [CoreLibrary]
 public sealed class ApplicationSystem(
@@ -55,7 +55,7 @@ public sealed class ApplicationSystem(
     [HttpGet]
     [DevSwagger]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
-    [Route(ApiRoutes.System.GetErrorCodes)]
+    [Route(ApiRoutes.SystemController.GetErrorCodes)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.System.GetErrorCodes.Summary,
         Description =
@@ -67,7 +67,7 @@ public sealed class ApplicationSystem(
     public Task<IActionResult> GetErrorCodesAsync(IStringLocalizer<ResourceDictionaryErrorCode> localizer)
     {
         var resources = localizer.GetAllStrings().Filter(s =>
-                s.Name.StartsWith(BusinessConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
+                s.Name.StartsWith(CoreConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
             .ToList();
         var result = new LanguageExt.Common.Result<IEnumerable<LocalizedString>>(resources);
         var action =
@@ -88,7 +88,7 @@ public sealed class ApplicationSystem(
     /// </exception>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
-    [Route(ApiRoutes.System.GetVersion)]
+    [Route(ApiRoutes.SystemController.GetVersion)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.System.GetVersion.Summary,
         Description =
@@ -102,8 +102,7 @@ public sealed class ApplicationSystem(
         var query = new QueryGetVersion();
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
         var action =
-            new ActionResultPayload<VersionDto, VersionResource>(
-                obj => obj);
+            new ActionResultPayload<VersionDto, VersionResource>(obj => obj);
         return result.ToActionResult(action, Localizer, HttpContext.Features);
     }
 }

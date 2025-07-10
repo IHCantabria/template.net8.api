@@ -20,12 +20,11 @@ internal static class LoggerMessageDefinitions
     [CoreLibrary]
     internal const string ActionRequestReceived = "Action Request Received: {methodName} at path {requestPath}";
 
-    [CoreLibrary] internal const string ActionRequestParameter = "Action Request Parameter: {key} = {value}";
-
-    [CoreLibrary] internal const string ActionRequestResponseError = "Action Request Response Error: {jsonError}";
-
     [CoreLibrary]
     internal const string ActionRequestResponsed = "Action Request Responsed: {methodName} at path {requestPath}";
+
+    [CoreLibrary] internal const string ActionRequestResponsedError =
+        "Action Request Responsed: {methodName} at path {requestPath} with ERROR code: {statusCode}";
 
     [CoreLibrary] internal const string HandlingRequest = "Handling Request {requestType}";
 

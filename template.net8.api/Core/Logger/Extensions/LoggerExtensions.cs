@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Serilog.Core;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Logger.Sinks;
 using ILogger = Serilog.ILogger;
 
 namespace template.net8.api.Core.Logger.Extensions;

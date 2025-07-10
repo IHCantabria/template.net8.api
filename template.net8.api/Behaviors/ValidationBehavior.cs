@@ -54,7 +54,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
             return Task.Run(() => validator.ValidateAsync(new ValidationContext<TRequest>(request), cts.Token),
                 cts.Token);
         });
-        var result = await ParallelUtils.ExecuteInParallelAsync(tasks, cts).ConfigureAwait(false);
+        var result = await ParallelUtils.ExecuteDependentInParallelAsync(tasks, cts).ConfigureAwait(false);
         var validateValidatorsAsync = result.ToList();
         if (validateValidatorsAsync.Length() != _validators.Length())
             throw new ValidationException(_localizer["GenericValidatorError"]);

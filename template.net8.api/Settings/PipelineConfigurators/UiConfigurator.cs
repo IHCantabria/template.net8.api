@@ -44,7 +44,7 @@ public sealed class UiConfigurator : IPipelineConfigurator
         //Get swagger configuration from service with strongly typed options object.
         var swaggerConfiguration = app.Services.GetRequiredService<IOptions<SwaggerOptions>>().Value;
         // Enable middleware to serve generated Swagger as a JSON endpoint.
-        app.UseSwagger(option => { option.RouteTemplate = swaggerConfiguration.JsonRoute; });
+        app.UseSwagger(option => option.RouteTemplate = swaggerConfiguration.JsonRoute);
         // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
         app.UseSwaggerUI(option =>
         {

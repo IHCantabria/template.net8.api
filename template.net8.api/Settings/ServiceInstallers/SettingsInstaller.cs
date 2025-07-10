@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Logger.Options;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
 

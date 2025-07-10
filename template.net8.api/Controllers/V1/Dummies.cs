@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Annotations;
 using template.net8.api.Contracts;
 using template.net8.api.Controllers.Extensions;
@@ -13,7 +14,9 @@ using template.net8.api.Domain.DTOs;
 using template.net8.api.Domain.Persistence.Models;
 using template.net8.api.Features.Commands;
 using template.net8.api.Features.Querys;
+using template.net8.api.Hubs;
 using template.net8.api.Localize.Resources;
+using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Controllers.V1;
 
@@ -21,7 +24,7 @@ namespace template.net8.api.Controllers.V1;
 ///     Dummies Controller
 /// </summary>
 [SwaggerTag(SwaggerDocumentation.Dummies.ControllerDescription)]
-[Route(ApiRoutes.Dummies.PathController)]
+[Route(ApiRoutes.DummiesController.PathController)]
 [ApiController]
 public sealed class Dummies(
     IMediator mediator,
@@ -48,7 +51,7 @@ public sealed class Dummies(
     /// </exception>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
-    [Route(ApiRoutes.Dummies.GetDummies)]
+    [Route(ApiRoutes.DummiesController.GetDummies)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.Dummies.GetDummies.Summary,
         Description =
@@ -57,7 +60,7 @@ public sealed class Dummies(
     )]
     [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummies.GetDummies.Ok,
         typeof(IEnumerable<DummyResource>), MediaTypeNames.Application.Json)]
-    public async Task<IActionResult> GetDummies(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetDummiesAsync(CancellationToken cancellationToken)
     {
         var query = new QueryGetDummies();
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
@@ -81,7 +84,7 @@ public sealed class Dummies(
     /// </exception>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
-    [Route(ApiRoutes.Dummies.GetDummy)]
+    [Route(ApiRoutes.DummiesController.GetDummy)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.Dummies.GetDummy.Summary,
         Description =
@@ -96,7 +99,7 @@ public sealed class Dummies(
     [SwaggerResponse(StatusCodes.Status404NotFound,
         SwaggerDocumentation.Dummies.GetDummy.NotFound,
         typeof(NotFoundProblemDetailsResource), MediaTypeNames.Application.ProblemJson)]
-    public async Task<IActionResult> GetDummy([FromRoute] QueryGetDummyParamsResource queryParams,
+    public async Task<IActionResult> GetDummyAsync([FromRoute] QueryGetDummyParamsResource queryParams,
         CancellationToken cancellationToken)
     {
         QueryGetDummyParamsDto paramsDto = queryParams;
@@ -119,7 +122,7 @@ public sealed class Dummies(
     /// </exception>
     [HttpPost]
     [RequestTimeout(RequestConstants.RequestCommandGenericPolicy)]
-    [Route(ApiRoutes.Dummies.CreateDummy)]
+    [Route(ApiRoutes.DummiesController.CreateDummy)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(
         Summary = SwaggerDocumentation.Dummies.CreateDummy.Summary,
@@ -132,13 +135,85 @@ public sealed class Dummies(
     [SwaggerResponse(StatusCodes.Status422UnprocessableEntity,
         SwaggerDocumentation.Dummies.CreateDummy.UnprocessableEntity,
         typeof(RequestTimeoutProblemDetailsResource), MediaTypeNames.Application.ProblemJson)]
-    public async Task<IActionResult> CreateDummy(CommandCreateDummyParamsResource commandParams,
+    public async Task<IActionResult> CreateDummyAsync(CommandCreateDummyParamsResource commandParams,
         CancellationToken cancellationToken)
     {
         var query = new CommandCreateDummy(commandParams);
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
         var action = new ActionResultPayload<Dummy, DummyCreatedResource>(obj => obj,
-            (nameof(Dummies), nameof(GetDummy)), ("Key", "dummy-key"));
+            (nameof(Dummies), nameof(GetDummyAsync)), ("Key", "dummy-key"));
         return result.ToActionResult(action, Localizer, HttpContext.Features);
+    }
+
+    /// <summary>
+    ///     Get Earthquakes Events Async
+    /// </summary>
+    /// <param name="config"></param>
+    /// <param name="cancellationToken">Cancellation Token</param>
+    /// <returns></returns>
+    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <exception cref="CoreException">
+    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
+    ///     resource
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    [HttpGet]
+    [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
+    [Route(ApiRoutes.DummiesController.Hubs)]
+    [SwaggerOperation(
+        Summary = SwaggerDocumentation.Dummies.GetDummy.Summary,
+        Description =
+            SwaggerDocumentation.Dummies.GetDummy.Description,
+        OperationId = SwaggerDocumentation.Dummies.GetDummy.Id
+    )]
+    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummies.GetDummy.Ok,
+        typeof(IEnumerable<HubEventResource>), MediaTypeNames.Application.Json)]
+    public Task<IActionResult> GetEarthquakesEventsAsync(IOptions<SwaggerOptions> config,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(config);
+        var fullUrl = config.Value.ServerUrl.OriginalString + ApiRoutes.DummiesHub.PathHub;
+
+        var eventList = new List<HubEventResource>
+        {
+            new()
+            {
+                Name = HubsDocumentation.Dummy.CheckConnectionStatus.Name, Path = fullUrl,
+                Type = HubsDocumentation.Dummy.CheckConnectionStatus.Type,
+                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Fields = []
+            },
+            new()
+            {
+                Name = HubsDocumentation.Dummy.ConnectionStatus.Name, Path = fullUrl,
+                Type = HubsDocumentation.Dummy.ConnectionStatus.Type,
+                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Fields = HubsDocumentation.Dummy.ConnectionStatus.Fields
+            },
+            new()
+            {
+                Name = HubsDocumentation.Dummy.ConnectionOnline.Name, Path = fullUrl,
+                Type = HubsDocumentation.Dummy.ConnectionOnline.Type,
+                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Fields = HubsDocumentation.Dummy.ConnectionOnline.Fields
+            },
+            new()
+            {
+                Name = HubsDocumentation.Dummy.NewDummy.Name, Path = fullUrl,
+                Type = HubsDocumentation.Dummy.NewDummy.Type,
+                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Fields = HubsDocumentation.Dummy.NewDummy.Fields
+            }
+        };
+        var result = new LanguageExt.Common.Result<IEnumerable<HubEventResource>>(eventList);
+        var action =
+            new ActionResultPayload<IEnumerable<HubEventResource>, IEnumerable<HubEventResource>>(obj =>
+                obj);
+        return Task.FromResult(result.ToActionResult(action, Localizer, HttpContext.Features));
     }
 }

@@ -20,9 +20,6 @@ template.net8.api/appsettings.Local.json
 # test Appsettings
 template.net8.api/appsettings.test.json
 
-# File log misconfigured
-template.net8.api/\#{HOST_API_LOG_INTERNAL_FILE}\#
-
 # Project Backup Files
 *Backup*.csproj
 

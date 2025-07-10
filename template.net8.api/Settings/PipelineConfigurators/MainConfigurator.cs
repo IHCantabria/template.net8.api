@@ -51,6 +51,12 @@ public sealed class MainConfigurator : IPipelineConfigurator
     {
         ArgumentNullException.ThrowIfNull(app);
 
+        // Enable middleware to log the request ID.
+        app.UseMiddleware<RequestIdLoggingMiddleware>();
+
+        // Enable middleware to log requests.
+        app.UseMiddleware<RequestLoggingMiddleware>();
+
         //Enable Serilog Request Logging.
         app.UseSerilogRequestLogging();
 

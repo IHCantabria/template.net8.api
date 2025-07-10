@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Core.Attributes;
 
-namespace template.net8.api.Settings.Options;
+namespace template.net8.api.Core.Logger.Options;
 
 /// <summary>
 ///     OpenTelemetry Options class to hold the OpenTelemetry Options
@@ -35,10 +34,10 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
 
     internal bool UseHeaderApiKey()
     {
-        if (LogEndpointApiKeyHeader.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(LogEndpointApiKeyHeader))
             return false;
 
-        return !LogEndpointApiKeyValue.IsNullOrEmpty();
+        return !string.IsNullOrEmpty(LogEndpointApiKeyValue);
     }
 }
 

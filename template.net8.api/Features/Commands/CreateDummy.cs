@@ -4,7 +4,6 @@ using FluentValidation;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Domain.DTOs;
 using template.net8.api.Domain.Persistence.Models;
 using template.net8.api.Localize.Resources;
@@ -60,7 +59,7 @@ public sealed class CreateDummyTextValidator : AbstractValidator<CommandCreateDu
     {
         ArgumentNullException.ThrowIfNull(localizer);
 
-        RuleFor(x => x.CommandParams.Text).Must(x => !x.IsNullOrEmpty())
+        RuleFor(x => x.CommandParams.Text).Must(x => !string.IsNullOrEmpty(x))
             .OverridePropertyName("text")
             .WithMessage(localizer["CreateDummyValidatorTextInvalidMsg"])
             .WithErrorCode(localizer["CreateDummyValidatorTextInvalidCode"])

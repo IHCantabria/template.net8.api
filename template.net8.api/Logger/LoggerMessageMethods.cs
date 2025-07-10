@@ -36,19 +36,16 @@ internal static partial class LoggerMessageMethods
 
     [CoreLibrary]
     [LoggerMessage(Level = LogLevel.Information,
-        Message = LoggerMessageDefinitions.ActionRequestParameter)]
-    internal static partial void LogActionRequestParameter(this ILogger logger, string key, string value);
+        Message = LoggerMessageDefinitions.ActionRequestResponsed)]
+    internal static partial void
+        LogActionRequestResponsedSuccess(this ILogger logger, string? methodName, string? requestPath);
 
     [CoreLibrary]
     [LoggerMessage(Level = LogLevel.Error,
-        Message = LoggerMessageDefinitions.ActionRequestResponseError)]
-    internal static partial void LogActionRequestResponseError(this ILogger logger, string jsonError);
-
-    [CoreLibrary]
-    [LoggerMessage(Level = LogLevel.Information,
-        Message = LoggerMessageDefinitions.ActionRequestResponsed)]
+        Message = LoggerMessageDefinitions.ActionRequestResponsedError)]
     internal static partial void
-        LogActionRequestResponsed(this ILogger logger, string? methodName, string? requestPath);
+        LogActionRequestResponsedError(this ILogger logger, string? methodName, string? requestPath,
+            string? statusCode);
 
     [CoreLibrary]
     [LoggerMessage(Level = LogLevel.Information,
