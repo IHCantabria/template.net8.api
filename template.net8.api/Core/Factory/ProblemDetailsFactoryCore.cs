@@ -8,6 +8,7 @@ using template.net8.api.Localize.Resources;
 namespace template.net8.api.Core.Factory;
 
 [CoreLibrary]
+// ReSharper disable once ClassTooBig
 internal static class ProblemDetailsFactoryCore
 {
     /// <exception cref="ArgumentNullException">
@@ -166,6 +167,26 @@ internal static class ProblemDetailsFactoryCore
             Status = StatusCodes.Status401Unauthorized
         };
         problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnauthorizedCode"].Value);
+        return problemDetails;
+    }
+
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>dictionary</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    internal static ProblemDetails CreateProblemDetailsUnauthorizedMissingToken(
+        IStringLocalizer<ResourceMain> localizer)
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Title = localizer["ProblemDetailsUnauthorizedMissingTokenTitle"],
+            Detail = localizer["ProblemDetailsUnauthorizedMissingTokenDetail"],
+            Type = "https://tools.ietf.org/html/rfc9110#name-401-unauthorized",
+            Status = StatusCodes.Status401Unauthorized
+        };
+        problemDetails.Extensions.TryAdd("code", localizer["ProblemDetailsUnauthorizedMissingTokenCode"].Value);
         return problemDetails;
     }
 

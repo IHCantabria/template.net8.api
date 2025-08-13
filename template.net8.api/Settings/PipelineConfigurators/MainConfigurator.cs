@@ -51,6 +51,10 @@ public sealed class MainConfigurator : IPipelineConfigurator
     {
         ArgumentNullException.ThrowIfNull(app);
 
+        // Configure specific not Production behaviour exception page.
+        if (app.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
+            app.UseDeveloperExceptionPage();
+
         // Enable middleware to log the request ID.
         app.UseMiddleware<RequestIdLoggingMiddleware>();
 
@@ -75,15 +79,8 @@ public sealed class MainConfigurator : IPipelineConfigurator
         // Enable middleware to redirect http request to https for the swagger page.
         app.UseHttpsRedirection();
 
-        // Configure specific not Production behaviour exception page.
-        if (app.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
-            app.UseDeveloperExceptionPage();
-
         //Configure enforce Https
         if (app.Environment.EnvironmentName is Envs.PreProduction or Envs.Production) app.UseHsts();
-
-        //Enable Security Headers middleware.
-        app.UseMiddleware<SecurityHeadersMiddleware>();
 
         //Host Filtering Middleware
         app.UseHostFiltering();
@@ -103,11 +100,17 @@ public sealed class MainConfigurator : IPipelineConfigurator
         // Enable cors middleware to allow cross domain requests.
         app.UseCors(configuration.CorsPolicy);
 
+        //Enable Authentication Header middleware. Commented out because it is not used in this template.
+        //app.UseMiddleware<AuthenticationHeaderMiddleware>();
+
         //Enable authentication middleware. Commented out because it is not used in this template.
         //app.UseAuthentication();
 
         //Enable Authorization middleware. Commented out because it is not used in this template.
         //app.UseAuthorization();
+
+        //Enable Security Headers middleware.
+        app.UseMiddleware<SecurityHeadersMiddleware>();
 
         //Enable response compression middleware.
         app.UseResponseCompression();

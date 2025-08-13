@@ -29,33 +29,39 @@ public sealed class SecurityHeadersMiddleware(RequestDelegate next)
 
         context.Response.OnStarting(() =>
         {
-            // Content-Security-Policy Header
-            context.Response.Headers.Append("Content-Security-Policy",
-                new StringValues(
-                    "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' avatars3.githubusercontent.com cdn.redoc.ly data:; style-src-elem 'self' 'unsafe-inline' fonts.googleapis.com; script-src-elem 'self' 'unsafe-inline'; worker-src blob:; font-src fonts.gstatic.com"));
+            SetSecurityHeaders(context);
 
-            // X-Content-Type-Options Header
-            context.Response.Headers.Append("X-Content-Type-Options", new StringValues("nosniff"));
-
-            // X-Frame-Options Header
-            context.Response.Headers.Append("X-Frame-Options", new StringValues("SAMEORIGIN"));
-
-            // X-XSS-Protection Header
-            context.Response.Headers.Append("X-XSS-Protection", new StringValues("1; mode=block"));
-
-            // Referrer-Policy Header
-            context.Response.Headers.Append("Referrer-Policy", new StringValues("no-referrer"));
-
-            // X-Permitted-Cross-Domain-Policies Header
-            context.Response.Headers.Append("X-Permitted-Cross-Domain-Policies", new StringValues("none"));
-
-            // Permissions-Policy Header
-            context.Response.Headers.Append("Permissions-Policy",
-                new StringValues(
-                    "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"));
             return Task.CompletedTask;
         });
-        // Call the next delegate/middleware in the pipeline.
+
         return _next(context);
+    }
+
+    private static void SetSecurityHeaders(HttpContext context)
+    {
+        // Content-Security-Policy Header
+        context.Response.Headers.Append("Content-Security-Policy",
+            new StringValues(
+                "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' avatars3.githubusercontent.com cdn.redoc.ly data:; style-src-elem 'self' 'unsafe-inline' fonts.googleapis.com; script-src-elem 'self' 'unsafe-inline'; worker-src blob:; font-src fonts.gstatic.com"));
+
+        // X-Content-Type-Options Header
+        context.Response.Headers.Append("X-Content-Type-Options", new StringValues("nosniff"));
+
+        // X-Frame-Options Header
+        context.Response.Headers.Append("X-Frame-Options", new StringValues("SAMEORIGIN"));
+
+        // X-XSS-Protection Header
+        context.Response.Headers.Append("X-XSS-Protection", new StringValues("1; mode=block"));
+
+        // Referrer-Policy Header
+        context.Response.Headers.Append("Referrer-Policy", new StringValues("no-referrer"));
+
+        // X-Permitted-Cross-Domain-Policies Header
+        context.Response.Headers.Append("X-Permitted-Cross-Domain-Policies", new StringValues("none"));
+
+        // Permissions-Policy Header
+        context.Response.Headers.Append("Permissions-Policy",
+            new StringValues(
+                "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"));
     }
 }

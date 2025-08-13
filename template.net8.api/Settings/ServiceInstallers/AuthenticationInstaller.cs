@@ -31,12 +31,13 @@ public sealed class AuthenticationInstaller : IServiceInstaller
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    // ReSharper disable once MethodTooLong
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         // Commented because Authentication is not implemented in this template.
         ArgumentNullException.ThrowIfNull(builder);
         //builder.Services.AddScoped<AppJwtBearerEvents>();
-        // configure strongly typed settings objects
+        ////configure strongly typed settings objects
         //var authenticationOptions = builder.Configuration.GetSection(JwtOptions.Jwt).Get<JwtOptions>();
         //ValidateJwtOptions(authenticationOptions);
         //_config = authenticationOptions;

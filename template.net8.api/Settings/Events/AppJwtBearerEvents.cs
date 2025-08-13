@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -56,9 +57,39 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    /// <exception cref="NotSupportedException">
+    ///     The
+    ///     <see>
+    ///         <cref>IDictionary`2</cref>
+    ///     </see>
+    ///     is read-only.
+    /// </exception>
+    /// <exception cref="System.Collections.Generic.KeyNotFoundException">
+    ///     The property is retrieved and
+    ///     <paramref>
+    ///         <name>key</name>
+    ///     </paramref>
+    ///     is not found.
+    /// </exception>
     public override Task Challenge(JwtBearerChallengeContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
+        var httpContextProblemDetails =
+            context.HttpContext.Features.Get<ProblemDetails>();
+        var bearerError = httpContextProblemDetails != null ? "invalid_token" : "invalid_request";
+        var bearerErrorDescription = httpContextProblemDetails != null
+            ? "The access token is not valid"
+            : "The access token is missing";
+        if (httpContextProblemDetails == null)
+        {
+            httpContextProblemDetails =
+                ProblemDetailsFactoryCore.CreateProblemDetailsUnauthorizedMissingToken(_localizer);
+            context.HttpContext.Features.Set(httpContextProblemDetails);
+        }
+
+        context.HttpContext.Items["BearerError"] = bearerError;
+        context.HttpContext.Items["BearerErrorDescription"] = bearerErrorDescription;
+
         return base.Challenge(context);
     }
 

@@ -273,4 +273,13 @@
 <data name="ProblemDetailsUnauthorizedProcessFailCode" xml:space="preserve">
   <value>BE-R-E-003</value>
 </data>
+  <data name="ProblemDetailsUnauthorizedMissingTokenTitle" xml:space="preserve">
+  <value>Missing Token.</value>
+</data>
+  <data name="ProblemDetailsUnauthorizedMissingTokenDetail" xml:space="preserve">
+  <value>The token is missing.</value>
+</data>
+<data name="ProblemDetailsUnauthorizedMissingTokenCode" xml:space="preserve">
+  <value>BE-R-E-004</value>
+</data>
 </root>
