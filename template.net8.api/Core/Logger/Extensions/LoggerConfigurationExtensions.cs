@@ -118,7 +118,7 @@ internal static class LoggerConfigurationExtensions
     private static LoggerConfiguration ConfigureSinkTelemetry(this LoggerConfiguration lc, OpenTelemetryOptions config,
         string envName, string version)
     {
-        return lc.WriteTo.OpenTelemetry(x =>
+        return lc.WriteTo.Async(s => s.OpenTelemetry(x =>
         {
             x.LogsEndpoint =
                 config.LogEndpointUrl
@@ -137,7 +137,7 @@ internal static class LoggerConfigurationExtensions
                 ["service.environment"] = envName
             };
             x.FormatProvider = CultureInfo.InvariantCulture;
-        });
+        }));
     }
 
     /// <summary>

@@ -26,7 +26,7 @@ internal static class SerilogLoggersFactory
         Log.Logger = new LoggerConfiguration()
             .EnrichLog()
             .ConfigureMinLevels()
-            .WriteTo.Sink(MemorySink) // Temporal memory sink
+            .WriteTo.Async(a => a.Sink(MemorySink)) // Temporal memory sink
             .CreateBootstrapLogger();
     }
 
