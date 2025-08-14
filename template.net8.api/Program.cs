@@ -43,7 +43,6 @@ catch (Exception e)
 {
     if (!Log.Logger.CurrentLoggerHasSinks())
         SerilogLoggersFactory.FallbackLogFactory();
-    // NLog: catch setup errors
     MainLoggerMethods.LogCriticalError(e);
     throw;
 }

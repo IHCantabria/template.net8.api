@@ -30,10 +30,9 @@ internal sealed class CamelCaseStringConverter : JsonConverter<string>
         if (reader.TokenType == JsonTokenType.Null)
             return null;
 
-        if (reader.TokenType != JsonTokenType.String)
-            throw new JsonException("Expected JSON string");
-
-        return ToCamelCase(reader.GetString());
+        return reader.TokenType != JsonTokenType.String
+            ? throw new JsonException("Expected JSON string")
+            : ToCamelCase(reader.GetString());
     }
 
     /// <summary>

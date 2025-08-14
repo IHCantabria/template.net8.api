@@ -8,8 +8,8 @@ internal static class EnumerableExtensions
 {
     /// <exception cref="InvalidOperationException">The collection was modified after the enumerator was created.</exception>
     /// <exception cref="NotSupportedException">The enumerator does not support being reset.</exception>
-    internal static Try<T> MinElement<T, TR>(this IEnumerable<T> container, Func<T, TR> valuingFoo)
-        where TR : IComparable
+    internal static Try<T> MinElement<T, Tr>(this IEnumerable<T> container, Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
         return () =>
         {
@@ -24,8 +24,8 @@ internal static class EnumerableExtensions
         };
     }
 
-    private static TR FindMinValue<T, TR>(IEnumerator<T> enumerator, Func<T, TR> valuingFoo)
-        where TR : IComparable
+    private static Tr FindMinValue<T, Tr>(IEnumerator<T> enumerator, Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
         if (!enumerator.MoveNext()) throw new ArgumentException("Container is empty!");
 
@@ -40,8 +40,8 @@ internal static class EnumerableExtensions
         return minVal;
     }
 
-    private static T FindMinElement<T, TR>(IEnumerator<T> enumerator, Func<T, TR> valuingFoo, TR minValue)
-        where TR : IComparable
+    private static T FindMinElement<T, Tr>(IEnumerator<T> enumerator, Func<T, Tr> valuingFoo, Tr minValue)
+        where Tr : IComparable
     {
         enumerator.Reset(); // Reset the enumerator to start from the beginning
 
@@ -56,8 +56,8 @@ internal static class EnumerableExtensions
 
     /// <exception cref="InvalidOperationException">The collection was modified after the enumerator was created.</exception>
     /// <exception cref="NotSupportedException">The enumerator does not support being reset.</exception>
-    internal static Try<T> MaxElement<T, TR>(this IEnumerable<T> container, Func<T, TR> valuingFoo)
-        where TR : IComparable
+    internal static Try<T> MaxElement<T, Tr>(this IEnumerable<T> container, Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
         return () =>
         {
@@ -72,8 +72,8 @@ internal static class EnumerableExtensions
         };
     }
 
-    private static TR FindMaxValue<T, TR>(IEnumerator<T> enumerator, Func<T, TR> valuingFoo)
-        where TR : IComparable
+    private static Tr FindMaxValue<T, Tr>(IEnumerator<T> enumerator, Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
         if (!enumerator.MoveNext()) throw new ArgumentException("Container is empty!");
 
@@ -88,8 +88,8 @@ internal static class EnumerableExtensions
         return maxVal;
     }
 
-    private static T FindMaxElement<T, TR>(IEnumerator<T> enumerator, Func<T, TR> valuingFoo, TR maxValue)
-        where TR : IComparable
+    private static T FindMaxElement<T, Tr>(IEnumerator<T> enumerator, Func<T, Tr> valuingFoo, Tr maxValue)
+        where Tr : IComparable
     {
         enumerator.Reset(); // Reset the enumerator to start from the beginning
 
@@ -104,8 +104,8 @@ internal static class EnumerableExtensions
 
     /// <exception cref="InvalidOperationException">The collection was modified after the enumerator was created.</exception>
     /// <exception cref="ArgumentException">Container is empty!</exception>
-    internal static Try<IEnumerable<T>> MaxElements<T, TR>(this IEnumerable<T> container, Func<T, TR> valuingFoo)
-        where TR : IComparable
+    internal static Try<IEnumerable<T>> MaxElements<T, Tr>(this IEnumerable<T> container, Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
         return () =>
         {
@@ -119,9 +119,9 @@ internal static class EnumerableExtensions
         };
     }
 
-    private static (List<T> maxElements, List<TR> maxValues) FindMaxElements<T, TR>(IEnumerator<T> enumerator,
-        Func<T, TR> valuingFoo)
-        where TR : IComparable
+    private static (List<T> maxElements, List<Tr> maxValues) FindMaxElements<T, Tr>(IEnumerator<T> enumerator,
+        Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
         // Find the maximum values
         var maxValues = FindMaxValues(enumerator, valuingFoo);
@@ -132,8 +132,8 @@ internal static class EnumerableExtensions
         return (maxElements, maxValues);
     }
 
-    private static List<T> FindMaxElements<T, TR>(IEnumerator<T> enumerator, Func<T, TR> valuingFoo, TR maxValue)
-        where TR : IComparable
+    private static List<T> FindMaxElements<T, Tr>(IEnumerator<T> enumerator, Func<T, Tr> valuingFoo, Tr maxValue)
+        where Tr : IComparable
     {
         var maxElements = new List<T>();
 
@@ -148,10 +148,10 @@ internal static class EnumerableExtensions
         return maxElements;
     }
 
-    private static List<TR> FindMaxValues<T, TR>(IEnumerator<T> enumerator, Func<T, TR> valuingFoo)
-        where TR : IComparable
+    private static List<Tr> FindMaxValues<T, Tr>(IEnumerator<T> enumerator, Func<T, Tr> valuingFoo)
+        where Tr : IComparable
     {
-        var maxValues = new List<TR> { valuingFoo(enumerator.Current) };
+        var maxValues = new List<Tr> { valuingFoo(enumerator.Current) };
 
         while (enumerator.MoveNext())
         {

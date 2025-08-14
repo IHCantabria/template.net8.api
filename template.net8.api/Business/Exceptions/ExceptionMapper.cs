@@ -114,10 +114,9 @@ internal static class ExceptionMapper
         if (exceptionType is ExceptionType.NotSupported)
             throw new NotSupportedException(localizer["MapperExceptionResultNotSupported", exceptionType]);
 
-        if (ActionResultHandlers.TryGetValue(exceptionType, out var handler))
-            return handler(ex, localizer, features);
-
-        throw new NotSupportedException(localizer["MapperExceptionResultNotSupported", exceptionType]);
+        return ActionResultHandlers.TryGetValue(exceptionType, out var handler)
+            ? handler(ex, localizer, features)
+            : throw new NotSupportedException(localizer["MapperExceptionResultNotSupported", exceptionType]);
     }
 
     /// <exception cref="ArgumentNullException">
@@ -133,10 +132,9 @@ internal static class ExceptionMapper
         if (exceptionType is ExceptionType.NotSupported)
             throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
 
-        if (HttpStatusCodeHandlers.TryGetValue(exceptionType, out var statusCode))
-            return statusCode;
-
-        throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
+        return HttpStatusCodeHandlers.TryGetValue(exceptionType, out var statusCode)
+            ? statusCode
+            : throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
     }
 
     /// <summary>
