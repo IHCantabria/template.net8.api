@@ -53,11 +53,8 @@ internal static class AutoMapperHotChocolateQueryableExtensions
     private static IEnumerable<Expression> VisitMemberInit(MemberInitExpression memberInit,
         Expression path, int level)
     {
-        var memberAssignments = memberInit.Bindings.Cast<MemberAssignment>();
-
-        foreach (var memberAssignment in memberAssignments)
-        foreach (var expression in VisitMemberAssignment(memberAssignment, path, level))
-            yield return expression;
+        return memberInit.Bindings.Cast<MemberAssignment>()
+            .SelectMany(memberAssignment => VisitMemberAssignment(memberAssignment, path, level));
     }
 
     private static IEnumerable<Expression> VisitMemberAssignment(MemberAssignment memberAssignment, Expression path,
