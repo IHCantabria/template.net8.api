@@ -1,6 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using HotChocolate.Resolvers;
+using JetBrains.Annotations;
 using MediatR;
-using template.net8.api.Domain.Persistence.Models;
+using template.net8.api.Domain.DTOs;
 using template.net8.api.Features.GraphQL;
 
 namespace template.net8.api.GraphQL;
@@ -17,6 +18,7 @@ public sealed class QueryProvider
     ///     Campaigns
     /// </summary>
     /// <param name="mediatr"></param>
+    /// <param name="context"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
@@ -30,9 +32,10 @@ public sealed class QueryProvider
     [UsedImplicitly]
     [GraphQLName("dummies")]
     [GraphQLDescription("Dummies")]
-    public Task<IQueryable<Dummy>> DummiesAsync([Service] IMediator mediatr)
+    public Task<IQueryable<DummyDto>> DummiesAsync([Service] IMediator mediatr, IResolverContext context)
     {
         ArgumentNullException.ThrowIfNull(mediatr);
-        return mediatr.Send(new GraphQLQueryGetDummies());
+        ArgumentNullException.ThrowIfNull(context);
+        return mediatr.Send(new GraphQLQueryGetDummies(context));
     }
 }

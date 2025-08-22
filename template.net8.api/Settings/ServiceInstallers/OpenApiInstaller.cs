@@ -12,7 +12,7 @@ public sealed class OpenApiInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 17;
+    public short LoadOrder => 16;
 
     /// <summary>
     ///     Install OpenApi Service

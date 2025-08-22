@@ -1,5 +1,5 @@
 ﻿using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.Base;
+using template.net8.api.Core.Base;
 using template.net8.api.Domain.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Domain.Specifications.Generic;
@@ -8,6 +8,10 @@ namespace template.net8.api.Domain.Specifications.Generic;
 internal sealed class EntityVerificationById<TEntity, TKey> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithId<TKey> where TKey : struct
 {
+    /// <summary>
+    ///     Constructs a specification to filter an entity by its ID.
+    /// </summary>
+    /// <param name="id"></param>
     /// <exception cref="NotSupportedException">
     ///     The
     ///     <see>
@@ -25,6 +29,9 @@ internal sealed class EntityVerificationById<TEntity, TKey> : VerificationBase<T
 internal sealed class EntitiesVerificationByIds<TEntity, TKey> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithId<TKey> where TKey : struct
 {
+    /// <summary>
+    ///     Constructs a specification to filter entities by a collection of IDs.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>
@@ -51,6 +58,9 @@ internal sealed class EntitiesVerificationByIds<TEntity, TKey> : VerificationBas
 internal sealed class EntityVerificationByDatahubId<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithDatahubId
 {
+    /// <summary>
+    ///     Constructs a specification to filter an entity by its Datahub ID.
+    /// </summary>
     /// <exception cref="NotSupportedException">
     ///     The
     ///     <see>
@@ -68,6 +78,9 @@ internal sealed class EntityVerificationByDatahubId<TEntity> : VerificationBase<
 internal sealed class EntitiesVerificationByDatahubIds<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithDatahubId
 {
+    /// <summary>
+    ///     Constructs a specification to filter entities by a collection of Datahub IDs.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>
@@ -94,6 +107,9 @@ internal sealed class EntitiesVerificationByDatahubIds<TEntity> : VerificationBa
 internal sealed class EntityVerificationByUuid<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithUuid
 {
+    /// <summary>
+    ///     Constructs a specification to filter an entity by its UUID.
+    /// </summary>
     /// <exception cref="NotSupportedException">
     ///     The
     ///     <see>
@@ -111,6 +127,9 @@ internal sealed class EntityVerificationByUuid<TEntity> : VerificationBase<TEnti
 internal sealed class EntitiesVerificationByUuids<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithUuid
 {
+    /// <summary>
+    ///     Constructs a specification to filter entities by a collection of UUIDs.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>
@@ -137,6 +156,9 @@ internal sealed class EntitiesVerificationByUuids<TEntity> : VerificationBase<TE
 internal sealed class EntityVerificationByNameKey<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithNameKey
 {
+    /// <summary>
+    ///     Constructs a specification to filter an entity by its Name.
+    /// </summary>
     /// <exception cref="NotSupportedException">
     ///     The
     ///     <see>
@@ -154,6 +176,9 @@ internal sealed class EntityVerificationByNameKey<TEntity> : VerificationBase<TE
 internal sealed class EntitiesVerificationByNameKeys<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithNameKey
 {
+    /// <summary>
+    ///     Constructs a specification to filter entities by a collection of Names.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>
@@ -180,6 +205,9 @@ internal sealed class EntitiesVerificationByNameKeys<TEntity> : VerificationBase
 internal sealed class EntityVerificationByName<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithName
 {
+    /// <summary>
+    ///     Constructs a specification to filter an entity by its Name.
+    /// </summary>
     /// <exception cref="NotSupportedException">
     ///     The
     ///     <see>
@@ -197,6 +225,9 @@ internal sealed class EntityVerificationByName<TEntity> : VerificationBase<TEnti
 internal sealed class EntitiesVerificationByNames<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithNameKey
 {
+    /// <summary>
+    ///     Constructs a specification to filter entities by a collection of Names.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>source</name>

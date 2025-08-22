@@ -1,15 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Base;
 using template.net8.api.Core.Interfaces;
-using template.net8.api.Domain.Base;
 using template.net8.api.Domain.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Domain.Specifications.Generic;
 
 [CoreLibrary]
-internal sealed class DtosOrderedByAliasSpecifications<TEntity, TDto> : SpecificationBase<TEntity, TDto>
-    where TEntity : class, IEntityWithAlias where TDto : class, IDto
+internal sealed class DtosOrderedByAliasSpecifications<TEntity> : SpecificationBase<TEntity>
+    where TEntity : class, IEntityWithAlias
 {
+    /// <summary>
+    ///     Constructs a specification to order entities by their alias text.
+    /// </summary>
+    /// <param name="trackData"></param>
     /// <exception cref="NotSupportedException">
     ///     The
     ///     <see>

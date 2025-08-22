@@ -1,7 +1,7 @@
 ﻿using template.net8.api.Core.Attributes;
 using template.net8.api.Logger;
 
-namespace template.net8.api.Domain.Base;
+namespace template.net8.api.Core.Base;
 
 /// <summary>
 ///     Repository Base

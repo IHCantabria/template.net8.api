@@ -25,7 +25,7 @@ public sealed class CorsInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 16;
+    public short LoadOrder => 15;
 
     /// <summary>
     ///     Install Cors Service

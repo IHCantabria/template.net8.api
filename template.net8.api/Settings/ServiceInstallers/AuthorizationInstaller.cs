@@ -15,7 +15,7 @@ public sealed class AuthorizationInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 20;
+    public short LoadOrder => 19;
 
     /// <summary>
     ///     Install Repository Services

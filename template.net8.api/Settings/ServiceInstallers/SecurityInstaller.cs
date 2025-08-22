@@ -14,7 +14,7 @@ public sealed class SecurityInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 22;
+    public short LoadOrder => 21;
 
     /// <summary>
     ///     Install Security Service

@@ -15,7 +15,7 @@ public sealed class GraphQLInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 26;
+    public short LoadOrder => 25;
 
     /// <summary>
     ///     Install Mediator Service

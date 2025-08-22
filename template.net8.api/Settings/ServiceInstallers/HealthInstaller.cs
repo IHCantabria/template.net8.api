@@ -25,7 +25,7 @@ public sealed class HealthInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 25;
+    public short LoadOrder => 24;
 
     /// <summary>
     ///     Install Health Checks Service

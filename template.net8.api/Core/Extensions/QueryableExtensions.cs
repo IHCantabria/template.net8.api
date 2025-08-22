@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using HotChocolate.Resolvers;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Attributes;
@@ -10,7 +11,9 @@ namespace template.net8.api.Core.Extensions;
 [CoreLibrary]
 internal static class QueryableExtensions
 {
-    [CoreLibrary]
+    /// <summary>
+    ///     Applies the verification to the queryable, modifying it based on the filters.
+    /// </summary>
     internal static IQueryable<TEntity> ApplyVerification<TEntity>(this IQueryable<TEntity> query,
         IVerification<TEntity>? verification) where TEntity : class, IEntity
     {
@@ -24,7 +27,7 @@ internal static class QueryableExtensions
     }
 
     /// <summary>
-    ///     ApplySpecification
+    ///     Applies the specification to the queryable, modifying it based on the filters, includes, group by, order by,
     /// </summary>
     /// <exception cref="InvalidOperationException">
     ///     The
@@ -33,7 +36,6 @@ internal static class QueryableExtensions
     ///     </see>
     ///     property is <see langword="false" />.
     /// </exception>
-    [CoreLibrary]
     internal static IQueryable<TEntity> ApplySpecification<TEntity>(this IQueryable<TEntity> query,
         ISpecification<TEntity>? specification) where TEntity : class, IEntity
     {
@@ -54,32 +56,145 @@ internal static class QueryableExtensions
     }
 
     /// <summary>
-    ///     ApplySpecification
+    ///     Applies the projection to the queryable, modifying it based on the projection expression.
     /// </summary>
-    /// <exception cref="InvalidOperationException">
-    ///     The
-    ///     <see>
-    ///         <cref>P:System.Nullable`1.HasValue</cref>
-    ///     </see>
-    ///     property is <see langword="false" />.
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     or
+    ///     <paramref>
+    ///         <name>selector</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
     /// </exception>
-    [CoreLibrary]
-    internal static IQueryable<TEntity> ApplySpecification<TEntity, TDto>(this IQueryable<TEntity> query,
-        ISpecification<TEntity, TDto>? specification) where TEntity : class, IEntity where TDto : class, IDto
+    internal static IQueryable<TDto> ApplyProjection<TEntity, TDto>(this IQueryable<TEntity> query,
+        IProjection<TEntity, TDto> projection) where TEntity : class, IEntity where TDto : class, IDto
     {
-        // Do not apply anything if specification is null
-        if (specification is null) return query;
+        return query.Select(projection.Expression);
+    }
 
-        // Modify the IQueryable
+    /// <summary>
+    ///     Projects the queryable to a DTO using the provided projection and resolver context.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     or
+    ///     <paramref>
+    ///         <name>selector</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     <paramref>
+    ///         <name>member</name>
+    ///     </paramref>
+    ///     does not represent a field or property.
+    ///     -or-
+    ///     The property represented by
+    ///     <paramref>
+    ///         <name>member</name>
+    ///     </paramref>
+    ///     does not have a <see langword="set" /> accessor.
+    ///     -or-
+    ///     <paramref>
+    ///         <name>expression</name>
+    ///     </paramref>
+    ///     .Type is not assignable to the type of the field or property that
+    ///     <paramref>
+    ///         <name>member</name>
+    ///     </paramref>
+    ///     represents.
+    /// </exception>
+    internal static IQueryable<TDto> ApplyProjection<TEntity, TDto>(this IQueryable<TEntity> query,
+        IProjection<TEntity, TDto> projection,
+        IResolverContext context) where TEntity : class, IEntity where TDto : class, IDto
+    {
+        var selectedFieldsTree = context.GetSelectedFieldsTree();
+        var lambdaBody = BuildMemberInit(projection.Expression.Body, selectedFieldsTree);
+        var lambda = Expression.Lambda<Func<TEntity, TDto>>(lambdaBody, projection.Expression.Parameters);
+        return query.Select(lambda);
+    }
 
-        query = specification.Filters.Count > 0 ? query.ApplyFilters(specification.Filters) : query;
-        query = specification.GroupBy is not null ? query.ApplyGroupBy(specification.GroupBy) : query;
-        query = specification.OrderBys.Count > 0 ? query.ApplyOrderBys(specification.OrderBys) : query;
-        query = specification.TakeRows.HasValue ? query.ApplyTakeRows(specification.TakeRows.Value) : query;
-        query = query.ApplyQuerySplitStrategy(specification.QuerySplitStrategy);
-        query = query.ApplyQueryTrackStrategy(specification.QueryTrackStrategy);
+    private static Expression BuildMemberInit(Expression source, Dictionary<string, HashSet<string>> selectedFieldsTree,
+        string path = "")
+    {
+        if (source is not MemberInitExpression init) return source;
 
-        return query;
+        var bindings = init.Bindings
+            .OfType<MemberAssignment>()
+            .Where(b => IsSelected(path, b.Member.Name, selectedFieldsTree))
+            .Select(b =>
+            {
+                var childPath = string.IsNullOrEmpty(path) ? b.Member.Name : $"{path}.{b.Member.Name}";
+
+                if (IsSimpleType(b.Expression.Type))
+                    return Expression.Bind(b.Member, b.Expression);
+
+                if (IsCollectionType(b.Expression.Type, out var elementType))
+                    return Expression.Bind(b.Member,
+                        BuildCollectionInit(b.Expression, elementType, selectedFieldsTree, childPath));
+
+                var childInit = BuildMemberInit(b.Expression, selectedFieldsTree, childPath);
+                return Expression.Bind(b.Member, childInit);
+            });
+
+        return Expression.MemberInit(Expression.New(init.Type), bindings);
+    }
+
+    private static BinaryExpression BuildCollectionInit(
+        Expression source,
+        Type elementType,
+        Dictionary<string, HashSet<string>> selectedFieldsTree,
+        string path)
+    {
+        var itemParam = Expression.Parameter(elementType, "x");
+        var itemInit = BuildMemberInit(itemParam, selectedFieldsTree, path);
+
+        var selectMethod = typeof(Queryable)
+            .GetMethods()
+            .First(m => m.Name == "Select" && m.GetParameters().Length == 2)
+            .MakeGenericMethod(elementType, elementType);
+
+        var selectCall = Expression.Call(selectMethod, source, Expression.Lambda(itemInit, itemParam));
+
+        var defaultValue = Expression.Default(source.Type);
+        return Expression.Coalesce(selectCall, defaultValue);
+    }
+
+    private static bool IsSelected(string path, string propName, Dictionary<string, HashSet<string>> tree)
+    {
+        return tree.TryGetValue(path, out var props) && props.Contains(propName);
+    }
+
+    private static bool IsSimpleType(Type type)
+    {
+        type = Nullable.GetUnderlyingType(type) ?? type;
+        return type.IsPrimitive
+               || type.IsEnum
+               || type == typeof(string)
+               || type == typeof(decimal)
+               || type == typeof(DateTime)
+               || type == typeof(DateTimeOffset)
+               || type == typeof(Guid)
+               || type == typeof(TimeSpan);
+    }
+
+    private static bool IsCollectionType(Type type, out Type elementType)
+    {
+        var enumerableType = type.GetInterfaces()
+            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+        if (enumerableType != null)
+        {
+            elementType = enumerableType.GetGenericArguments()[0];
+            return true;
+        }
+
+        elementType = null!;
+        return false;
     }
 
     private static IQueryable<TEntity> ApplyFilters<TEntity>(this IQueryable<TEntity> queryable,

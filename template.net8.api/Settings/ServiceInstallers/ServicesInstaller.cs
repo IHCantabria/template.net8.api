@@ -14,7 +14,7 @@ public sealed class ServicesInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 12;
+    public short LoadOrder => 11;
 
     /// <summary>
     ///     Install Business Services

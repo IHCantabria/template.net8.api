@@ -1,5 +1,7 @@
 ﻿using JetBrains.Annotations;
 using template.net8.api.Contracts;
+using template.net8.api.Core.Interfaces;
+using template.net8.api.Domain.DTOs;
 
 namespace template.net8.api.Domain.Persistence.Models;
 
@@ -34,4 +36,14 @@ public partial class Dummy
     {
         return entity;
     }
+}
+
+internal static class DummyProjections
+{
+    internal static IProjection<Dummy, DummyDto> Projection =>
+        new Projection<Dummy, DummyDto>(p => new DummyDto
+        {
+            Key = p.Key,
+            Text = p.Text
+        });
 }

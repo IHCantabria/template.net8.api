@@ -13,7 +13,7 @@ public sealed class ValidatorsInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 14;
+    public short LoadOrder => 13;
 
     /// <summary>
     ///     Install Validators Services

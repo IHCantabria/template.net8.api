@@ -18,7 +18,7 @@ public sealed class AuthenticationInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 19;
+    public short LoadOrder => 18;
 
     /// <summary>
     ///     Install Authentication Services

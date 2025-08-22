@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Base;
 using template.net8.api.Core.Exceptions;
-using template.net8.api.Domain.Base;
 using template.net8.api.Domain.Persistence.Repositories.Interfaces;
 
 namespace template.net8.api.Domain.Persistence.Repositories;

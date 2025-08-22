@@ -15,7 +15,7 @@ public sealed class RequestTimeoutInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 23;
+    public short LoadOrder => 22;
 
     /// <summary>
     ///     Install Request Timeout Service

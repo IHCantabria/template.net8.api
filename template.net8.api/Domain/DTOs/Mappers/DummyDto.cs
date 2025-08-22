@@ -36,11 +36,31 @@ public sealed partial record DummyDto
         return dto;
     }
 
-    internal static IEnumerable<DummyResource> ToCollection(
-        IReadOnlyList<DummyDto> dtos)
+
+    /// <summary>
+    ///     This method is used to convert a collection of DummyDto to a collection of DummyResource.
+    /// </summary>
+    /// <param name="dtos"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>source</name>
+    ///     </paramref>
+    ///     or
+    ///     <paramref>
+    ///         <name>selector</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
+    public static IEnumerable<DummyResource> ToCollection(
+        IEnumerable<DummyDto> dtos)
     {
-        var resources = new DummyResource[dtos.Count];
-        for (var i = 0; i < dtos.Count; i++) resources[i] = dtos[i];
+        // Si el enumerable ya es una lista, iteramos más rápido usando índices
+        if (dtos is not IReadOnlyList<DummyDto> list) return dtos.Select(ToDummyResource);
+
+        var resources = new DummyResource[list.Count];
+        for (var i = 0; i < list.Count; i++)
+            resources[i] = list[i];
         return resources;
     }
 }

@@ -13,7 +13,7 @@ public sealed class MediatorInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 15;
+    public short LoadOrder => 14;
 
     /// <summary>
     ///     Install Mediator Service

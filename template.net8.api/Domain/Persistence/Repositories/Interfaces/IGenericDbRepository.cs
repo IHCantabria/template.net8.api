@@ -61,10 +61,12 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     ///     Asynchronously gets the entities that satisfy the specification and maps them to DTOs.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TDto>(ISpecification<TEntity, TDto>? specification,
+    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TDto>(ISpecification<TEntity>? specification,
+        IProjection<TEntity, TDto> projection,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -81,10 +83,12 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     ///     Asynchronously gets the unique entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity> specification,
+        IProjection<TEntity, TDto> projection,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -101,10 +105,12 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     ///     Asynchronously gets the first entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<LanguageExt.Common.Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity> specification,
+        IProjection<TEntity, TDto> projection,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -112,9 +118,10 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     ///     Synchronously gets the first entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Try<TDto> GetFirst<TDto>(ISpecification<TEntity, TDto> specification)
+    Try<TDto> GetFirst<TDto>(ISpecification<TEntity> specification, IProjection<TEntity, TDto> projection)
         where TDto : class, IDto;
 
     /// <summary>
@@ -159,39 +166,35 @@ public interface IGenericDbRepositoryScopedDbContext<out TDbContext, TEntity>
     /// <summary>
     ///     Asynchronously executes the query procedure.
     /// </summary>
-    /// <param name="procedureName"></param>
+    /// <param name="procedureCall"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
-        CancellationToken cancellationToken,
-        params object[] parameters);
+    Task<LanguageExt.Common.Result<bool>> ExecuteQueryProcedureAsync(IProcedureCall procedureCall,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Asynchronously executes the query procedure and returns the entities.
     /// </summary>
-    /// <param name="procedureName"></param>
+    /// <param name="procedureCall"></param>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
-        ISpecification<TEntity>? specification, CancellationToken cancellationToken,
-        params object[] parameters);
+    Task<LanguageExt.Common.Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(IProcedureCall procedureCall,
+        ISpecification<TEntity>? specification, CancellationToken cancellationToken);
 
 
     /// <summary>
     ///     Asynchronously executes the query procedure and maps the entities to DTOs.
     /// </summary>
-    /// <param name="procedureName"></param>
+    /// <param name="procedureCall"></param>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
-        ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken,
-        params object[] parameters) where TDto : class, IDto;
+    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(IProcedureCall procedureCall,
+        ISpecification<TEntity>? specification, IProjection<TEntity, TDto> projection,
+        CancellationToken cancellationToken) where TDto : class, IDto;
 }
 
 /// <summary>
@@ -290,10 +293,12 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     ///     Asynchronously gets the entities that satisfy the specification and maps them to DTOs.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TDto>(ISpecification<TEntity, TDto>? specification,
+    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> GetAsync<TDto>(ISpecification<TEntity>? specification,
+        IProjection<TEntity, TDto> projection,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -310,10 +315,12 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     ///     Asynchronously gets the unique entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<LanguageExt.Common.Result<TDto>> GetSingleAsync<TDto>(ISpecification<TEntity> specification,
+        IProjection<TEntity, TDto> projection,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -330,10 +337,12 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     ///     Asynchronously gets the first entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity, TDto> specification,
+    Task<LanguageExt.Common.Result<TDto>> GetFirstAsync<TDto>(ISpecification<TEntity> specification,
+        IProjection<TEntity, TDto> projection,
         CancellationToken cancellationToken)
         where TDto : class, IDto;
 
@@ -341,48 +350,45 @@ public interface IGenericDbRepositoryTransientDbContext<TDbContext, TEntity>
     ///     Synchronously gets the first entity that satisfies the specification and maps it to a DTO.
     /// </summary>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Try<TDto> GetFirst<TDto>(ISpecification<TEntity, TDto> specification)
+    Try<TDto> GetFirst<TDto>(ISpecification<TEntity> specification, IProjection<TEntity, TDto> projection)
         where TDto : class, IDto;
 
     /// <summary>
     ///     Asynchronously executes the query procedure.
     /// </summary>
-    /// <param name="procedureName"></param>
+    /// <param name="procedureCall"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<bool>> ExecuteQueryProcedureAsync(string procedureName,
-        CancellationToken cancellationToken,
-        params object[] parameters);
+    Task<LanguageExt.Common.Result<bool>> ExecuteQueryProcedureAsync(IProcedureCall procedureCall,
+        CancellationToken cancellationToken);
 
 
     /// <summary>
     ///     Asynchronously executes the query procedure and returns the entities.
     /// </summary>
-    /// <param name="procedureName"></param>
+    /// <param name="procedureCall"></param>
     /// <param name="specification"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(string procedureName,
-        ISpecification<TEntity>? specification, CancellationToken cancellationToken,
-        params object[] parameters);
+    Task<LanguageExt.Common.Result<ICollection<TEntity>>> ExecuteQueryProcedureAsync(IProcedureCall procedureCall,
+        ISpecification<TEntity>? specification, CancellationToken cancellationToken);
 
 
     /// <summary>
     ///     Asynchronously executes the query procedure and maps the entities to DTOs.
     /// </summary>
-    /// <param name="procedureName"></param>
+    /// <param name="procedureCall"></param>
     /// <param name="specification"></param>
+    /// <param name="projection"></param>
     /// <param name="cancellationToken"></param>
-    /// <param name="parameters"></param>
     /// <typeparam name="TDto"></typeparam>
     /// <returns></returns>
-    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(string procedureName,
-        ISpecification<TEntity, TDto>? specification, CancellationToken cancellationToken,
-        params object[] parameters) where TDto : class, IDto;
+    Task<LanguageExt.Common.Result<IEnumerable<TDto>>> ExecuteQueryProcedureAsync<TDto>(IProcedureCall procedureCall,
+        ISpecification<TEntity>? specification, IProjection<TEntity, TDto> projection,
+        CancellationToken cancellationToken) where TDto : class, IDto;
 }
 
 /// <summary>
