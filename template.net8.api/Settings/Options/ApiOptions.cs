@@ -23,10 +23,10 @@ public sealed record ApiOptions : IEqualityOperators<ApiOptions, ApiOptions, boo
     public required string Name { get; init; }
 
     /// <summary>
-    ///     Cors Policy
+    ///     Address of the Api
     /// </summary>
     [Required]
-    public required string CorsPolicy { get; init; }
+    public required string Address { get; init; }
 }
 
 /// <summary>

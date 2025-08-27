@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Filters;
 using template.net8.api.Settings.Interfaces;
@@ -31,44 +32,21 @@ public sealed class SwaggerInstaller : IServiceInstaller
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    /// <exception cref="InvalidConfigurationException">Condition.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
         var config = builder.Configuration;
         // Configure strongly typed options objects
         var swaggerOptions = config.GetSection(SwaggerOptions.Swagger).Get<SwaggerOptions>();
-        ValidateSwaggerOptions(swaggerOptions);
+        OptionsValidator.ValidateSwaggerOptions(swaggerOptions);
         // Configure strongly typed options objects
         var swaggerSecurityOptions =
             config.GetSection(SwaggerSecurityOptions.SwaggerSecurity).Get<SwaggerSecurityOptions>();
-        ValidateSwaggerSecurityOptions(swaggerSecurityOptions);
+        OptionsValidator.ValidateSwaggerSecurityOptions(swaggerSecurityOptions);
         var version = config.Get<ProjectOptions>()?.Version ?? "";
         AddSwaggerGen(builder, swaggerOptions, swaggerSecurityOptions, version);
         return Task.CompletedTask;
-    }
-
-    private static void ValidateSwaggerOptions(SwaggerOptions? config)
-    {
-        var optionsValidator = new SwaggerOptionsValidator();
-        if (config is null)
-            throw new InvalidConfigurationException(
-                "The Swagger configuration in the appsettings file is incorrect");
-
-        var validation = optionsValidator.Validate(null, config);
-        if (validation.Failed)
-            throw new InvalidConfigurationException(validation.FailureMessage);
-    }
-
-    private static void ValidateSwaggerSecurityOptions(SwaggerSecurityOptions? config)
-    {
-        var optionsValidator = new SwaggerSecurityOptionsValidator();
-        if (config is null)
-            throw new InvalidConfigurationException(
-                "The Swagger Security configuration in the appsettings file is incorrect");
-
-        var validation = optionsValidator.Validate(null, config);
-        if (validation.Failed)
-            throw new InvalidConfigurationException(validation.FailureMessage);
     }
 
     private static void AddSwaggerGen(WebApplicationBuilder builder, SwaggerOptions? swaggerOptions,

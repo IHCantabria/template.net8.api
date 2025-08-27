@@ -12,7 +12,7 @@ public sealed class LocalizerInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 4;
+    public short LoadOrder => 5;
 
     /// <summary>
     ///     Install AutoMapper Service

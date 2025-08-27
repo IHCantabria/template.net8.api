@@ -55,6 +55,9 @@ public sealed class MainConfigurator : IPipelineConfigurator
         if (app.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
             app.UseDeveloperExceptionPage();
 
+        // Enable middleware to allow Error response outside the scope of the API.
+        app.UseStatusCodePages();
+
         // Enable middleware to log the request ID.
         app.UseMiddleware<RequestIdLoggingMiddleware>();
 
@@ -64,6 +67,9 @@ public sealed class MainConfigurator : IPipelineConfigurator
         //Enable Serilog Request Logging.
         app.UseSerilogRequestLogging();
 
+        // Enable middleware to collect telemetry data.
+        app.UseMiddleware<TelemetryMiddleware>();
+
         // Enable middleware Block Http Request.
         app.UseMiddleware<HttpRejectMiddleware>();
 
@@ -72,9 +78,6 @@ public sealed class MainConfigurator : IPipelineConfigurator
 
         // Add the Request Localization middleware
         app.ConfigureLocalizationMiddleware();
-
-        // Enable middleware to allow Error response outside the scope of the API.
-        app.UseStatusCodePages();
 
         // Enable middleware to redirect http request to https for the swagger page.
         app.UseHttpsRedirection();
@@ -95,7 +98,7 @@ public sealed class MainConfigurator : IPipelineConfigurator
         app.UseRequestTimeouts();
 
         //Get swagger configuration from service with strongly typed options object.
-        var configuration = app.Services.GetRequiredService<IOptions<ApiOptions>>().Value;
+        var configuration = app.Services.GetRequiredService<IOptions<CorsOptions>>().Value;
 
         // Enable cors middleware to allow cross domain requests.
         app.UseCors(configuration.CorsPolicy);

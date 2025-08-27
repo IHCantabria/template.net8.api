@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -10,7 +12,8 @@ using Serilog.Formatting.Compact;
 using Serilog.Sinks.OpenTelemetry;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Logger.Enrichers;
-using template.net8.api.Core.Logger.Options;
+using template.net8.api.Core.OpenTelemetry.Options;
+using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Core.Logger.Extensions;
 
@@ -23,17 +26,22 @@ internal static class LoggerConfigurationExtensions
     /// <param name="lc"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException">Condition.</exception>
+    /// <exception cref="ArgumentException">
+    ///     When any element of
+    ///     <paramref>
+    ///         <name>enrichers</name>
+    ///     </paramref>
+    ///     is <code>null</code>
+    /// </exception>
     internal static LoggerConfiguration EnrichLog(this LoggerConfiguration lc)
     {
         return lc.Enrich.FromLogContext()
             .Enrich.With<ActivityEnricher>()
             .Enrich.With<RequestIdentifierEnricher>()
-            .Enrich.WithProcessId()
-            .Enrich.WithThreadId()
-            .Enrich.WithEnvironmentName()
-            .Enrich.WithMachineName()
-            .Enrich.WithClientIp()
-            .Enrich.WithCorrelationId()
+            .Enrich.With<ThreadIdEnricher>()
+            .Enrich.With<ThreadNameEnricher>()
+            .Enrich.With<ClientIpEnricher>()
+            .Enrich.With(new CorrelationIdEnricher("x-correlation-id", false))
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
                 .WithDefaultDestructurers()
                 .WithDestructurers([new DbUpdateExceptionDestructurer()]));
@@ -54,7 +62,11 @@ internal static class LoggerConfigurationExtensions
             .MinimumLevel.Override(CoreConstants.ApiName, LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning);
+            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager",
+                LogEventLevel.Error)
+            .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository",
+                LogEventLevel.Error);
     }
 
     /// <summary>
@@ -101,40 +113,63 @@ internal static class LoggerConfigurationExtensions
     internal static LoggerConfiguration ConfigureSinks(this LoggerConfiguration lc,
         ConfigurationManager builderConfiguration, string envName, string version)
     {
-        var config = builderConfiguration.GetSection(OpenTelemetryOptions.OpenTelemetry).Get<OpenTelemetryOptions>();
+        var openTelemetryOptions = builderConfiguration.GetSection(OpenTelemetryOptions.OpenTelemetry)
+            .Get<OpenTelemetryOptions>();
 
-        if (config is null)
+        if (openTelemetryOptions is null)
             return lc.ConfigureSinkLocal();
 
-        ValidateOpenTelemetryOptions(config);
-        var useOpenTelemetry = IsOpenTelemetryAvailable(config);
+        OptionsValidator.ValidateOpenTelemetryOptions(openTelemetryOptions);
+        var useOpenTelemetry = IsLogOpenTelemetryAvailable(openTelemetryOptions);
         if (!useOpenTelemetry)
             throw new InvalidConfigurationException(
-                "The OpenTelemetry configuration in the appsettings file is incorrect or the endpoint is down. There was a problem trying to connecte to the OpenTelemetry endpoint");
+                "The OpenTelemetry Log configuration in the appsettings file is incorrect or the endpoint for the logs is down. There was a problem trying to connecte to the OpenTelemetry log endpoint");
 
-        return lc.ConfigureSinkTelemetry(config, envName, version);
+        var apiOptionsConfig = builderConfiguration.GetSection(ApiOptions.Api).Get<ApiOptions>();
+        OptionsValidator.ValidateApiOptions(apiOptionsConfig);
+
+        var config = new OpenTelemetryConfig
+        {
+            OpenTelemetryOptions = openTelemetryOptions,
+            ApiOptions = apiOptionsConfig!,
+            EnvName = envName,
+            Version = version
+        };
+        return lc.ConfigureSinkTelemetry(config);
     }
 
-    private static LoggerConfiguration ConfigureSinkTelemetry(this LoggerConfiguration lc, OpenTelemetryOptions config,
-        string envName, string version)
+    private static LoggerConfiguration ConfigureSinkTelemetry(this LoggerConfiguration lc, OpenTelemetryConfig config)
     {
         return lc.WriteTo.Async(s => s.OpenTelemetry(x =>
         {
             x.LogsEndpoint =
-                config.LogEndpointUrl
+                config.OpenTelemetryOptions.LogEndpointUrl
                     .ToString(); //for loki use http://localhost:3100/otlp // for seq use http://localhost:5341/ingest/otlp/v1/logs
             x.Protocol = OtlpProtocol.HttpProtobuf;
             x.HttpMessageHandler = new SocketsHttpHandler { ActivityHeadersPropagator = null };
-            if (config.UseHeaderApiKey())
+            if (config.OpenTelemetryOptions.UseLogHeaderApiKey())
                 x.Headers = new Dictionary<string, string>
                 {
-                    [config.LogEndpointApiKeyHeader!] = config.LogEndpointApiKeyValue!
+                    [config.OpenTelemetryOptions.LogEndpointApiKeyHeader!] =
+                        config.OpenTelemetryOptions.LogEndpointApiKeyValue!
                 };
             x.ResourceAttributes = new Dictionary<string, object>
             {
                 ["service.name"] = CoreConstants.ApiName,
-                ["service.version"] = version,
-                ["service.environment"] = envName
+                ["service.version"] = config.Version,
+                ["service.instance.id"] = CoreConstants.GuidInstance.ToString(),
+                ["service.thread.id"] = Environment.CurrentManagedThreadId,
+                ["service.thread.name"] = Thread.CurrentThread.Name ?? string.Empty,
+                ["server.address"] = config.ApiOptions.Address,
+                ["service.environment"] = config.EnvName,
+                ["host.name"] = Environment.MachineName,
+                ["os.description"] = RuntimeInformation.OSDescription,
+                ["os.architecture"] = RuntimeInformation.OSArchitecture.ToString(),
+                ["process.runtime.name"] = ".NET 8",
+                ["process.runtime.version"] = Environment.Version.ToString(),
+                ["process.user.name"] = Environment.UserName,
+                ["process.pid"] = Environment.ProcessId,
+                ["process.name"] = Process.GetCurrentProcess().ProcessName
             };
             x.FormatProvider = CultureInfo.InvariantCulture;
         }));
@@ -178,24 +213,12 @@ internal static class LoggerConfigurationExtensions
             rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, buffered: true));
     }
 
-    private static void ValidateOpenTelemetryOptions(OpenTelemetryOptions? config)
-    {
-        var optionsValidator = new OpenTelemetryOptionsValidator();
-        if (config is null)
-            throw new InvalidConfigurationException(
-                "The OpenTelemetry configuration in the appsettings file is incorrect");
-
-        var validation = optionsValidator.Validate(null, config);
-        if (validation.Failed)
-            throw new InvalidConfigurationException(validation.FailureMessage);
-    }
-
-    private static bool IsOpenTelemetryAvailable(OpenTelemetryOptions config)
+    private static bool IsLogOpenTelemetryAvailable(OpenTelemetryOptions config)
     {
         using var client = new HttpClient();
         using var request = new HttpRequestMessage(HttpMethod.Post, config.LogEndpointUrl);
 
-        if (config.UseHeaderApiKey())
+        if (config.UseLogHeaderApiKey())
             request.Headers.Add(config.LogEndpointApiKeyHeader!, config.LogEndpointApiKeyValue);
 
         // Send a minimal valid OpenTelemetry log entry
@@ -206,4 +229,31 @@ internal static class LoggerConfigurationExtensions
         using var response = client.Send(request, HttpCompletionOption.ResponseHeadersRead);
         return response.IsSuccessStatusCode;
     }
+}
+
+/// <summary>
+///     OpenTelemetry Config
+/// </summary>
+[CoreLibrary]
+public sealed record OpenTelemetryConfig
+{
+    /// <summary>
+    ///     Environment Name
+    /// </summary>
+    public required string EnvName { get; init; } = null!;
+
+    /// <summary>
+    ///     version
+    /// </summary>
+    public required string Version { get; init; } = null!;
+
+    /// <summary>
+    ///     OpenTelemetry Options
+    /// </summary>
+    public required OpenTelemetryOptions OpenTelemetryOptions { get; init; } = null!;
+
+    /// <summary>
+    ///     Api Options
+    /// </summary>
+    public required ApiOptions ApiOptions { get; init; } = null!;
 }

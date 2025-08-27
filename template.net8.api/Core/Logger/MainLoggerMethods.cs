@@ -75,4 +75,24 @@ internal static class MainLoggerMethods
     {
         Log.Information(MainLoggerMessageDefinitions.Shutdown, CoreConstants.ApiName);
     }
+
+    internal static void LogMetricCollectorEnable()
+    {
+        Log.Information(MainLoggerMessageDefinitions.OpenTelemetryMetricCollectorEnable, CoreConstants.ApiName);
+    }
+
+    internal static void LogMetricCollectorDisable()
+    {
+        Log.Information(MainLoggerMessageDefinitions.OpenTelemetryMetricCollectorDisable, CoreConstants.ApiName);
+    }
+
+    internal static void LogTraceCollectorEnable()
+    {
+        Log.Information(MainLoggerMessageDefinitions.OpenTelemetryTraceCollectorEnable, CoreConstants.ApiName);
+    }
+
+    internal static void LogTraceCollectorDisable()
+    {
+        Log.Information(MainLoggerMessageDefinitions.OpenTelemetryTraceCollectorDisable, CoreConstants.ApiName);
+    }
 }

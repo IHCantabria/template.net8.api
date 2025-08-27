@@ -13,7 +13,7 @@ public sealed class SignalRInstaller : IServiceInstaller
     /// <summary>
     ///     Load order of the service installer
     /// </summary>
-    public short LoadOrder => 13;
+    public short LoadOrder => 26;
 
     /// <summary>
     ///     Install SignalR Services

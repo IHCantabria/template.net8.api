@@ -1,6 +1,7 @@
 ﻿using HealthChecks.ApplicationStatus.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Protocols.Configuration;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.HealthChecks;
 using template.net8.api.Settings.Interfaces;
@@ -38,28 +39,17 @@ public sealed class HealthInstaller : IServiceInstaller
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    /// <exception cref="InvalidConfigurationException">Condition.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
         var connectionOptions = builder.Configuration
             .GetSection(ProjectDbOptions.ProjectDb)
             .Get<ProjectDbOptions>();
-        ValidateProjectDbOptions(connectionOptions);
+        OptionsValidator.ValidateProjectDbOptions(connectionOptions);
         AddHealthChecks(builder, connectionOptions);
 
         return Task.CompletedTask;
-    }
-
-    private static void ValidateProjectDbOptions(ProjectDbOptions? config)
-    {
-        var optionsValidator = new ProjectDbOptionsValidator();
-        if (config is null)
-            throw new InvalidConfigurationException(
-                "The Project Db configuration in the appsettings file is incorrect");
-
-        var validation = optionsValidator.Validate(null, config);
-        if (validation.Failed)
-            throw new InvalidConfigurationException(validation.FailureMessage);
     }
 
     private static void AddHealthChecks(WebApplicationBuilder builder, ProjectDbOptions? connectionOptions)

@@ -25,6 +25,7 @@ internal sealed class RequestIdentifierEnricher : ILogEventEnricher
 
         if (string.IsNullOrEmpty(requestId)) return;
 
-        logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("RequestId", requestId));
+        logEvent.RemovePropertyIfPresent("RequestId");
+        logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("request_id", requestId));
     }
 }

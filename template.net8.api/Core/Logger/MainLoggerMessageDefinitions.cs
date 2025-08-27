@@ -33,4 +33,13 @@ internal static class MainLoggerMessageDefinitions
         "An error occurred before or during the configuration of the main application log for {Name} , initiating Fallback log.";
 
     internal const string Shutdown = "Shutdown {Name}";
+
+    internal const string OpenTelemetryMetricCollectorEnable = "OpenTelemetry Metric Collector is enabled for {Name}.";
+
+    internal const string OpenTelemetryMetricCollectorDisable =
+        "OpenTelemetry Metric Collector is disabled for {Name}.";
+
+    internal const string OpenTelemetryTraceCollectorEnable = "OpenTelemetry Trace Collector is enabled for {Name}.";
+
+    internal const string OpenTelemetryTraceCollectorDisable = "OpenTelemetry Trace Collector is disabled for {Name}.";
 }

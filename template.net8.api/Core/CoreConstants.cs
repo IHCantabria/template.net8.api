@@ -10,4 +10,6 @@ internal static class CoreConstants
     internal const string ApiName = "template.net8.api";
 
     internal const string ApiErrorCodesPrefix = "BE-";
+
+    internal static Guid GuidInstance { get; set; } = Guid.NewGuid();
 }

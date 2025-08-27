@@ -17,7 +17,7 @@ public sealed class RequestLoggingMiddleware(RequestDelegate next, ILogger<Reque
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
     /// <summary>
-    ///     Invoke Async method to check if the request is HTTPS.
+    ///     Invoke Async method to invoke the middleware.
     /// </summary>
     /// <param name="context"></param>
     /// <exception cref="ArgumentNullException">

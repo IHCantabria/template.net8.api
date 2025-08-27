@@ -17,7 +17,10 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5290",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "local"
+        "ASPNETCORE_ENVIRONMENT": "local",
+        "OTEL_DOTNET_DEBUG": "true",
+        "OTEL_LOG_LEVEL": "debug",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
       }
     },
     "https": {
@@ -28,7 +31,10 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7187;http://localhost:5290",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "local"
+        "ASPNETCORE_ENVIRONMENT": "local",
+        "OTEL_DOTNET_DEBUG": "true",
+        "OTEL_LOG_LEVEL": "debug",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
       }
     },
     "IIS Express": {
@@ -37,7 +43,10 @@
       "hotReloadEnabled": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "local"
+        "ASPNETCORE_ENVIRONMENT": "local",
+        "OTEL_DOTNET_DEBUG": "true",
+        "OTEL_LOG_LEVEL": "debug",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
       }
     },
     "{PROJECT_NAME} (LOCAL)": {
@@ -48,7 +57,10 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7187;http://localhost:5290",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "local"
+        "ASPNETCORE_ENVIRONMENT": "local",
+        "OTEL_DOTNET_DEBUG": "true",
+        "OTEL_LOG_LEVEL": "debug",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
       }
     },
     "{PROJECT_NAME} (Test)": {

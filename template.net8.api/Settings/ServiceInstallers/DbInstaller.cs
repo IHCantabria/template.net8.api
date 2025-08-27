@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Npgsql;
+using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Timeout;
 using template.net8.api.Domain.Persistence.Context;
@@ -34,6 +35,7 @@ public sealed class DbInstaller : IServiceInstaller
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
+    /// <exception cref="InvalidConfigurationException">Condition.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -43,21 +45,9 @@ public sealed class DbInstaller : IServiceInstaller
             .GetSection(ProjectDbOptions.ProjectDb)
             .Get<ProjectDbOptions>();
 
-        ValidateProjectDbOptions(connectionOptions);
+        OptionsValidator.ValidateProjectDbOptions(connectionOptions);
         AddDbContextPool(builder, connectionOptions);
         return Task.CompletedTask;
-    }
-
-    private static void ValidateProjectDbOptions(ProjectDbOptions? config)
-    {
-        var optionsValidator = new ProjectDbOptionsValidator();
-        if (config is null)
-            throw new InvalidConfigurationException(
-                "The Project Db configuration in the appsettings file is incorrect");
-
-        var validation = optionsValidator.Validate(null, config);
-        if (validation.Failed)
-            throw new InvalidConfigurationException(validation.FailureMessage);
     }
 
     private static void AddDbContextPool(IHostApplicationBuilder builder, ProjectDbOptions? connectionOptions)

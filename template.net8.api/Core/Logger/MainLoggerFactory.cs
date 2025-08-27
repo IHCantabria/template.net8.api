@@ -21,6 +21,13 @@ internal static class SerilogLoggersFactory
     ///     </paramref>
     ///     is <code>null</code>
     /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     When any element of
+    ///     <paramref>
+    ///         <name>enrichers</name>
+    ///     </paramref>
+    ///     is <code>null</code>
+    /// </exception>
     internal static void MainLogFactory()
     {
         Log.Logger = new LoggerConfiguration()

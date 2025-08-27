@@ -25,10 +25,14 @@ internal sealed class ActivityEnricher : ILogEventEnricher
         var activity = Activity.Current;
         if (activity is null) return;
 
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("TraceId", activity.TraceId.ToString()));
-        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("SpanId", activity.SpanId.ToString()));
+        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("trace_id", activity.TraceId.ToString()));
+        logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("span_id", activity.SpanId.ToString()));
 
         if (activity.ParentSpanId != default)
-            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("ParentId", activity.ParentSpanId.ToString()));
+            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("parent_span_id",
+                activity.ParentSpanId.ToString()));
+
+        foreach (var tag in activity.TagObjects)
+            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(tag.Key, tag.Value));
     }
 }
