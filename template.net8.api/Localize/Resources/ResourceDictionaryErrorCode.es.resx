@@ -183,4 +183,7 @@
   <data name="BE-R-E-003" xml:space="preserve">
     <value>Tu token no ha superado la validación inicial, el token es inválido para esta aplicación.</value>
   </data>
+  <data name="BE-R-E-004" xml:space="preserve">
+    <value>El acceso requiere un token de acceso</value>
+  </data>
 </root>

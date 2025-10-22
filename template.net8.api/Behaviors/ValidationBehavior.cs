@@ -64,6 +64,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
     private static IEnumerable<ValidationFailure> AggregateValidationResults(IEnumerable<ValidationResult> results)
     {
         return results
+            .Where(r => r?.Errors != null)
             .SelectMany(r => r.Errors).Distinct()
             .Where(f => f is not null);
     }

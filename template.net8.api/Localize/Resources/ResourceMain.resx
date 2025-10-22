@@ -259,8 +259,8 @@
     <value>An error occurred in the data validation process against the database.</value>
   </data>
   <data name="ProblemDetailsForbiddenAccessCode" xml:space="preserve">
-  <value>BE-R-E-002</value>
-</data>
+    <value>BE-R-E-002</value>
+  </data>
   <data name="ProblemDetailsForbiddenAccessDetail" xml:space="preserve">
     <value>The token provided does not comply with the requested resource access policies.</value>
   </data>
@@ -270,16 +270,37 @@
   <data name="ProblemDetailsUnauthorizedProcessFailTitle" xml:space="preserve">
     <value>Unauthorized Access.</value>
   </data>
-<data name="ProblemDetailsUnauthorizedProcessFailCode" xml:space="preserve">
-  <value>BE-R-E-003</value>
-</data>
+  <data name="ProblemDetailsUnauthorizedProcessFailCode" xml:space="preserve">
+    <value>BE-R-E-003</value>
+  </data>
   <data name="ProblemDetailsUnauthorizedMissingTokenTitle" xml:space="preserve">
-  <value>Missing Token.</value>
-</data>
+    <value>Missing Token.</value>
+  </data>
   <data name="ProblemDetailsUnauthorizedMissingTokenDetail" xml:space="preserve">
-  <value>The token is missing.</value>
-</data>
-<data name="ProblemDetailsUnauthorizedMissingTokenCode" xml:space="preserve">
-  <value>BE-R-E-004</value>
-</data>
+    <value>The token is missing.</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedMissingTokenCode" xml:space="preserve">
+    <value>BE-R-E-004</value>
+  </data>
+  <data name="DummyHubConnectionOnlineMsg" xml:space="preserve">
+    <value>Connection is active.</value>
+  </data>
+  <data name="DummyHubConnectionStatusMsg" xml:space="preserve">
+    <value>Connection successfully established.</value>
+  </data>
+  <data name="GetDummyEventsCheckConnectionStatusDescription" xml:space="preserve">
+    <value>Client request to check the connection status.</value>
+  </data>
+  <data name="GetDummyEventsConnectionStatusDescription" xml:space="preserve">
+    <value>Server response of the CheckConnectionStatus method.</value>
+  </data>
+  <data name="GetDummyEventsConnectionOnlineDescription" xml:space="preserve">
+    <value>Server event when a client is online.</value>
+  </data>
+  <data name="GetDummyEventsNewDummyDescription" xml:space="preserve">
+    <value>Server event when a new dummy is created.</value>
+  </data>
+  <data name="DummyHubNewDummyMsg" xml:space="preserve">
+    <value>New Dummy Created</value>
+  </data>
 </root>

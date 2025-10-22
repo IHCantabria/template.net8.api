@@ -189,97 +189,118 @@
   <data name="ProblemDetailsBadRequestValidationJsonMalformedCode" xml:space="preserve">
     <value>BE-R-EV-002</value>
   </data>
-  <data name="ProblemDetailsBadRequestValidationJsonInvalidDetail" xml:space="preserve">
-    <value>El Json utilizado como carga útil no cumple el contrato requerido.</value>
-  </data>
-  <data name="ProblemDetailsBadRequestValidationJsonInvalidCode" xml:space="preserve">
-    <value>BE-R-EV-003</value>
-  </data>
   <data name="ProblemDetailsBadRequestCode" xml:space="preserve">
     <value>BE-R-E-400</value>
-  </data>
-  <data name="ProblemDetailsBadRequestHttpNotSupportedTitle" xml:space="preserve">
-    <value>HTTP protocol is not allowed.</value>
-  </data>
-  <data name="ProblemDetailsBadRequestHttpNotSupportedDetail" xml:space="preserve">
-    <value>HTTPS protocol is required.</value>
   </data>
   <data name="ProblemDetailsBadRequestHttpNotSupportedCode" xml:space="preserve">
     <value>BE-R-E-001</value>
   </data>
-  <data name="ProblemDetailsUnauthorizedCode" xml:space="preserve">
-    <value>BE-R-E-401</value>
+  <data name="ProblemDetailsBadRequestHttpNotSupportedDetail" xml:space="preserve">
+    <value>HTTPS protocol is required.</value>
   </data>
-  <data name="ProblemDetailsForbiddenCode" xml:space="preserve">
-    <value>BE-R-E-403</value>
+  <data name="ProblemDetailsBadRequestHttpNotSupportedTitle" xml:space="preserve">
+    <value>HTTP protocol is not allowed.</value>
   </data>
-  <data name="ProblemDetailsNotFoundCode" xml:space="preserve">
-    <value>BE-R-E-404</value>
+  <data name="ProblemDetailsBadRequestValidationJsonInvalidCode" xml:space="preserve">
+    <value>BE-R-EV-003</value>
   </data>
-  <data name="ProblemDetailsMethodNotAllowedTitle" xml:space="preserve">
-    <value>Método no Permitido.</value>
-  </data>
-  <data name="ProblemDetailsMethodNotAllowedCode" xml:space="preserve">
-    <value>BE-R-E-405</value>
-  </data>
-  <data name="ProblemDetailsRequestTimeoutCode" xml:space="preserve">
-    <value>BE-R-E-408</value>
+  <data name="ProblemDetailsBadRequestValidationJsonInvalidDetail" xml:space="preserve">
+    <value>El Json utilizado como carga útil no cumple el contrato requerido.</value>
   </data>
   <data name="ProblemDetailsConflictCode" xml:space="preserve">
     <value>BE-R-E-409</value>
   </data>
+  <data name="ProblemDetailsForbiddenCode" xml:space="preserve">
+    <value>BE-R-E-403</value>
+  </data>
   <data name="ProblemDetailsGoneCode" xml:space="preserve">
     <value>BE-R-E-410</value>
   </data>
-  <data name="ProblemDetailsUnsupportedMediaTypeTitle" xml:space="preserve">
-    <value>Cabecera HTTP Content Type No Permitida.</value>
+  <data name="ProblemDetailsMethodNotAllowedCode" xml:space="preserve">
+    <value>BE-R-E-405</value>
   </data>
-  <data name="ProblemDetailsUnsupportedMediaTypeCode" xml:space="preserve">
-    <value>BE-R-E-415</value>
+  <data name="ProblemDetailsMethodNotAllowedTitle" xml:space="preserve">
+    <value>Método no Permitido.</value>
+  </data>
+  <data name="ProblemDetailsNotFoundCode" xml:space="preserve">
+    <value>BE-R-E-404</value>
+  </data>
+  <data name="ProblemDetailsRequestTimeoutCode" xml:space="preserve">
+    <value>BE-R-E-408</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedCode" xml:space="preserve">
+    <value>BE-R-E-401</value>
   </data>
   <data name="ProblemDetailsUnprocessableEntityCode" xml:space="preserve">
     <value>BE-R-E-422</value>
   </data>
-  <data name="ProblemDetailsTooManyRequestTitle" xml:space="preserve">
-    <value>Demasiadas Peticiones.</value>
+  <data name="ProblemDetailsUnsupportedMediaTypeCode" xml:space="preserve">
+    <value>BE-R-E-415</value>
   </data>
-  <data name="ProblemDetailsTooManyRequestCode" xml:space="preserve">
-    <value>BE-R-E-429</value>
+  <data name="ProblemDetailsUnsupportedMediaTypeTitle" xml:space="preserve">
+    <value>Cabecera HTTP Content Type No Permitida.</value>
   </data>
   <data name="ProblemDetailsInternalServerErrorCode" xml:space="preserve">
     <value>BE-R-E-500</value>
   </data>
+  <data name="ProblemDetailsNotImplementedCode" xml:space="preserve">
+    <value>BE-R-E-501</value>
+  </data>
   <data name="ProblemDetailsNotImplementedTitle" xml:space="preserve">
     <value>No Implementado.</value>
   </data>
-  <data name="ProblemDetailsNotImplementedCode" xml:space="preserve">
-    <value>BE-R-E-501</value>
+  <data name="ProblemDetailsTooManyRequestCode" xml:space="preserve">
+    <value>BE-R-E-429</value>
+  </data>
+  <data name="ProblemDetailsTooManyRequestTitle" xml:space="preserve">
+    <value>Demasiadas Peticiones.</value>
   </data>
   <data name="InternalServerErrorValidationData" xml:space="preserve">
     <value>Se ha producido un error en el proceso de validación de datos contra la base de datos.</value>
   </data>
   <data name="ProblemDetailsForbiddenAccessCode" xml:space="preserve">
-  <value>BE-R-E-002</value>
-</data>
-<data name="ProblemDetailsForbiddenAccessDetail" xml:space="preserve">
-  <value>El token suministrado no cumple con las políticas de acceso al recurso solicitado.</value>
-</data>
-<data name="ProblemDetailsForbiddenAccessTitle" xml:space="preserve">
-  <value>Acceso Prohibido.</value>
-</data>
-<data name="ProblemDetailsUnauthorizedProcessFailTitle" xml:space="preserve">
-  <value>Acceso No Autorizado.</value>
-</data>
-<data name="ProblemDetailsUnauthorizedProcessFailCode" xml:space="preserve">
-  <value>BE-R-E-003</value>
-</data>
- <data name="ProblemDetailsUnauthorizedMissingTokenTitle" xml:space="preserve">
-  <value>Token Ausente.</value>
-</data>
-<data name="ProblemDetailsUnauthorizedMissingTokenDetail" xml:space="preserve">
-  <value>Token de autenticación no presente.</value>
-</data>
-<data name="ProblemDetailsUnauthorizedMissingTokenCode" xml:space="preserve">
-  <value>BE-R-E-004</value>
-</data>
+    <value>BE-R-E-002</value>
+  </data>
+  <data name="ProblemDetailsForbiddenAccessDetail" xml:space="preserve">
+    <value>El token suministrado no cumple con las políticas de acceso al recurso solicitado.</value>
+  </data>
+  <data name="ProblemDetailsForbiddenAccessTitle" xml:space="preserve">
+    <value>Acceso Prohibido.</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedProcessFailTitle" xml:space="preserve">
+    <value>Acceso No Autorizado.</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedProcessFailCode" xml:space="preserve">
+    <value>BE-R-E-003</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedMissingTokenTitle" xml:space="preserve">
+    <value>Token Ausente.</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedMissingTokenDetail" xml:space="preserve">
+    <value>Token de autenticación no presente.</value>
+  </data>
+  <data name="ProblemDetailsUnauthorizedMissingTokenCode" xml:space="preserve">
+    <value>BE-R-E-004</value>
+  </data>
+  <data name="DummyHubConnectionOnlineMsg" xml:space="preserve">
+    <value>La conexión está activa.</value>
+  </data>
+  <data name="DummyHubConnectionStatusMsg" xml:space="preserve">
+    <value>Conexión establecida correctamente.</value>
+  </data>
+  <data name="GetDummyEventsCheckConnectionStatusDescription" xml:space="preserve">
+    <value>Solicitud del cliente para comprobar el estado de la conexión.</value>
+  </data>
+  <data name="GetDummyEventsConnectionStatusDescription" xml:space="preserve">
+    <value>Respuesta del servidor al método CheckConnectionStatus.</value>
+  </data>
+  <data name="GetDummyEventsConnectionOnlineDescription" xml:space="preserve">
+    <value>Evento del servidor cuando un cliente está conectado.</value>
+  </data>
+  <data name="GetDummyEventsNewDummyDescription" xml:space="preserve">
+    <value>Evento del servidor cuando se crea un nuevo dummy.</value>
+  </data>
+  <data name="DummyHubNewDummyMsg" xml:space="preserve">
+    <value>Nuevo dummy creado</value>
+  </data>
 </root>

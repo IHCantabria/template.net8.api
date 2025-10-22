@@ -40,6 +40,14 @@ internal static class SwaggerDocumentation
             internal const string UnprocessableEntity =
                 "Unable to create the dummy due to a data incompatibility in the client payload. Please review the payload and fix the errors before retry the request.";
         }
+
+        internal static class GetDummyEvents
+        {
+            internal const string Summary = "Get the Dummy's Events.";
+            internal const string Description = "Get the dummy's events in the system.";
+            internal const string Id = "GetDummyEventsAsync";
+            internal const string Ok = "Return the dummy's events in the system.";
+        }
     }
 
     [CoreLibrary]

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using OpenTelemetry.Exporter;
@@ -38,6 +39,20 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
     /// <exception cref="InvalidOperationException">The name of this computer cannot be obtained.</exception>
     /// <exception cref="InvalidConfigurationException">Condition.</exception>
     /// <exception cref="NotSupportedException">The process is not on this computer.</exception>
+    /// <exception cref="SocketException">An error is encountered when resolving the local host name.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    ///     The length of
+    ///     <paramref>
+    ///         <name>hostNameOrAddress</name>
+    ///     </paramref>
+    ///     is greater than 255 characters.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    ///     <paramref>
+    ///         <name>hostNameOrAddress</name>
+    ///     </paramref>
+    ///     is an invalid IP address.
+    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -45,6 +60,9 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
         var openTelemetryOptions = builder.Configuration
             .GetSection(OpenTelemetryOptions.OpenTelemetry)
             .Get<OpenTelemetryOptions>();
+
+        if (openTelemetryOptions is null)
+            return Task.CompletedTask;
 
         OptionsValidator.ValidateOpenTelemetryOptions(openTelemetryOptions);
 
@@ -65,6 +83,7 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
                     new KeyValuePair<string, object>("server.address", apiOptions!.Address),
                     new KeyValuePair<string, object>("service.environment", builder.Environment.EnvironmentName),
                     new KeyValuePair<string, object>("host.name", Environment.MachineName),
+                    new KeyValuePair<string, object>("host.ip", HostInfo.GetHostIp()),
                     new KeyValuePair<string, object>("os.description", RuntimeInformation.OSDescription),
                     new KeyValuePair<string, object>("os.architecture", RuntimeInformation.OSArchitecture.ToString()),
                     new KeyValuePair<string, object>("process.runtime.name", ".NET 8"),
@@ -75,9 +94,9 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
                     new KeyValuePair<string, object>("service.thread.id", Environment.CurrentManagedThreadId),
                     new KeyValuePair<string, object>("service.thread.name", Thread.CurrentThread.Name ?? string.Empty)
                 ]))
-            .WithMetrics(metricsBuilder => ConfigureMetrics(metricsBuilder, openTelemetryOptions!))
+            .WithMetrics(metricsBuilder => ConfigureMetrics(metricsBuilder, openTelemetryOptions))
             .WithTracing(tracingBuilder =>
-                ConfigureTracing(tracingBuilder, openTelemetryOptions!, builder.Environment));
+                ConfigureTracing(tracingBuilder, openTelemetryOptions, builder.Environment));
 
         return Task.CompletedTask;
     }

@@ -1,9 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using template.net8.api.Core.Attributes;
+using template.net8.api.Core.Contracts;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
+using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Controllers.V1;
 
@@ -24,10 +27,21 @@ public sealed class Health(
     ///     Health Check.
     /// </summary>
     /// <returns></returns>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>argument</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
+    /// </exception>
     [HttpGet]
     [Route(ApiRoutes.HealthController.HealthCheck)]
-    public Task<IActionResult> HealthCheckAsync()
+    public Task<IActionResult> HealthCheckAsync(IOptions<ProjectOptions> options)
     {
-        return Task.FromResult<IActionResult>(Ok("Service is running"));
+        ArgumentNullException.ThrowIfNull(options);
+        return Task.FromResult<IActionResult>(Ok(new InfoResource
+        {
+            Status = StatusCodes.Status200OK,
+            Version = options.Value.Version
+        }));
     }
 }

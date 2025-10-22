@@ -8,7 +8,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using template.net8.api.Contracts;
 using template.net8.api.Controllers.Extensions;
 using template.net8.api.Core.Contracts;
-using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Timeout;
 using template.net8.api.Domain.DTOs;
 using template.net8.api.Domain.Persistence.Models;
@@ -42,12 +41,11 @@ public sealed class Dummies(
     ///     <paramref>
     ///         <name>source</name>
     ///     </paramref>
+    ///     or
+    ///     <paramref>
+    ///         <name>selector</name>
+    ///     </paramref>
     ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-    /// <exception cref="CoreException">
-    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
-    ///     resource
     /// </exception>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
@@ -65,9 +63,9 @@ public sealed class Dummies(
         var query = new QueryGetDummies();
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
         var action =
-            new ActionResultPayload<IEnumerable<DummyDto>, IEnumerable<DummyResource>>(obj =>
+            ActionResultPayload<IEnumerable<DummyDto>, IEnumerable<DummyResource>>.Ok(obj =>
                 DummyDto.ToCollection(obj.ToList()));
-        return result.ToActionResult(action, Localizer, HttpContext.Features);
+        return result.ToActionResult(this, action, Localizer);
     }
 
 
@@ -77,11 +75,6 @@ public sealed class Dummies(
     /// <param name="queryParams"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-    /// <exception cref="CoreException">
-    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
-    ///     resource
-    /// </exception>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.DummiesController.GetDummy)]
@@ -105,8 +98,8 @@ public sealed class Dummies(
         QueryGetDummyParamsDto paramsDto = queryParams;
         var query = new QueryGetDummy(paramsDto);
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
-        var action = new ActionResultPayload<DummyDto, DummyResource>(obj => obj);
-        return result.ToActionResult(action, Localizer, HttpContext.Features);
+        var action = ActionResultPayload<DummyDto, DummyResource>.Ok(obj => obj);
+        return result.ToActionResult(this, action, Localizer);
     }
 
     /// <summary>
@@ -115,11 +108,6 @@ public sealed class Dummies(
     /// <param name="commandParams"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-    /// <exception cref="CoreException">
-    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
-    ///     resource
-    /// </exception>
     [HttpPost]
     [RequestTimeout(RequestConstants.RequestCommandGenericPolicy)]
     [Route(ApiRoutes.DummiesController.CreateDummy)]
@@ -140,22 +128,18 @@ public sealed class Dummies(
     {
         var query = new CommandCreateDummy(commandParams);
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
-        var action = new ActionResultPayload<Dummy, DummyCreatedResource>(obj => obj,
-            (nameof(Dummies), nameof(GetDummyAsync)), ("Key", "dummy-key"));
-        return result.ToActionResult(action, Localizer, HttpContext.Features);
+        var action = ActionResultPayload<Dummy, DummyCreatedResource>.CreatedWithLocation(
+            (nameof(Dummies), nameof(GetDummyAsync)),
+            ("Key", "dummy-key"), obj => obj);
+        return result.ToActionResult(this, action, Localizer);
     }
 
     /// <summary>
-    ///     Get Earthquakes Events Async
+    ///     Get Dummies Events Async
     /// </summary>
     /// <param name="config"></param>
     /// <param name="cancellationToken">Cancellation Token</param>
     /// <returns></returns>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-    /// <exception cref="CoreException">
-    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
-    ///     resource
-    /// </exception>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>argument</name>
@@ -166,14 +150,14 @@ public sealed class Dummies(
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.DummiesController.Hubs)]
     [SwaggerOperation(
-        Summary = SwaggerDocumentation.Dummies.GetDummy.Summary,
+        Summary = SwaggerDocumentation.Dummies.GetDummyEvents.Summary,
         Description =
-            SwaggerDocumentation.Dummies.GetDummy.Description,
-        OperationId = SwaggerDocumentation.Dummies.GetDummy.Id
+            SwaggerDocumentation.Dummies.GetDummyEvents.Description,
+        OperationId = SwaggerDocumentation.Dummies.GetDummyEvents.Id
     )]
-    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummies.GetDummy.Ok,
+    [SwaggerResponse(StatusCodes.Status200OK, SwaggerDocumentation.Dummies.GetDummyEvents.Ok,
         typeof(IEnumerable<HubEventResource>), MediaTypeNames.Application.Json)]
-    public Task<IActionResult> GetEarthquakesEventsAsync(IOptions<SwaggerOptions> config,
+    public Task<IActionResult> GetDummyEventsAsync(IOptions<SwaggerOptions> config,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(config);
@@ -185,35 +169,33 @@ public sealed class Dummies(
             {
                 Name = HubsDocumentation.Dummy.CheckConnectionStatus.Name, Path = fullUrl,
                 Type = HubsDocumentation.Dummy.CheckConnectionStatus.Type,
-                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Description = Localizer["GetDummyEventsCheckConnectionStatusDescription"],
                 Fields = []
             },
             new()
             {
                 Name = HubsDocumentation.Dummy.ConnectionStatus.Name, Path = fullUrl,
                 Type = HubsDocumentation.Dummy.ConnectionStatus.Type,
-                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Description = Localizer["GetDummyEventsConnectionStatusDescription"],
                 Fields = HubsDocumentation.Dummy.ConnectionStatus.Fields
             },
             new()
             {
                 Name = HubsDocumentation.Dummy.ConnectionOnline.Name, Path = fullUrl,
                 Type = HubsDocumentation.Dummy.ConnectionOnline.Type,
-                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Description = Localizer["GetDummyEventsConnectionOnlineDescription"],
                 Fields = HubsDocumentation.Dummy.ConnectionOnline.Fields
             },
             new()
             {
                 Name = HubsDocumentation.Dummy.NewDummy.Name, Path = fullUrl,
                 Type = HubsDocumentation.Dummy.NewDummy.Type,
-                Description = Localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+                Description = Localizer["GetDummyEventsNewDummyDescription"],
                 Fields = HubsDocumentation.Dummy.NewDummy.Fields
             }
         };
         var result = new LanguageExt.Common.Result<IEnumerable<HubEventResource>>(eventList);
-        var action =
-            new ActionResultPayload<IEnumerable<HubEventResource>, IEnumerable<HubEventResource>>(obj =>
-                obj);
-        return Task.FromResult(result.ToActionResult(action, Localizer, HttpContext.Features));
+        var action = ActionResultPayload<IEnumerable<HubEventResource>, IEnumerable<HubEventResource>>.Ok(obj => obj);
+        return Task.FromResult(result.ToActionResult(this, action, Localizer));
     }
 }

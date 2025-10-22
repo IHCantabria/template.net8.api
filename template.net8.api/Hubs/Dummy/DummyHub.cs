@@ -29,7 +29,7 @@ public sealed class DummyHub(IStringLocalizer<ResourceMain> localizer) : Hub<IDu
     {
         await Clients.Caller.ConnectionOnline(new HubInfoMessageResource
         {
-            Message = _localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+            Message = _localizer["DummyHubConnectionOnlineMsg"],
             ConnectionId = Context.ConnectionId
         }).ConfigureAwait(false);
 
@@ -45,7 +45,7 @@ public sealed class DummyHub(IStringLocalizer<ResourceMain> localizer) : Hub<IDu
         // Responde al cliente que hizo la petición indicando que la conexión está activa
         return Clients.Caller.ConnectionStatus(new HubInfoMessageResource
         {
-            Message = _localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+            Message = _localizer["DummyHubConnectionStatusMsg"],
             ConnectionId = Context.ConnectionId
         });
     }

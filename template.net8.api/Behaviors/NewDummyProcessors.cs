@@ -44,7 +44,7 @@ internal sealed class NewDummyProcessors(
     {
         return _hubContext.Clients.All.NewDummy(new DummyHubNewDummyMessageResource
         {
-            Message = _localizer["CreateDummyValidatorTextInvalidMsg"], // TODO:FIX
+            Message = _localizer["DummyHubNewDummyMsg"],
             DummyKey = data.Key.ToString(CultureInfo.InvariantCulture)
         });
     }

@@ -57,7 +57,6 @@ internal static class LoggerExtensions
         var innerLoggerField = logger?.GetType().GetField("_logger", BindingFlags.NonPublic | BindingFlags.Instance);
         if (innerLoggerField != null) logger = innerLoggerField.GetValue(logger) as Serilog.Core.Logger;
 
-        // Usa Reflection para obtener los Sinks privados dentro del Logger
         var pipelineField =
             typeof(Serilog.Core.Logger).GetField("_sink", BindingFlags.NonPublic | BindingFlags.Instance);
         if (pipelineField == null) return false;
@@ -69,6 +68,27 @@ internal static class LoggerExtensions
         if (sinksField == null) return false;
 
         var sinks = sinksField.GetValue(pipeline) as IEnumerable;
-        return sinks != null && sinks.Cast<ILogEventSink>().Any(les => les is not MemorySink);
+        return sinks != null && sinks.Cast<ILogEventSink>().Any(s => !IsOrWrapsMemorySink(s));
+    }
+
+    [SuppressMessage("Security",
+        "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
+        Justification =
+            "Access to the non-public field is necessary because Serilog dont provide with a method to know the current configurated")]
+    private static bool IsOrWrapsMemorySink(ILogEventSink sink)
+    {
+        switch (sink)
+        {
+            case null:
+                return false;
+            case MemorySink:
+                return true;
+        }
+
+        var wrappedSinkField = sink.GetType().GetField("_wrappedSink", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (wrappedSinkField == null) return false;
+
+        var inner = wrappedSinkField.GetValue(sink) as ILogEventSink;
+        return inner != null && IsOrWrapsMemorySink(inner);
     }
 }

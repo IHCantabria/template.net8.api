@@ -1,9 +1,7 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Authorization;
 using template.net8.api.Core.Exceptions;
@@ -140,55 +138,55 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    /// <exception cref="EncoderFallbackException">
-    ///     A fallback occurred (for more information, see Character Encoding in .NET)
-    ///     -and-
-    ///     <see cref="EncoderFallback" /> is set to <see cref="EncoderExceptionFallback" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">If 'expires' &lt;= 'notbefore'.</exception>
-    /// <exception cref="SecurityTokenEncryptionFailedException">
-    ///     both
-    ///     <see>
-    ///         <cref>P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.SigningCredentials</cref>
-    ///     </see>
-    ///     and
-    ///     <see>
-    ///         <cref>P:System.IdentityModel.Tokens.Jwt.JwtSecurityToken.InnerToken</cref>
-    ///     </see>
-    ///     are set.
-    /// </exception>
-    /// <exception cref="InternalServerErrorException">Condition.</exception>
-    /// <exception cref="ResultFaultedInvalidOperationException">
-    ///     Result is not a failure! Use ExtractData method instead and
-    ///     Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractData method
-    /// </exception>
-    /// <exception cref="ResultSuccessInvalidOperationException">
-    ///     Result is not a success! Use ExtractException method instead
-    ///     and Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractException method
-    /// </exception>
     public override Task MessageReceived(MessageReceivedContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
-        //Make authentication optional if Authorization header is missing for DEV environment
-        if (ShouldAuthenticate(context, _config.Value)) return Task.CompletedTask;
 
-        var result = TokenFactory.GenerateGenieAccessToken(_config.Value).Try();
-        if (result.IsFaulted)
-            throw new InternalServerErrorException(_localizer["GenieAccessTokenServerError"],
-                result.ExtractException());
-
-        context.Token = result.ExtractData(); // Create Valid Token
+        if (TryExtractSignalRAccessToken(context, out var token) ||
+            TryExtractDevToken(context, out token))
+            context.Token = token;
 
         return Task.CompletedTask;
     }
 
-    private static bool ShouldAuthenticate(MessageReceivedContext? context, JwtOptions? config)
+    private static bool TryExtractSignalRAccessToken(MessageReceivedContext context, out string? token)
     {
-        if (context is null) return true;
-        if (config is null) return true;
+        token = null;
+        var accessToken = context.Request.Query["access_token"];
+        var path = context.HttpContext.Request.Path;
 
-        var isDev = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is Envs.Local or Envs.Test;
+        if (string.IsNullOrEmpty(accessToken)) return false;
+        if (!path.StartsWithSegments(ApiRoutes.HubsAccess,
+                StringComparison.InvariantCultureIgnoreCase)) return false;
 
-        return !string.IsNullOrEmpty(context.HttpContext.Request.Headers.Authorization) || !isDev;
+        token = accessToken;
+        return true;
+    }
+
+    private static bool HasAuthorizationHeader(MessageReceivedContext context)
+    {
+        return !string.IsNullOrEmpty(context.HttpContext.Request.Headers.Authorization);
+    }
+
+    private static bool IsDevEnvironment()
+    {
+        var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        return env is Envs.Local or Envs.Test;
+    }
+
+    private bool TryExtractDevToken(MessageReceivedContext context, out string? token)
+    {
+        token = null;
+        if (!IsDevEnvironment()) return false;
+        if (HasAuthorizationHeader(context)) return false;
+
+        var result = TokenFactory.GenerateGenieAccessToken(_config.Value).Try();
+        if (result.IsFaulted)
+            throw new InternalServerErrorException(
+                _localizer["GenieAccessTokenServerError"],
+                result.ExtractException());
+
+        token = result.ExtractData();
+        return true;
     }
 }

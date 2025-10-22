@@ -14,6 +14,7 @@ using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Logger.Enrichers;
 using template.net8.api.Core.OpenTelemetry.Options;
 using template.net8.api.Settings.Options;
+using Path = System.IO.Path;
 
 namespace template.net8.api.Core.Logger.Extensions;
 
@@ -116,7 +117,7 @@ internal static class LoggerConfigurationExtensions
         var openTelemetryOptions = builderConfiguration.GetSection(OpenTelemetryOptions.OpenTelemetry)
             .Get<OpenTelemetryOptions>();
 
-        if (openTelemetryOptions is null)
+        if (openTelemetryOptions is null || !openTelemetryOptions.IsLogActive)
             return lc.ConfigureSinkLocal();
 
         OptionsValidator.ValidateOpenTelemetryOptions(openTelemetryOptions);
@@ -163,6 +164,7 @@ internal static class LoggerConfigurationExtensions
                 ["server.address"] = config.ApiOptions.Address,
                 ["service.environment"] = config.EnvName,
                 ["host.name"] = Environment.MachineName,
+                ["host.ip"] = HostInfo.GetHostIp(),
                 ["os.description"] = RuntimeInformation.OSDescription,
                 ["os.architecture"] = RuntimeInformation.OSArchitecture.ToString(),
                 ["process.runtime.name"] = ".NET 8",
@@ -209,7 +211,8 @@ internal static class LoggerConfigurationExtensions
     /// </exception>
     internal static LoggerConfiguration ConfigureSinkLocal(this LoggerConfiguration lc)
     {
-        return lc.WriteTo.Async(c => c.File(new CompactJsonFormatter(), "logs/log.txt",
+        var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "log.txt");
+        return lc.WriteTo.Async(c => c.File(new CompactJsonFormatter(), logPath,
             rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, buffered: true));
     }
 

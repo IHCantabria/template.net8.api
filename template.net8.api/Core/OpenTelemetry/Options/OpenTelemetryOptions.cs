@@ -17,6 +17,12 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
     public static readonly string OpenTelemetry = nameof(OpenTelemetry);
 
     /// <summary>
+    ///     Log Active
+    /// </summary>
+    [Required]
+    public required bool IsLogActive { get; set; }
+
+    /// <summary>
     ///     Log Endpoint Api Key Header
     /// </summary>
     public string? LogEndpointApiKeyHeader { get; set; }

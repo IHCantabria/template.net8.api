@@ -9,7 +9,6 @@ using template.net8.api.Core;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Core.DTOs;
-using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Timeout;
 using template.net8.api.Features.Querys;
 using template.net8.api.Localize.Resources;
@@ -41,16 +40,17 @@ public sealed class ApplicationSystem(
     ///     </paramref>
     ///     is <see langword="null" />.
     /// </exception>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-    /// <exception cref="CoreException">
-    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
-    ///     resource
-    /// </exception>
     /// <exception cref="ArgumentException">
     ///     <paramref>
     ///         <name>comparisonType</name>
     ///     </paramref>
     ///     is not a <see cref="StringComparison" /> value.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    ///     <paramref>
+    ///         <name>value</name>
+    ///     </paramref>
+    ///     is <see langword="null" />.
     /// </exception>
     [HttpGet]
     [DevSwagger]
@@ -71,9 +71,9 @@ public sealed class ApplicationSystem(
             .ToList();
         var result = new LanguageExt.Common.Result<IEnumerable<LocalizedString>>(resources);
         var action =
-            new ActionResultPayload<IEnumerable<LocalizedString>, IEnumerable<ErrorCodeResource>>(obj =>
+            ActionResultPayload<IEnumerable<LocalizedString>, IEnumerable<ErrorCodeResource>>.Ok(obj =>
                 ErrorCodeResource.ToCollection(obj.ToList()));
-        return Task.FromResult(result.ToActionResult(action, Localizer, HttpContext.Features));
+        return Task.FromResult(result.ToActionResult(this, action, Localizer));
     }
 
     /// <summary>
@@ -81,11 +81,6 @@ public sealed class ApplicationSystem(
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
-    /// <exception cref="CoreException">
-    ///     Error Creating the Http Action Result. Error mapping action endpoint response to
-    ///     resource
-    /// </exception>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.SystemController.GetVersion)]
@@ -101,8 +96,7 @@ public sealed class ApplicationSystem(
     {
         var query = new QueryGetVersion();
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
-        var action =
-            new ActionResultPayload<VersionDto, VersionResource>(obj => obj);
-        return result.ToActionResult(action, Localizer, HttpContext.Features);
+        var action = ActionResultPayload<VersionDto, VersionResource>.Ok(obj => obj);
+        return result.ToActionResult(this, action, Localizer);
     }
 }

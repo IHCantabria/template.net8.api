@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Factory;
@@ -13,7 +12,7 @@ namespace template.net8.api.Settings.Handlers;
 internal sealed class GlobalExceptionHandlerControl(
     IProblemDetailsService problemDetailsService,
     IStringLocalizer<ResourceMain> localizer,
-    ILogger<ControllerBase> logger)
+    ILogger<GlobalExceptionHandlerControl> logger)
     : IExceptionHandler
 {
     private readonly IStringLocalizer<ResourceMain> _localizer =

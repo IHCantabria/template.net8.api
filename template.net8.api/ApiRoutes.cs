@@ -5,7 +5,7 @@ namespace template.net8.api;
 [CoreLibrary]
 internal static class ApiRoutes
 {
-    private const string HubsAccess = "/hubs";
+    internal const string HubsAccess = "/hubs";
 
     internal static class DummiesController
     {

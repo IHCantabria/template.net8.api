@@ -59,7 +59,7 @@ public sealed class CreateDummyTextValidator : AbstractValidator<CommandCreateDu
     {
         ArgumentNullException.ThrowIfNull(localizer);
 
-        RuleFor(x => x.CommandParams.Text).Must(x => !string.IsNullOrEmpty(x))
+        RuleFor(x => x.CommandParams.Text).Must(x => !string.IsNullOrWhiteSpace(x))
             .OverridePropertyName("text")
             .WithMessage(localizer["CreateDummyValidatorTextInvalidMsg"])
             .WithErrorCode(localizer["CreateDummyValidatorTextInvalidCode"])
