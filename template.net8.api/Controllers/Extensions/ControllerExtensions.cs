@@ -107,7 +107,7 @@ internal static class ControllerExtensions
             action.ActionPath?.Item2,
             action.ActionPath?.Item1,
             dictionary,
-            protocol: controller.Request.Scheme);
+            controller.Request.Scheme);
 
         controller.Response.Headers.TryAdd("Location", locationUrl);
 
@@ -151,11 +151,10 @@ internal static class ControllerExtensions
             { { action.ActionParam!.Value.Item2, action.ActionParam.Value.Item1 } };
 
         var locationUrl = controller.Url.Action(
-                action.ActionPath?.Item2,
-                action.ActionPath?.Item1,
-                dictionary,
-                protocol: controller.Request.Scheme);
-        );
+            action.ActionPath?.Item2,
+            action.ActionPath?.Item1,
+            dictionary,
+            controller.Request.Scheme);
 
         return new AcceptedResult(locationUrl, null);
     }
@@ -174,11 +173,10 @@ internal static class ControllerExtensions
         dictionary.Add(action.ActionParam.Value.Item2, value?.ToString());
 
         var locationUrl = controller.Url.Action(
-                action.ActionPath?.Item2,
-                action.ActionPath?.Item1,
-                dictionary,
-                protocol: controller.Request.Scheme);
-        );
+            action.ActionPath?.Item2,
+            action.ActionPath?.Item1,
+            dictionary,
+            controller.Request.Scheme);
 
         return action.IsEmptyResponse
             ? new AcceptedResult(locationUrl, null)
