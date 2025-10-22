@@ -163,7 +163,7 @@ function Run-TrivyScan {
         Write-Output "Running Trivy scan (JSON report)..."
         Write-Output "Executing: $TrivyExecutable"
         
-        $jsonArgs = @("fs", "--scanners", "vuln,secret,misconfig,license", "--license-full", "--ignore-unfixed", "--format", "json", "-o", $JsonReport, $absoluteScanTarget)
+        $jsonArgs = @("fs", "--scanners", "vuln,secret,misconfig,license", "--license-full", "--ignore-unfixed", "--skip-dirs", ".vs,.vscode,.trivy,trivy-temp-download,trivy-reports,logs,.git", "--format", "json", "-o", $JsonReport, $absoluteScanTarget)
         $process = Start-Process -FilePath $TrivyExecutable -ArgumentList $jsonArgs -NoNewWindow -Wait -PassThru
 
         if ($process.ExitCode -ne 0) {
@@ -181,7 +181,7 @@ function Run-TrivyScan {
         # Generate HTML report if template is available
         if (Test-Path $HtmlTemplate) {
             Write-Output "Generating HTML report..."
-            $htmlArgs = @("fs", "--scanners", "vuln,secret,misconfig", "--ignore-unfixed", "--format", "template", "--template", "@$HtmlTemplate", "--output", $HtmlReport, $absoluteScanTarget)
+            $htmlArgs = @("fs", "--scanners", "vuln,secret,misconfig", "--ignore-unfixed", "--skip-dirs", ".vs,.vscode,.trivy,trivy-temp-download,trivy-reports,logs,.git", "--format", "template", "--template", "@$HtmlTemplate", "--output", $HtmlReport, $absoluteScanTarget)
             $htmlProcess = Start-Process -FilePath $TrivyExecutable -ArgumentList $htmlArgs -NoNewWindow -Wait -PassThru
             
             if ($htmlProcess.ExitCode -eq 0 -and (Test-Path $HtmlReport)) {
