@@ -80,6 +80,8 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
                     serviceVersion: version,
                     serviceInstanceId: CoreConstants.GuidInstance.ToString())
                 .AddAttributes([
+                    new KeyValuePair<string, object>("service.thread.id", Environment.CurrentManagedThreadId),
+                    new KeyValuePair<string, object>("service.thread.name", Thread.CurrentThread.Name ?? string.Empty),
                     new KeyValuePair<string, object>("server.address", apiOptions!.Address),
                     new KeyValuePair<string, object>("service.environment", builder.Environment.EnvironmentName),
                     new KeyValuePair<string, object>("host.name", Environment.MachineName),
@@ -89,10 +91,8 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
                     new KeyValuePair<string, object>("process.runtime.name", ".NET 8"),
                     new KeyValuePair<string, object>("process.runtime.version", Environment.Version.ToString()),
                     new KeyValuePair<string, object>("process.user.name", Environment.UserName),
-                    new KeyValuePair<string, object>("process.id", Environment.ProcessId),
-                    new KeyValuePair<string, object>("process.name", Process.GetCurrentProcess().ProcessName),
-                    new KeyValuePair<string, object>("service.thread.id", Environment.CurrentManagedThreadId),
-                    new KeyValuePair<string, object>("service.thread.name", Thread.CurrentThread.Name ?? string.Empty)
+                    new KeyValuePair<string, object>("process.pid", Environment.ProcessId),
+                    new KeyValuePair<string, object>("process.name", Process.GetCurrentProcess().ProcessName)
                 ]))
             .WithMetrics(metricsBuilder => ConfigureMetrics(metricsBuilder, openTelemetryOptions))
             .WithTracing(tracingBuilder =>
