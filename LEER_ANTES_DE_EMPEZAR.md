@@ -51,8 +51,11 @@ Read and follow this steps after clone template repo and  before doing anything 
 		
 ## CONFIGURE SONARQUBE
 	1. Link repository with sonarqube server project.
-	2. Configure PROJECT_KEY y SONAR_TOKEN_KEY in the sonarqube server.
-	3. Rename the file analyser_template.ps1 to sonar.ps1. This file will be your configuration for the local env of the project, this file will be omitted from the repository.
+	2. Configure PROJECT_KEY y SONAR_TOKEN_KEY in the sonarqube server and replace the placeholders in the file sonarqube-dotnet-windows.ps1.
+	3. Rename the file sonarqube-dotnet-windows.ps1 to sonar.ps1. This file will be your configuration for the local env of the project, this file will be omitted from the repository.
+
+## CONFIGURE TRIVY
+	3. Rename the file trivy-windows.ps1 to trivy.ps1. This file will be your configuration for the local env of the project, this file will be omitted from the repository.
 	
 ## CONFIGURE appsettings.local.json
 	1. Rename the file appsettings.local_template.json to appsettings.local.json. This file will be your configuration for the local env of the project, this file will be omitted from the repository.
@@ -67,6 +70,7 @@ Read and follow this steps after clone template repo and  before doing anything 
 	5. Make the specific changes needed for your Business/Infraestructure logic.
 	
 ## CHECKS
-	1. Check correct compilation and Startup
-	2. Check correct build using the command npm build:"env"
-	3. ¡DELETE THIS FILE!.
+	1. Check correct compilation and Startup.
+	2. Check correct build using the command npm build:"env".
+	3. Check correct sonar and trivy analysis.
+	4. ¡DELETE THIS FILE!.
