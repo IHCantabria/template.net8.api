@@ -11,8 +11,7 @@
     "install-dotnet": "dotnet restore /p:PublishReadyToRun=true",
     "postversion": "git push origin && git push origin --tags",
     "preversion": "npm run sonar && npm run trivy",
-    "sonar": "powershell -ExecutionPolicy Bypass -File ./sonarqube-dotnet.ps1",
-    "sonar:legacy": "powershell -ExecutionPolicy Bypass -File ./sonar.ps1",
+    "sonar": "powershell -ExecutionPolicy Bypass -File ./sonar.ps1",
     "trivy": "npm run install-dotnet && powershell -ExecutionPolicy Bypass -File ./trivy.ps1",
     "version": "git add -A"
   },

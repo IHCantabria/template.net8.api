@@ -3,13 +3,15 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-# SonarCube Script
-*sonar*.*
+# SonarQube
+*sonar.ps1
+.sonarqube
 
-# SonarCube
-.sonarqube/
-.sonar/
-.scannerwork/
+#Trivy
+.trivy
+*trivy.ps1
+trivy-reports
+trivy-temp-download
 
 # Package.json
 {PROJECT_NAMESPACE}/package.json

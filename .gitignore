@@ -5,8 +5,7 @@
 
 # SonarQube
 *sonar.ps1
-.sonar
-.scannerwork
+.sonarqube
 
 #Trivy
 .trivy
