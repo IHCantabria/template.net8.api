@@ -8,7 +8,7 @@ using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
 using template.net8.api.Settings.Options;
 
-namespace template.net8.api.Controllers.V1;
+namespace template.net8.api.Controllers;
 
 /// <summary>
 ///     Health Check Controller

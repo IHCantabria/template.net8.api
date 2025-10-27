@@ -14,7 +14,7 @@ using template.net8.api.Features.Querys;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
 
-namespace template.net8.api.Controllers.V1;
+namespace template.net8.api.Controllers;
 
 /// <summary>
 ///     Application System Controller
