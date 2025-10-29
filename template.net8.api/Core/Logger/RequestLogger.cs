@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 using Serilog.Context;
 using template.net8.api.Core.Attributes;
@@ -14,6 +15,9 @@ internal static class RequestLogger
     /// <summary>
     ///     Log Action Request
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentContextLogPropertyNaming",
+        Justification =
+            "Open Telemetry fields should have this format: father.child")]
     internal static async Task LogActionRequestAsync(HttpContext context, ILogger logger)
     {
         var methodName = context.Request.Method;
@@ -23,10 +27,11 @@ internal static class RequestLogger
         var routeParams = ExtractRouteParams(context);
         var (bodyContent, formFields) = await ExtractRequestBodyAsync(context).ConfigureAwait(false);
 
-        using (LogContext.PushProperty("QueryParams", queryParams, true))
-        using (LogContext.PushProperty("RouteParams", routeParams, true))
-        using (LogContext.PushProperty("Body", bodyContent ?? string.Empty, true))
-        using (LogContext.PushProperty("FormFields", formFields ?? new Dictionary<string, string>(), true))
+        using (LogContext.PushProperty("request.params.query", queryParams, true))
+        using (LogContext.PushProperty("request.params.route", routeParams, true))
+        using (LogContext.PushProperty("request.params.body", bodyContent ?? string.Empty, true))
+        using (LogContext.PushProperty("request.params.form_field", formFields ?? new Dictionary<string, string>(),
+                   true))
         {
             logger.LogActionRequestReceived(methodName, requestPath);
         }
@@ -115,6 +120,9 @@ internal static class RequestLogger
     /// <summary>
     ///     Log Action Response
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentContextLogPropertyNaming",
+        Justification =
+            "Open Telemetry fields should have this format: father.child")]
     internal static void LogActionResponseError(HttpContext context, string responseText,
         ILogger logger)
     {
@@ -125,7 +133,7 @@ internal static class RequestLogger
             ? context.Request.Method
             : $"{controller}.{action}";
         var requestPath = context.Request.Path;
-        using (LogContext.PushProperty("ErrorResponse", responseText))
+        using (LogContext.PushProperty("request.response.error", responseText))
         {
             logger.LogActionRequestResponsedError(methodName, requestPath,
                 context.Response.StatusCode.ToString(CultureInfo.InvariantCulture));

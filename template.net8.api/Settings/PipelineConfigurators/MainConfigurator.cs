@@ -61,8 +61,11 @@ public sealed class MainConfigurator : IPipelineConfigurator
         // Enable middleware to log the request ID.
         app.UseMiddleware<RequestIdLoggingMiddleware>();
 
-        // Enable middleware to log requests.
-        app.UseMiddleware<RequestLoggingMiddleware>();
+        // Enable Middleware native
+        app.UseHttpLogging();
+
+        // Enable middleware custom to log requests.
+        app.UseMiddleware<HttpRequestResponseLoggingMiddleware>();
 
         //Enable Serilog Request Logging.
         app.UseSerilogRequestLogging();

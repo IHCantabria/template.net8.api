@@ -11,8 +11,9 @@ namespace template.net8.api.Settings.Middlewares;
 /// </summary>
 /// <param name="next"></param>
 [CoreLibrary]
-//TODO REVIEW: Evaluate if this middleware is necessary or if it can be replaced by Services.AddHttpLogging and IHttpLoggingInterceptor
-public sealed class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+public sealed class HttpRequestResponseLoggingMiddleware(
+    RequestDelegate next,
+    ILogger<HttpRequestResponseLoggingMiddleware> logger)
 {
     private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));

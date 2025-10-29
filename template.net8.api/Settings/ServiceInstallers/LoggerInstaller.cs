@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Serilog;
 using template.net8.api.Core;
@@ -75,6 +76,10 @@ public sealed class LoggerInstaller : IServiceInstaller
         var version = await ReadPackageJsonVersionAsync().ConfigureAwait(false);
 
         SerilogLoggersFactory.RealApplicationLogFactory(config, builder.Environment.EnvironmentName, version);
+
+        builder.Services.AddHttpLogging(options =>
+            options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders |
+                                    HttpLoggingFields.ResponsePropertiesAndHeaders);
     }
 
     private static async Task<string> ReadPackageJsonVersionAsync()
