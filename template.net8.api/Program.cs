@@ -2,11 +2,15 @@ using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using LinqKit;
 using Serilog;
+using template.net8.api.Core;
 using template.net8.api.Core.Logger;
 using template.net8.api.Core.Logger.Extensions;
 using template.net8.api.Settings.Extensions;
+using ZLinq;
 
 [assembly: ComVisible(false), CLSCompliant(false)]
+// Define ZLinq DropIn for the assembly to generate optimized Linq queries
+[assembly: ZLinqDropIn(CoreConstants.ApiName, DropInGenerateTypes.Collection)]
 SerilogLoggersFactory.MainLogFactory();
 MainLoggerMethods.LogStartingMainService();
 

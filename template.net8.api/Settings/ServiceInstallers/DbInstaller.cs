@@ -73,20 +73,45 @@ public sealed class DbInstaller : IServiceInstaller
     {
         if (options.IsConfigured) return;
 
-        if (builder.Environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
-        {
-            options.EnableSensitiveDataLogging();
-            options.EnableDetailedErrors();
-            options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
-        }
+        ConfigureDevelopmentSettings(options, builder);
+        ConfigureWarnings(options);
+        ConfigureDatabaseProvider(options, builder, connectionOptions);
+    }
 
-        options.UseNpgsql(GetNpgsqlDataSource(builder.Environment, connectionOptions),
-            x =>
-            {
-                x.UseNetTopologySuite();
-                x.CommandTimeout(DbContextConstants.CommandTimeout);
-                x.EnableRetryOnFailure(DbContextConstants.MaxRetryCount, DbContextConstants.MaxRetryDelay, []);
-            }).UseExceptionProcessor();
+
+    private static void ConfigureDevelopmentSettings(DbContextOptionsBuilder options, IHostApplicationBuilder builder)
+    {
+        if (builder.Environment.EnvironmentName is not (Envs.Development or Envs.Local or Envs.Test)) return;
+
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+        options.ConfigureWarnings(w =>
+            w.Ignore(CoreEventId.SensitiveDataLoggingEnabledWarning));
+    }
+
+    private static void ConfigureWarnings(DbContextOptionsBuilder options)
+    {
+        options.ConfigureWarnings(w =>
+            w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+    }
+
+    private static void ConfigureDatabaseProvider(
+        DbContextOptionsBuilder options,
+        IHostApplicationBuilder builder,
+        ProjectDbOptions connectionOptions)
+    {
+        options.UseNpgsql(
+                GetNpgsqlDataSource(builder.Environment, connectionOptions),
+                npgsqlOptions =>
+                {
+                    npgsqlOptions.UseNetTopologySuite();
+                    npgsqlOptions.CommandTimeout(DbContextConstants.CommandTimeout);
+                    npgsqlOptions.EnableRetryOnFailure(
+                        DbContextConstants.MaxRetryCount,
+                        DbContextConstants.MaxRetryDelay,
+                        Array.Empty<string>());
+                })
+            .UseExceptionProcessor();
     }
 
     [MustDisposeResource]

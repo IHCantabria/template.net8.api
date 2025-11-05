@@ -9,6 +9,7 @@ using template.net8.api.Controllers;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Settings.Options;
+using ZLinq;
 
 namespace template.net8.api.Settings.Filters;
 

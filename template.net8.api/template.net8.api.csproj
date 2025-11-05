@@ -13,8 +13,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <!--<DocumentationFile>bin\Debug\net8.0\{PROJECT_NAMESPACE}.xml</DocumentationFile>-->
-    <DocumentationFile>bin\Debug\net8.0\template.net8.api.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net8.0\{PROJECT_NAMESPACE}.xml</DocumentationFile>
+    <!--<DocumentationFile>bin\Debug\net8.0\template.net8.api.xml</DocumentationFile>-->
     <NoWarn>CA1515</NoWarn>
     <Optimize>False</Optimize>
   </PropertyGroup>
@@ -31,10 +31,6 @@
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\dev.pubxml" />
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\pre.pubxml" />
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\prod.pubxml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <using Include="SimdLinq" />
   </ItemGroup>
 
   <ItemGroup>
@@ -91,7 +87,6 @@
     <PackageReference Include="Serilog.Exceptions.EntityFrameworkCore" Version="8.4.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
     <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
-    <PackageReference Include="SimdLinq" Version="1.3.2" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="10.15.0.120848">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -100,6 +95,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="9.0.4" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
+    <PackageReference Include="ZLinq" Version="1.5.3" />
+    <PackageReference Include="ZLinq.DropInGenerator" Version="1.5.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

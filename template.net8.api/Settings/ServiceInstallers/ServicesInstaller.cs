@@ -2,6 +2,8 @@
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
 using template.net8.api.Settings.Interfaces;
+using ZLinq;
+using ZLinq.Linq;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
@@ -42,7 +44,7 @@ public sealed class ServicesInstaller : IServiceInstaller
         return Task.CompletedTask;
     }
 
-    private static IEnumerable<Type> GetExportedServiceTypes()
+    private static ValueEnumerable<ArrayWhere<Type>, Type> GetExportedServiceTypes()
     {
         return typeof(Program).Assembly
             .GetExportedTypes()

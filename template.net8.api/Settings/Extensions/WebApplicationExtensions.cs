@@ -2,22 +2,14 @@
 using Microsoft.AspNetCore.Localization;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
+using ZLinq;
+using ZLinq.Linq;
 
 namespace template.net8.api.Settings.Extensions;
 
 [CoreLibrary]
 internal static class WebApplicationExtensions
 {
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>keySelector</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     internal static async Task ConfigurePipelinesInAssemblyAsync(this WebApplication app)
     {
         var pipelines = GetPipelineConfigurators();
@@ -27,7 +19,9 @@ internal static class WebApplicationExtensions
             await pipeline.ConfigurePipelineAsync(app).ConfigureAwait(false);
     }
 
-    private static IEnumerable<IPipelineConfigurator> GetPipelineConfigurators()
+    private static
+        ValueEnumerable<Cast<ArrayWhereSelect<Type, object?>, object?, IPipelineConfigurator>, IPipelineConfigurator>
+        GetPipelineConfigurators()
     {
         //Get all Types in the assembly that implement IConfigurator, create a instance of the type and order it by LoadOrder.
         var exportedTypes = typeof(Program).Assembly.GetExportedTypes().Where(x =>
@@ -35,6 +29,9 @@ internal static class WebApplicationExtensions
         return exportedTypes.Select(Activator.CreateInstance).Cast<IPipelineConfigurator>();
     }
 
+    /// <summary>
+    ///     Configures the Localization Middleware for the application.
+    /// </summary>
     /// <exception cref="ArgumentNullException">
     ///     <paramref>
     ///         <name>name</name>
@@ -45,8 +42,7 @@ internal static class WebApplicationExtensions
     ///     <paramref>
     ///         <name>name</name>
     ///     </paramref>
-    ///     is not a valid culture name. For more information,
-    ///     see the Notes to Callers section.
+    ///     is not a valid culture name. For more information, see the Notes to Callers section.
     /// </exception>
     internal static void ConfigureLocalizationMiddleware(this WebApplication app)
     {

@@ -1,5 +1,7 @@
 ﻿using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
+using ZLinq;
+using ZLinq.Linq;
 
 namespace template.net8.api.Settings.Extensions;
 
@@ -9,16 +11,6 @@ internal static class WebApplicationBuilderExtensions
     /// <summary>
     ///     Install the services in the assembly.
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>keySelector</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     internal static async Task InstallServicesInAssemblyAsync(this WebApplicationBuilder builder)
     {
         var services = GetServiceInstallers();
@@ -28,7 +20,8 @@ internal static class WebApplicationBuilderExtensions
             await service.InstallServiceAsync(builder).ConfigureAwait(false);
     }
 
-    private static IEnumerable<IServiceInstaller> GetServiceInstallers()
+    private static ValueEnumerable<Cast<ArrayWhereSelect<Type, object?>, object?, IServiceInstaller>, IServiceInstaller>
+        GetServiceInstallers()
     {
         //Get all Types in the assembly that implement IInstaller, create a instance of the type and order it by LoadOrder.
         var exportedTypes = typeof(Program).Assembly.GetExportedTypes().Where(x =>
