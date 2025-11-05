@@ -45,14 +45,13 @@ public sealed class SwaggerInstaller : IServiceInstaller
             config.GetSection(SwaggerSecurityOptions.SwaggerSecurity).Get<SwaggerSecurityOptions>();
         OptionsValidator.ValidateSwaggerSecurityOptions(swaggerSecurityOptions);
         var version = config.Get<ProjectOptions>()?.Version ?? "";
-        AddSwaggerGen(builder, swaggerOptions, swaggerSecurityOptions, version);
+        AddSwaggerGen(builder, swaggerOptions!, swaggerSecurityOptions, version);
         return Task.CompletedTask;
     }
 
-    private static void AddSwaggerGen(WebApplicationBuilder builder, SwaggerOptions? swaggerOptions,
+    private static void AddSwaggerGen(WebApplicationBuilder builder, SwaggerOptions swaggerOptions,
         SwaggerSecurityOptions? swaggerSecurityOptions, string version)
     {
-        if (swaggerOptions is null) return;
         // Register the swagger generator, defining 1 or more swagger documents
         builder.Services.AddSwaggerGen(c =>
         {

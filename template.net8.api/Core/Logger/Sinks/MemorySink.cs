@@ -21,12 +21,6 @@ internal sealed class MemorySink : ILogEventSink
     ///     Flush the events to the real logger
     /// </summary>
     /// <param name="logger"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     public void FlushToLogger(ILogger logger)
     {
         var eventsToFlush = _events.ToList();
