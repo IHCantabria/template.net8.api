@@ -1,9 +1,13 @@
-﻿using Serilog;
+﻿using System.Diagnostics.CodeAnalysis;
+using Serilog;
 using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Logger;
 
 [CoreLibrary]
+[SuppressMessage("ReSharper", "ClassTooBig",
+    Justification =
+        "MainLoggerMethods is designed to have all the Main Log Methods")]
 internal static class MainLoggerMethods
 {
     internal static void LogStartingMainService()
@@ -61,9 +65,9 @@ internal static class MainLoggerMethods
         Log.Information(MainLoggerMessageDefinitions.ReadyMainService, CoreConstants.ApiName);
     }
 
-    internal static void LogCriticalError(Exception ex)
+    internal static void LogCriticalMainPipelineError(Exception ex)
     {
-        Log.Fatal(ex, MainLoggerMessageDefinitions.CriticalError, CoreConstants.ApiName);
+        Log.Fatal(ex, MainLoggerMessageDefinitions.CriticalMainPipelineError, CoreConstants.ApiName);
     }
 
     internal static void LogInitFallBack()
@@ -94,5 +98,25 @@ internal static class MainLoggerMethods
     internal static void LogTraceCollectorDisable()
     {
         Log.Information(MainLoggerMessageDefinitions.OpenTelemetryTraceCollectorDisable, CoreConstants.ApiName);
+    }
+
+    internal static void LogCriticalUnhandledException(Exception ex)
+    {
+        Log.Fatal(ex, MainLoggerMessageDefinitions.CriticalUnhandledException, CoreConstants.ApiName);
+    }
+
+    internal static void LogUnobservedTaskException(Exception ex)
+    {
+        Log.Warning(ex, MainLoggerMessageDefinitions.UnobservedTaskException, CoreConstants.ApiName);
+    }
+
+    internal static void LogProcessExit()
+    {
+        Log.Information(MainLoggerMessageDefinitions.ProcessExit, CoreConstants.ApiName);
+    }
+
+    internal static void LogDomainUnload()
+    {
+        Log.Information(MainLoggerMessageDefinitions.DomainUnload, CoreConstants.ApiName);
     }
 }

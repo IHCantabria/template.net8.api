@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using LinqKit;
 using Serilog;
 using template.net8.api.Core;
+using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Logger;
 using template.net8.api.Core.Logger.Extensions;
 using template.net8.api.Settings.Extensions;
@@ -13,6 +14,30 @@ using ZLinq;
 [assembly: ZLinqDropIn(CoreConstants.ApiName, DropInGenerateTypes.Collection)]
 SerilogLoggersFactory.MainLogFactory();
 MainLoggerMethods.LogStartingMainService();
+
+AppDomain.CurrentDomain.UnhandledException += (_, args) =>
+{
+    var ex = args.ExceptionObject as Exception;
+    MainLoggerMethods.LogCriticalUnhandledException(
+        ex ?? new CoreException($"Unhandled exception object: {args.ExceptionObject}")
+    );
+
+    if (!args.IsTerminating) return;
+
+    MainLoggerMethods.LogShutdown();
+    Log.CloseAndFlush();
+};
+
+TaskScheduler.UnobservedTaskException += (_, args) =>
+{
+    MainLoggerMethods.LogUnobservedTaskException(args.Exception);
+    args.SetObserved();
+};
+
+AppDomain.CurrentDomain.ProcessExit += (_, _) => MainLoggerMethods.LogProcessExit();
+
+AppDomain.CurrentDomain.DomainUnload += (_, _) => MainLoggerMethods.LogDomainUnload();
+
 
 //Configure Optimize LinqToSQL calls
 LinqKitExtension.QueryOptimizer = ExpressionOptimizer.visit;
@@ -47,7 +72,7 @@ catch (Exception e)
 {
     if (!Log.Logger.CurrentLoggerHasSinks())
         SerilogLoggersFactory.FallbackLogFactory();
-    MainLoggerMethods.LogCriticalError(e);
+    MainLoggerMethods.LogCriticalMainPipelineError(e);
     throw;
 }
 finally
