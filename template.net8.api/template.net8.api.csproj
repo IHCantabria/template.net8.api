@@ -50,17 +50,17 @@
   <ItemGroup>
     <PackageReference Include="Delta.EF" Version="6.4.4" />
     <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="8.1.3" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.10" />
-    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="15.1.10" />
-    <PackageReference Include="HotChocolate.Data.Spatial" Version="15.1.10" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.11" />
+    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="15.1.11" />
+    <PackageReference Include="HotChocolate.Data.Spatial" Version="15.1.11" />
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
     <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
-    <PackageReference Include="Linq.Expression.Optimizer" Version="1.0.32" />
+    <PackageReference Include="Linq.Expression.Optimizer" Version="1.0.34" />
     <PackageReference Include="LinqKit" Version="1.3.8" />
     <PackageReference Include="MediatR" Version="12.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.19" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.21" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -70,12 +70,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="9.0.4" />
-    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.12.0" />
-    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
-    <PackageReference Include="Roslynator.Analyzers" Version="4.14.0">
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.14.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.14.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.14.0" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.14.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -91,12 +91,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="9.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="9.0.6" />
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
-    <PackageReference Include="ZLinq" Version="1.5.3" />
-    <PackageReference Include="ZLinq.DropInGenerator" Version="1.5.3">
+    <PackageReference Include="ZLinq" Version="1.5.4" />
+    <PackageReference Include="ZLinq.DropInGenerator" Version="1.5.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
