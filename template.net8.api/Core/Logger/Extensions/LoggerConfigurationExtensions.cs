@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using LanguageExt;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Serilog;
 using Serilog.Events;
@@ -121,8 +122,8 @@ internal static class LoggerConfigurationExtensions
             return lc.ConfigureSinkLocal();
 
         OptionsValidator.ValidateOpenTelemetryOptions(openTelemetryOptions);
-        var useOpenTelemetry = IsLogOpenTelemetryAvailable(openTelemetryOptions);
-        if (!useOpenTelemetry)
+        var useOpenTelemetry = IsLogOpenTelemetryAvailable(openTelemetryOptions).Try();
+        if (useOpenTelemetry.IsFaulted)
             throw new InvalidConfigurationException(
                 "The OpenTelemetry Log configuration in the appsettings file is incorrect or the endpoint for the logs is down. There was a problem trying to connecte to the OpenTelemetry log endpoint");
 
@@ -216,21 +217,24 @@ internal static class LoggerConfigurationExtensions
             rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, buffered: true));
     }
 
-    private static bool IsLogOpenTelemetryAvailable(OpenTelemetryOptions config)
+    private static Try<bool> IsLogOpenTelemetryAvailable(OpenTelemetryOptions config)
     {
-        using var client = new HttpClient();
-        using var request = new HttpRequestMessage(HttpMethod.Post, config.LogEndpointUrl);
+        return () =>
+        {
+            using var client = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Post, config.LogEndpointUrl);
 
-        if (config.UseLogHeaderApiKey())
-            request.Headers.Add(config.LogEndpointApiKeyHeader!, config.LogEndpointApiKeyValue);
+            if (config.UseLogHeaderApiKey())
+                request.Headers.Add(config.LogEndpointApiKeyHeader!, config.LogEndpointApiKeyValue);
 
-        // Send a minimal valid OpenTelemetry log entry
-        request.Content = new ByteArrayContent([]);
-        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-protobuf");
+            // Send a minimal valid OpenTelemetry log entry
+            request.Content = new ByteArrayContent([]);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-protobuf");
 
-        // Check if client responds
-        using var response = client.Send(request, HttpCompletionOption.ResponseHeadersRead);
-        return response.IsSuccessStatusCode;
+            // Check if client responds
+            using var response = client.Send(request, HttpCompletionOption.ResponseHeadersRead);
+            return response.IsSuccessStatusCode;
+        };
     }
 }
 

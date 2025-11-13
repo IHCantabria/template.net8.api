@@ -3,10 +3,10 @@ using JetBrains.Annotations;
 using LinqKit;
 using Serilog;
 using template.net8.api.Core;
-using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Logger;
 using template.net8.api.Core.Logger.Extensions;
 using template.net8.api.Settings.Extensions;
+using template.net8.api.Settings.Handlers;
 using ZLinq;
 
 [assembly: ComVisible(false), CLSCompliant(false)]
@@ -15,29 +15,8 @@ using ZLinq;
 SerilogLoggersFactory.MainLogFactory();
 MainLoggerMethods.LogStartingMainService();
 
-AppDomain.CurrentDomain.UnhandledException += (_, args) =>
-{
-    var ex = args.ExceptionObject as Exception;
-    MainLoggerMethods.LogCriticalUnhandledException(
-        ex ?? new CoreException($"Unhandled exception object: {args.ExceptionObject}")
-    );
-
-    if (!args.IsTerminating) return;
-
-    MainLoggerMethods.LogShutdown();
-    Log.CloseAndFlush();
-};
-
-TaskScheduler.UnobservedTaskException += (_, args) =>
-{
-    MainLoggerMethods.LogUnobservedTaskException(args.Exception);
-    args.SetObserved();
-};
-
-AppDomain.CurrentDomain.ProcessExit += (_, _) => MainLoggerMethods.LogProcessExit();
-
-AppDomain.CurrentDomain.DomainUnload += (_, _) => MainLoggerMethods.LogDomainUnload();
-
+//Register Global Error and Exit Handlers
+GlobalErrorAndExitHandlers.Register();
 
 //Configure Optimize LinqToSQL calls
 LinqKitExtension.QueryOptimizer = ExpressionOptimizer.visit;
@@ -91,5 +70,5 @@ namespace template.net8.api
     [UsedImplicitly]
     public sealed class Program;
 }
-//TODO: Review all the comments in the code and update them.  DOcument the implementatiosn using the Inheritdoc tag for the Interfaces. Example below
+//TODO: Review all the comments in the code and update them.  Document the implementatiosn using the Inheritdoc tag for the Interfaces. Example below
 // <inheritdoc cref="ISaveNotificationsDispatcher.ManageSaveEarthquakeNotificationsAsync" />

@@ -25,14 +25,14 @@ public sealed record CorsOptions : IEqualityOperators<CorsOptions, CorsOptions, 
     /// <summary>
     ///     Cors Allowed Origins
     /// </summary>
-    [Required]
-    public required string AllowedOrigins { get; init; }
+    public string? AllowedOrigins { get; init; }
 
     /// <summary>
     ///     Array of Allowed Origins
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<string> ArrayAllowedOrigins => AllowedOrigins.Split(";");
+    public IEnumerable<string> ArrayAllowedOrigins =>
+        string.IsNullOrEmpty(AllowedOrigins) ? [] : AllowedOrigins.Split(";");
 }
 
 /// <summary>
