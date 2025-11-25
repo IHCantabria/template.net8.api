@@ -157,7 +157,7 @@ internal static class LoggerConfigurationExtensions
                 };
             x.ResourceAttributes = new Dictionary<string, object>
             {
-                ["service.name"] = CoreConstants.ApiName,
+                ["service.name"] = config.OpenTelemetryOptions.ServiceName,
                 ["service.version"] = config.Version,
                 ["service.instance.id"] = CoreConstants.GuidInstance.ToString(),
                 ["service.thread.id"] = Environment.CurrentManagedThreadId,

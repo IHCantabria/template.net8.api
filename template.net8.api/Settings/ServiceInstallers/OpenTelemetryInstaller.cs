@@ -76,7 +76,7 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resource => resource
                 .AddService(
-                    CoreConstants.ApiName,
+                    openTelemetryOptions.ServiceName,
                     serviceVersion: version,
                     serviceInstanceId: CoreConstants.GuidInstance.ToString())
                 .AddAttributes([

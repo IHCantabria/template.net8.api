@@ -23,6 +23,12 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
     public required bool IsLogActive { get; set; }
 
     /// <summary>
+    ///     Log Service Name
+    /// </summary>
+    [Required]
+    public required string ServiceName { get; set; }
+
+    /// <summary>
     ///     Log Endpoint Api Key Header
     /// </summary>
     public string? LogEndpointApiKeyHeader { get; set; }
