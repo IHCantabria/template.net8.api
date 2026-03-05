@@ -1,27 +1,26 @@
 ﻿using System.Diagnostics;
 using Serilog.Core;
 using Serilog.Events;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Logger.Enrichers;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class ActivityEnricher : ILogEventEnricher
 {
     /// <summary>
-    ///     Enriches the log event with Activity information.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="logEvent"></param>
-    /// <param name="propertyFactory"></param>
     /// <exception cref="ArgumentNullException">
-    ///     When
-    ///     <paramref>
-    ///         <name>property</name>
-    ///     </paramref>
-    ///     is <code>null</code>
+    ///     <paramref name="logEvent" /> is <see langword="null" />.
+    ///     <paramref name="propertyFactory" /> is <see langword="null" />.
     /// </exception>
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
+        ArgumentNullException.ThrowIfNull(logEvent);
+        ArgumentNullException.ThrowIfNull(propertyFactory);
+
         var activity = Activity.Current;
         if (activity is null) return;
 

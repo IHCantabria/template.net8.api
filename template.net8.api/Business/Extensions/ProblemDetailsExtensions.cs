@@ -1,51 +1,26 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Factory;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Business.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class ProblemDetailsExtensions
 {
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     <paramref>
-    ///         <name>index</name>
-    ///     </paramref>
-    ///     is less than 0.
-    ///     -or-
-    ///     <paramref>
-    ///         <name>index</name>
-    ///     </paramref>
-    ///     is equal to or greater than
-    ///     <see>
-    ///         <cref>P:System.Collections.Generic.List`1.Count</cref>
-    ///     </see>
-    ///     .
-    /// </exception>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The property is set and the
-    ///     <see>
-    ///         <cref>IDictionary`2</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    /// <exception cref="System.Collections.Generic.KeyNotFoundException">
-    ///     The property is retrieved and
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is not found.
-    /// </exception>
-    internal static ProblemDetails AddErrors(this ProblemDetails problemDetails,
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
+    internal static void AddErrors(this ProblemDetails problemDetails,
         IStringLocalizer<ResourceMain> localizer,
         ValidationException vex)
     {
@@ -65,7 +40,5 @@ internal static class ProblemDetailsExtensions
             problemDetails.Extensions["errors"] = errorsCollection;
             problemDetails.Extensions["code"] = localizer["ProblemDetailsValidationCode"];
         }
-
-        return problemDetails;
     }
 }

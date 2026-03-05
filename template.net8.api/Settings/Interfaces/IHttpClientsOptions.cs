@@ -1,20 +1,28 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace template.net8.api.Settings.Interfaces;
 
 /// <summary>
-///     Interface for Http Clients Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public interface IHttpClientsOptions : IConnectionsOptions
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification = "Reusable configuration contract; it may not be used in every application scenario.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification =
+        "Members are part of the reusable configuration contract and may not be used in all implementations.")]
+internal interface IHttpClientsOptions : IConnectionsOptions
 {
     /// <summary>
-    ///     Uri Base for the Http Client
+    ///     ADD DOCUMENTATION
     /// </summary>
     Uri UriBase { get; init; }
 
     /// <summary>
-    ///     Timeout for the Http Client
+    ///     ADD DOCUMENTATION
     /// </summary>
     TimeSpan Timeout { get; init; }
 }

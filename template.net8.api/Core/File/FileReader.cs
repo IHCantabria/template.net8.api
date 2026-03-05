@@ -1,45 +1,33 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace template.net8.api.Core.File;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification = "General-purpose helper type; usage depends on consumer requirements.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "General-purpose helper methods; not all members are used in every scenario.")]
 internal static class FileReader
 {
     /// <summary>
-    ///     Converts a file to a byte array asynchronously.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="file">The file to convert.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <param name="bufferSize">The buffer size in bytes. Default is 65536 (64 KB).</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the byte array.</returns>
-    /// <exception cref="ArrayTypeMismatchException">
-    ///     <paramref>
-    ///         <name>array</name>
-    ///     </paramref>
-    ///     is covariant, and the array's type is not exactly <see langword="T[]" />.
-    /// </exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     <paramref>
-    ///         <name>start</name>
-    ///     </paramref>
-    ///     ,
-    ///     <paramref>
-    ///         <name>length</name>
-    ///     </paramref>
-    ///     , or
-    ///     <paramref>
-    ///         <name>start</name>
-    ///     </paramref>
-    ///     +
-    ///     <paramref>
-    ///         <name>length</name>
-    ///     </paramref>
-    ///     is not in the range of
-    ///     <paramref>
-    ///         <name>array</name>
-    ///     </paramref>
-    ///     .
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumented",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static async Task<LanguageExt.Common.Result<byte[]>> ConvertFileToByteArrayAsync(IFormFile file,
         CancellationToken cancellationToken,
         int bufferSize = 65536)
@@ -62,39 +50,18 @@ internal static class FileReader
     }
 
     /// <summary>
-    ///     Converts a file to a byte array synchronously.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="file">The file to convert.</param>
-    /// <param name="bufferSize">The buffer size in bytes. Default is 65536 (64 KB).</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the byte array.</returns>
-    /// <exception cref="ArrayTypeMismatchException">
-    ///     <paramref>
-    ///         <name>array</name>
-    ///     </paramref>
-    ///     is covariant, and the array's type is not exactly <see langword="T[]" />.
-    /// </exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     <paramref>
-    ///         <name>start</name>
-    ///     </paramref>
-    ///     ,
-    ///     <paramref>
-    ///         <name>length</name>
-    ///     </paramref>
-    ///     , or
-    ///     <paramref>
-    ///         <name>start</name>
-    ///     </paramref>
-    ///     +
-    ///     <paramref>
-    ///         <name>length</name>
-    ///     </paramref>
-    ///     is not in the range of
-    ///     <paramref>
-    ///         <name>array</name>
-    ///     </paramref>
-    ///     .
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumented",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static LanguageExt.Common.Result<byte[]> ConvertFileToByteArray(IFormFile file,
         int bufferSize = 65536)
     {

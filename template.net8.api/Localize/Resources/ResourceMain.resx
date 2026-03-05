@@ -132,17 +132,11 @@
   <data name="GenieAccessTokenServerError" xml:space="preserve">
     <value>Something went wrong when creating the genie access token.</value>
   </data>
-  <data name="CreateDummyValidatorTextInvalidMsg" xml:space="preserve">
-    <value>You must specify a valid text.</value>
-  </data>
   <data name="DejaVu" xml:space="preserve">
     <value>A Dejavu is usually a glitch in the matrix, it happens when they change something.</value>
   </data>
   <data name="GenericValidatorError" xml:space="preserve">
     <value>There is something wrong with the validators for your request.</value>
-  </data>
-  <data name="GetDummyValidatorNotFoundMsg" xml:space="preserve">
-    <value>The dummy key declared in your request doesn't match any dummy in the system.</value>
   </data>
   <data name="ProblemDetailsBadRequestTitle" xml:space="preserve">
     <value>Incorrect Inputs.</value>
@@ -173,12 +167,6 @@
   </data>
   <data name="ProblemDetailsValidationTitle" xml:space="preserve">
     <value>One or more validation errors occurred.</value>
-  </data>
-  <data name="CreateDummyValidatorTextInvalidCode" xml:space="preserve">
-    <value>BE-CD-EV-001</value>
-  </data>
-  <data name="GetDummyValidatorNotFoundCode" xml:space="preserve">
-    <value>BE-GD-EV-001</value>
   </data>
   <data name="ProblemDetailsValidationCode" xml:space="preserve">
     <value>BE-R-EV-001</value>
@@ -282,25 +270,260 @@
   <data name="ProblemDetailsUnauthorizedMissingTokenCode" xml:space="preserve">
     <value>BE-R-E-004</value>
   </data>
-  <data name="DummyHubConnectionOnlineMsg" xml:space="preserve">
+  <data name="UserHubConnectionOnlineMsg" xml:space="preserve">
     <value>Connection is active.</value>
   </data>
-  <data name="DummyHubConnectionStatusMsg" xml:space="preserve">
+  <data name="UserHubConnectionStatusMsg" xml:space="preserve">
     <value>Connection successfully established.</value>
   </data>
-  <data name="GetDummyEventsCheckConnectionStatusDescription" xml:space="preserve">
+  <data name="GetUserEventsCheckConnectionStatusDescription" xml:space="preserve">
     <value>Client request to check the connection status.</value>
   </data>
-  <data name="GetDummyEventsConnectionStatusDescription" xml:space="preserve">
+  <data name="GetUserEventsConnectionStatusDescription" xml:space="preserve">
     <value>Server response of the CheckConnectionStatus method.</value>
   </data>
-  <data name="GetDummyEventsConnectionOnlineDescription" xml:space="preserve">
+  <data name="GetUserEventsConnectionOnlineDescription" xml:space="preserve">
     <value>Server event when a client is online.</value>
   </data>
-  <data name="GetDummyEventsNewDummyDescription" xml:space="preserve">
-    <value>Server event when a new dummy is created.</value>
+  <data name="GetUserEventsNewUserDescription" xml:space="preserve">
+    <value>Server event when a new user is created.</value>
   </data>
-  <data name="DummyHubNewDummyMsg" xml:space="preserve">
-    <value>New Dummy Created</value>
+  <data name="UserHubNewUserMsg" xml:space="preserve">
+    <value>New User Created</value>
+  </data>
+  <data name="UserHubCreatedUserMsg" xml:space="preserve">
+    <value>UserHubCreatedUserMsg</value>
+  </data>
+  <data name="UserHubDeletedUserMsg" xml:space="preserve">
+    <value>UserHubDeletedUserMsg</value>
+    <comment>UserHubDeletedUserMsg</comment>
+  </data>
+  <data name="UserHubUpdatedUserMsg" xml:space="preserve">
+    <value>UserHubUpdatedUserMsg</value>
+    <comment>UserHubUpdatedUserMsg</comment>
+  </data>
+  <data name="GetUserEventsUpdateUserDescription" xml:space="preserve">
+    <value>GetUserEventsUpdateUserDescription</value>
+    <comment>GetUserEventsUpdateUserDescription</comment>
+  </data>
+  <data name="GetUserEventsDeleteUserDescription" xml:space="preserve">
+    <value>GetUserEventsDeleteUserDescription</value>
+    <comment>GetUserEventsDeleteUserDescription</comment>
+  </data>
+  <data name="CreateUserValidatorPasswordNotValidMsg" xml:space="preserve">
+    <value>CreateUserValidatorPasswordNotValidMsg</value>
+    <comment>CreateUserValidatorPasswordNotValidMsg</comment>
+  </data>
+  <data name="CreateUserValidatorPasswordNotValidCode" xml:space="preserve">
+    <value>CreateUserValidatorPasswordNotValidCode</value>
+    <comment>CreateUserValidatorPasswordNotValidCode</comment>
+  </data>
+  <data name="CreateUserValidatorEmailNotValidMsg" xml:space="preserve">
+    <value>CreateUserValidatorEmailNotValidMsg</value>
+    <comment>CreateUserValidatorEmailNotValidMsg</comment>
+  </data>
+  <data name="CreateUserValidatorEmailNotValidCode" xml:space="preserve">
+    <value>CreateUserValidatorEmailNotValidCode</value>
+    <comment>CreateUserValidatorEmailNotValidCode</comment>
+  </data>
+  <data name="CreateUserValidatorEmailUsedCode" xml:space="preserve">
+    <value>CreateUserValidatorEmailUsedCode</value>
+    <comment>CreateUserValidatorEmailUsedCode</comment>
+  </data>
+  <data name="CreateUserValidatorEmailUsedMsg" xml:space="preserve">
+    <value>CreateUserValidatorEmailUsedMsg</value>
+    <comment>CreateUserValidatorEmailUsedMsg</comment>
+  </data>
+  <data name="TokenValidatoUserExistMsg" xml:space="preserve">
+    <value>TokenValidatoUserExistMsg</value>
+    <comment>TokenValidatoUserExistMsg</comment>
+  </data>
+  <data name="TokenValidatoUserExistCode" xml:space="preserve">
+    <value>TokenValidatoUserExistCode</value>
+    <comment>TokenValidatoUserExistCode</comment>
+  </data>
+  <data name="TokenValidatoUserDisabledMsg" xml:space="preserve">
+    <value>TokenValidatoUserDisabledMsg</value>
+    <comment>TokenValidatoUserDisabledMsg</comment>
+  </data>
+  <data name="TokenValidatoUserDisabledCode" xml:space="preserve">
+    <value>TokenValidatoUserDisabledCode</value>
+    <comment>TokenValidatoUserDisabledCode</comment>
+  </data>
+  <data name="DeleteUserValidatorUuidNotFoundMsg" xml:space="preserve">
+    <value>DeleteUserValidatorUuidNotFoundMsg</value>
+    <comment>DeleteUserValidatorUuidNotFoundMsg</comment>
+  </data>
+  <data name="DeleteUserValidatorUuidNotFoundCode" xml:space="preserve">
+    <value>DeleteUserValidatorUuidNotFoundCode</value>
+    <comment>DeleteUserValidatorUuidNotFoundCode</comment>
+  </data>
+  <data name="DisableUserValidatorUserDisabledMsg" xml:space="preserve">
+    <value>DisableUserValidatorUserDisabledMsg</value>
+    <comment>DisableUserValidatorUserDisabledMsg</comment>
+  </data>
+  <data name="DisableUserValidatorUserDisabledCode" xml:space="preserve">
+    <value>DisableUserValidatorUserDisabledCode</value>
+    <comment>DisableUserValidatorUserDisabledCode</comment>
+  </data>
+  <data name="DisableUserValidatorUuidNotFoundCode" xml:space="preserve">
+    <value>DisableUserValidatorUuidNotFoundCode</value>
+    <comment>DisableUserValidatorUuidNotFoundCode</comment>
+  </data>
+  <data name="DisableUserValidatorUuidNotFoundMsg" xml:space="preserve">
+    <value>DisableUserValidatorUuidNotFoundMsg</value>
+    <comment>DisableUserValidatorUuidNotFoundMsg</comment>
+  </data>
+  <data name="EnableUserValidatorUuidNotFoundMsg" xml:space="preserve">
+    <value>EnableUserValidatorUuidNotFoundMsg</value>
+    <comment>EnableUserValidatorUuidNotFoundMsg</comment>
+  </data>
+  <data name="EnableUserValidatorUuidNotFoundCode" xml:space="preserve">
+    <value>EnableUserValidatorUuidNotFoundCode</value>
+    <comment>EnableUserValidatorUuidNotFoundCode</comment>
+  </data>
+  <data name="EnableUserValidatorUserEnabledCode" xml:space="preserve">
+    <value>EnableUserValidatorUserEnabledCode</value>
+    <comment>EnableUserValidatorUserEnabledCode</comment>
+  </data>
+  <data name="EnableUserValidatorUserEnabledMsg" xml:space="preserve">
+    <value>EnableUserValidatorUserEnabledMsg</value>
+    <comment>EnableUserValidatorUserEnabledMsg</comment>
+  </data>
+  <data name="ResetUserPasswordValidatorPasswordNotValidMasg" xml:space="preserve">
+    <value>ResetUserPasswordValidatorPasswordNotValidMasg</value>
+    <comment>ResetUserPasswordValidatorPasswordNotValidMasg</comment>
+  </data>
+  <data name="ResetUserPasswordValidatorPasswordNotValidCode" xml:space="preserve">
+    <value>ResetUserPasswordValidatorPasswordNotValidCode</value>
+    <comment>ResetUserPasswordValidatorPasswordNotValidCode</comment>
+  </data>
+  <data name="ResetUserPasswordValidatorUserDisabledCode" xml:space="preserve">
+    <value>ResetUserPasswordValidatorUserDisabledCode</value>
+    <comment>ResetUserPasswordValidatorUserDisabledCode</comment>
+  </data>
+  <data name="ResetUserPasswordValidatorUserDisabledMsg" xml:space="preserve">
+    <value>ResetUserPasswordValidatorUserDisabledMsg</value>
+    <comment>ResetUserPasswordValidatorUserDisabledMsg</comment>
+  </data>
+  <data name="ResetUserPasswordValidatorUuidNotFoundCode" xml:space="preserve">
+    <value>ResetUserPasswordValidatorUuidNotFoundCode</value>
+    <comment>ResetUserPasswordValidatorUuidNotFoundCode</comment>
+  </data>
+  <data name="ResetUserPasswordValidatorUuidNotFoundMsg" xml:space="preserve">
+    <value>ResetUserPasswordValidatorUuidNotFoundMsg</value>
+    <comment>ResetUserPasswordValidatorUuidNotFoundMsg</comment>
+  </data>
+  <data name="UpdateUserValidatorRoleNotFoundCode" xml:space="preserve">
+    <value>UpdateUserValidatorRoleNotFoundCode</value>
+    <comment>UpdateUserValidatorRoleNotFoundCode</comment>
+  </data>
+  <data name="UpdateUserValidatorRoleNotFoundMsg" xml:space="preserve">
+    <value>UpdateUserValidatorRoleNotFoundMsg</value>
+    <comment>UpdateUserValidatorRoleNotFoundMsg</comment>
+  </data>
+  <data name="UpdateUserValidatorEmailUsedMsg" xml:space="preserve">
+    <value>UpdateUserValidatorEmailUsedMsg</value>
+    <comment>UpdateUserValidatorEmailUsedMsg</comment>
+  </data>
+  <data name="UpdateUserValidatorEmailUsedCode" xml:space="preserve">
+    <value>UpdateUserValidatorEmailUsedCode</value>
+    <comment>UpdateUserValidatorEmailUsedCode</comment>
+  </data>
+  <data name="UpdateUserValidatorEmailNotValidCode" xml:space="preserve">
+    <value>UpdateUserValidatorEmailNotValidCode</value>
+    <comment>UpdateUserValidatorEmailNotValidCode</comment>
+  </data>
+  <data name="UpdateUserValidatorEmailNotValidMsg" xml:space="preserve">
+    <value>UpdateUserValidatorEmailNotValidMsg</value>
+    <comment>UpdateUserValidatorEmailNotValidMsg</comment>
+  </data>
+  <data name="UpdateUserValidatorUuidNotFoundMsg" xml:space="preserve">
+    <value>UpdateUserValidatorUuidNotFoundMsg</value>
+    <comment>UpdateUserValidatorUuidNotFoundMsg</comment>
+  </data>
+  <data name="UpdateUserValidatorUuidNotFoundCode" xml:space="preserve">
+    <value>UpdateUserValidatorUuidNotFoundCode</value>
+    <comment>UpdateUserValidatorUuidNotFoundCode</comment>
+  </data>
+  <data name="AccessUserValidatorUuidMissingMsg" xml:space="preserve">
+    <value>AccessUserValidatorUuidMissingMsg</value>
+    <comment>AccessUserValidatorUuidMissingMsg</comment>
+  </data>
+  <data name="AccessUserValidatorUuidMissingCode" xml:space="preserve">
+    <value>AccessUserValidatorUuidMissingCode</value>
+    <comment>AccessUserValidatorUuidMissingCode</comment>
+  </data>
+  <data name="AccessUserValidatorUuidEmptyMsg" xml:space="preserve">
+    <value>AccessUserValidatorUuidEmptyMsg</value>
+    <comment>AccessUserValidatorUuidEmptyMsg</comment>
+  </data>
+  <data name="AccessUserValidatorUuidEmptyCode" xml:space="preserve">
+    <value>AccessUserValidatorUuidEmptyCode</value>
+    <comment>AccessUserValidatorUuidEmptyCode</comment>
+  </data>
+  <data name="AccessUserValidatorUserDisabledCode" xml:space="preserve">
+    <value>AccessUserValidatorUserDisabledCode</value>
+    <comment>AccessUserValidatorUserDisabledCode</comment>
+  </data>
+  <data name="AccessUserValidatorUserDisabledMsg" xml:space="preserve">
+    <value>AccessUserValidatorUserDisabledMsg</value>
+    <comment>AccessUserValidatorUserDisabledMsg</comment>
+  </data>
+  <data name="AccessUserValidatorRoleInvalidCode" xml:space="preserve">
+    <value>AccessUserValidatorRoleInvalidCode</value>
+    <comment>AccessUserValidatorRoleInvalidCode</comment>
+  </data>
+  <data name="AccessUserValidatorRoleInvalidMsg" xml:space="preserve">
+    <value>AccessUserValidatorRoleInvalidMsg</value>
+    <comment>AccessUserValidatorRoleInvalidMsg</comment>
+  </data>
+  <data name="GetUserValidatorUuidNotFoundMsg" xml:space="preserve">
+    <value>GetUserValidatorUuidNotFoundMsg</value>
+    <comment>GetUserValidatorUuidNotFoundMsg</comment>
+  </data>
+  <data name="GetUserValidatorUuidNotFoundCode" xml:space="preserve">
+    <value>GetUserValidatorUuidNotFoundCode</value>
+    <comment>GetUserValidatorUuidNotFoundCode</comment>
+  </data>
+  <data name="LoginUserValidatorEmailNotValidMsg" xml:space="preserve">
+    <value>LoginUserValidatorEmailNotValidMsg</value>
+    <comment>LoginUserValidatorEmailNotValidMsg</comment>
+  </data>
+  <data name="LoginUserValidatorEmailNotValidCode" xml:space="preserve">
+    <value>LoginUserValidatorEmailNotValidCode</value>
+    <comment>LoginUserValidatorEmailNotValidCode</comment>
+  </data>
+  <data name="LoginUserValidatorEmailNotFoundMsg" xml:space="preserve">
+    <value>LoginUserValidatorEmailNotFoundMsg</value>
+    <comment>LoginUserValidatorEmailNotFoundMsg</comment>
+  </data>
+  <data name="LoginUserValidatorEmailNotFoundCode" xml:space="preserve">
+    <value>LoginUserValidatorEmailNotFoundCode</value>
+    <comment>LoginUserValidatorEmailNotFoundCode</comment>
+  </data>
+  <data name="LoginUserValidatorUserDisabledMsg" xml:space="preserve">
+    <value>LoginUserValidatorUserDisabledMsg</value>
+    <comment>LoginUserValidatorUserDisabledMsg</comment>
+  </data>
+  <data name="LoginUserValidatorUserDisabledCode" xml:space="preserve">
+    <value>LoginUserValidatorUserDisabledCode</value>
+    <comment>LoginUserValidatorUserDisabledCode</comment>
+  </data>
+  <data name="LoginUserValidatorPasswordInvalidMsg" xml:space="preserve">
+    <value>LoginUserValidatorPasswordInvalidMsg</value>
+    <comment>LoginUserValidatorPasswordInvalidMsg</comment>
+  </data>
+  <data name="LoginUserValidatorPasswordInvalidCode" xml:space="preserve">
+    <value>LoginUserValidatorPasswordInvalidCode</value>
+    <comment>LoginUserValidatorPasswordInvalidCode</comment>
+  </data>
+  <data name="CreateUserValidatorRoleNotFoundCode" xml:space="preserve">
+    <value>CreateUserValidatorRoleNotFoundCode</value>
+    <comment>CreateUserValidatorRoleNotFoundCode</comment>
+  </data>
+  <data name="CreateUserValidatorRoleNotFoundMsg" xml:space="preserve">
+    <value>CreateUserValidatorRoleNotFoundMsg</value>
+    <comment>CreateUserValidatorRoleNotFoundMsg</comment>
   </data>
 </root>

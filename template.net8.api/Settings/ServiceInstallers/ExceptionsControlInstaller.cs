@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using template.net8.api.Core.Attributes;
+﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Mvc;
 using template.net8.api.Settings.Extensions;
 using template.net8.api.Settings.Handlers;
 using template.net8.api.Settings.Interfaces;
@@ -7,37 +7,28 @@ using template.net8.api.Settings.Interfaces;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Exceptions Control Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class ExceptionsControlInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class ExceptionsControlInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 2;
 
-    /// <summary>
-    ///     Install Exception Handler Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.AddExceptionHandler<GlobalExceptionHandlerControl>();
         builder.Services.AddProblemDetails(setup =>
-        {
-            setup.CustomizeProblemDetails = ctx => CustomizeProblemDetails(builder.Environment, ctx);
-        });
+            setup.CustomizeProblemDetails = ctx => CustomizeProblemDetails(builder.Environment, ctx));
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void CustomizeProblemDetails(IHostEnvironment env, ProblemDetailsContext ctx)
     {
         var httpContextProblemDetails =

@@ -1,26 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     App Options class to hold the App Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record AppOptions : IEqualityOperators<AppOptions, AppOptions, bool>
+internal sealed record AppOptions : IEqualityOperators<AppOptions, AppOptions, bool>
 {
     /// <summary>
-    ///     Current Environment
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string Env { get; set; }
 }
 
 /// <summary>
-///     App Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class AppOptionsValidator : IValidateOptions<AppOptions>;
+internal sealed partial class AppOptionsValidator : IValidateOptions<AppOptions>;

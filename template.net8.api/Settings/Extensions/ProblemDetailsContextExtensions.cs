@@ -1,13 +1,17 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Settings.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class ProblemDetailsContextExtensions
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static void HiddenDetails(this ProblemDetailsContext ctx, IHostEnvironment env)
     {
         if (ShouldHiddenDetails(env,
@@ -16,14 +20,9 @@ internal static class ProblemDetailsContextExtensions
     }
 
     /// <summary>
-    ///     This method will add a method field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="ctx.ProblemDetails.Extensions" /> is <see langword="null" />.</exception>
     internal static void AddMethodField(this ProblemDetailsContext ctx)
     {
         if (ContainsMethod(ctx.ProblemDetails.Extensions)) return;
@@ -32,6 +31,9 @@ internal static class ProblemDetailsContextExtensions
         ctx.ProblemDetails.Extensions.TryAdd("method", httpMethod);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static void AddInstanceField(this ProblemDetailsContext ctx)
     {
         if (NotContainsInstance(ctx))
@@ -39,14 +41,9 @@ internal static class ProblemDetailsContextExtensions
     }
 
     /// <summary>
-    ///     This method will add a requestId field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="ctx.ProblemDetails.Extensions" /> is <see langword="null" />.</exception>
     internal static void AddRequestIdField(this ProblemDetailsContext ctx)
     {
         if (ContainsRequestId(ctx.ProblemDetails.Extensions)) return;
@@ -56,14 +53,9 @@ internal static class ProblemDetailsContextExtensions
     }
 
     /// <summary>
-    ///     This method will add a traceId field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="ctx.ProblemDetails.Extensions" /> is <see langword="null" />.</exception>
     internal static void AddTraceIdField(this ProblemDetailsContext ctx)
     {
         if (ContainsTraceId(ctx.ProblemDetails.Extensions)) return;
@@ -75,14 +67,9 @@ internal static class ProblemDetailsContextExtensions
     }
 
     /// <summary>
-    ///     This method will add a code field to the ProblemDetails.Extensions dictionary if it does not already exist.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="ctx.ProblemDetails.Extensions" /> is <see langword="null" />.</exception>
     internal static void AddCodeField(this ProblemDetailsContext ctx)
     {
         if (ContainsCode(ctx.ProblemDetails.Extensions)) return;
@@ -91,6 +78,9 @@ internal static class ProblemDetailsContextExtensions
         ctx.ProblemDetails.Extensions.TryAdd("code", code);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static void UseHttpContextProblemDetails(this ProblemDetailsContext ctx,
         ProblemDetails clientProblemDetails)
     {
@@ -105,49 +95,71 @@ internal static class ProblemDetailsContextExtensions
             : ctx.ProblemDetails.Extensions;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Dictionary<string, object?> MergeExtensions(IDictionary<string, object?> serverExtensions,
         IDictionary<string, object?> clientExtensions)
     {
-        // Create a new dictionary to hold the merged extensions
         Dictionary<string, object?> mergedExtensions = new(serverExtensions);
 
-        // Merge or override serverExtensions with clientExtensions
         //Should be Serial
         foreach (var entry in clientExtensions) mergedExtensions[entry.Key] = entry.Value;
 
         return mergedExtensions;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool ShouldHiddenDetails(IHostEnvironment env, int? status)
     {
         return env.IsProduction() && status >= StatusCodes.Status500InternalServerError;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool ContainsRequestId(IDictionary<string, object?> extensions)
     {
         return extensions.ContainsKey("requestId");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool ContainsTraceId(IDictionary<string, object?> extensions)
     {
         return extensions.ContainsKey("traceId");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool ContainsCode(IDictionary<string, object?> extensions)
     {
         return extensions.ContainsKey("code");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool NotContainsInstance(ProblemDetailsContext ctx)
     {
         return ctx.ProblemDetails.Instance is null;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool ContainsMethod(IDictionary<string, object?> extensions)
     {
         return extensions.ContainsKey("method");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static string GetInstance(HttpContext ctx)
     {
         return $"{ctx.Request.Scheme}://{ctx.Request.Host}{ctx.Request.Path}";

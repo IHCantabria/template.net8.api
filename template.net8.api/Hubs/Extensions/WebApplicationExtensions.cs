@@ -1,15 +1,17 @@
-﻿using template.net8.api.Hubs.Dummy;
+﻿using template.net8.api.Hubs.User;
 
 namespace template.net8.api.Hubs.Extensions;
 
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class WebApplicationExtensions
 {
     /// <summary>
-    ///     Configures the SignalR hubs for the application.
+    ///     ADD DOCUMENTATION
     /// </summary>
     internal static void ConfigureHubs(this WebApplication app)
     {
-        app.MapHub<DummyHub>(ApiRoutes.DummiesHub.PathHub,
-            options => options.AllowStatefulReconnects = true);
+        app.MapHub<UserHub>(ApiRoutes.UsersHub.PathHub, static options => options.AllowStatefulReconnects = true);
     }
 }

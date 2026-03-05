@@ -1,41 +1,42 @@
-﻿using System.Numerics;
-using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Core.Geometries.DTOs;
 
 /// <summary>
-///     Extent DTO
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed partial record ExtentDto : IDto, IEqualityOperators<ExtentDto, ExtentDto, bool>
+internal sealed partial record ExtentDto : IDto, IEqualityOperators<ExtentDto, ExtentDto, bool>
 {
     /// <summary>
     ///     Longitude Min WGS84
     /// </summary>
-    public required decimal LonMin { get; init; }
+    internal required decimal LonMin { get; init; }
 
     /// <summary>
     ///     Longitude Max WGS84
     /// </summary>
-    public required decimal LonMax { get; init; }
+    internal required decimal LonMax { get; init; }
 
     /// <summary>
     ///     Latitude Min WGS84
     /// </summary>
-    public required decimal LatMin { get; init; }
+    internal required decimal LatMin { get; init; }
 
     /// <summary>
     ///     Latitude Max WGS84
     /// </summary>
-
-    public required decimal LatMax { get; init; }
+    internal required decimal LatMax { get; init; }
 }
 
 /// <summary>
-///     Create Extent DTO
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Public visibility is required because the type is exposed through a public conversion operator.")]
 public sealed record CreateExtentDto : IDto, IEqualityOperators<CreateExtentDto, CreateExtentDto, bool>
 {
     /// <summary>
@@ -60,10 +61,9 @@ public sealed record CreateExtentDto : IDto, IEqualityOperators<CreateExtentDto,
     public required decimal LatMax { get; init; }
 
     /// <summary>
-    ///     Extent Is Valid
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <returns></returns>
-    public bool IsValid()
+    internal bool IsValid()
     {
         return LonMin >= -180 && LonMax <= 180 && LatMin >= -90 && LatMax <= 90 && LonMin < LonMax &&
                LatMin < LatMax;
@@ -71,31 +71,33 @@ public sealed record CreateExtentDto : IDto, IEqualityOperators<CreateExtentDto,
 }
 
 /// <summary>
-///     Point DTO
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed partial record PointDto : IDto, IEqualityOperators<PointDto, PointDto, bool>
+internal sealed partial record PointDto : IDto, IEqualityOperators<PointDto, PointDto, bool>
 {
     /// <summary>
-    ///     Universal Unique Identifier
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required Guid Uuid { get; init; }
+    internal required Guid Uuid { get; init; }
 
     /// <summary>
     ///     Longitude WGS84
     /// </summary>
-    public decimal? Lon { get; init; }
+    internal decimal? Lon { get; init; }
 
     /// <summary>
     ///     Latitude WGS84
     /// </summary>
-    public decimal? Lat { get; init; }
+    internal decimal? Lat { get; init; }
 }
 
 /// <summary>
-///     Create Point DTO
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Public visibility is required because the type is exposed through a public conversion operator.")]
 public sealed record CreatePointDto : IDto, IEqualityOperators<CreatePointDto, CreatePointDto, bool>
 {
     /// <summary>
@@ -109,10 +111,9 @@ public sealed record CreatePointDto : IDto, IEqualityOperators<CreatePointDto, C
     public required decimal Lat { get; init; }
 
     /// <summary>
-    ///     Extent Is Valid
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <returns></returns>
-    public bool IsValid()
+    internal bool IsValid()
     {
         return Lon is >= -180 and <= 180 && Lat is >= -90 and <= 90;
     }

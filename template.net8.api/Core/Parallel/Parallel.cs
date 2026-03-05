@@ -1,24 +1,39 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
 
 namespace template.net8.api.Core.Parallel;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "General-purpose helper methods; not all members are used in every scenario.")]
 internal static class ParallelUtils
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static Task ExecuteDependentInParallelAsync(IEnumerable<Task> tasks,
         CancellationTokenSource cts)
     {
         return HandleTaskDependentCompletionAsync(tasks, cts);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static Task<IEnumerable<T>> ExecuteDependentInParallelAsync<T>(IEnumerable<Task<T>> tasks,
         CancellationTokenSource cts)
     {
         return HandleTaskDependentCompletionAsync(tasks, cts);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     /// <exception cref="ResultSuccessInvalidOperationException">
     ///     Result is not a success! Use ExtractException method instead
     ///     and Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractException method
@@ -37,6 +52,9 @@ internal static class ParallelUtils
             : new LanguageExt.Common.Result<IEnumerable<T>>(taskResults.ExtractException());
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task HandleTaskDependentCompletionAsync(IEnumerable<Task> tasks,
         CancellationTokenSource cts)
     {
@@ -56,6 +74,9 @@ internal static class ParallelUtils
         }
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<IEnumerable<T>> HandleTaskDependentCompletionAsync<T>(IEnumerable<Task<T>> tasks,
         CancellationTokenSource cts)
     {
@@ -85,6 +106,9 @@ internal static class ParallelUtils
         return completedResults;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<LanguageExt.Common.Result<IEnumerable<T>>> HandleTaskDependentCompletionAsync<T>(
         IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
         CancellationTokenSource cts)
@@ -117,12 +141,18 @@ internal static class ParallelUtils
         return completedResults;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static Task ExecuteIndependentInParallelAsync(IEnumerable<Task> tasks,
         CancellationTokenSource cts)
     {
         return HandleTaskIndependentCompletionAsync(tasks);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static Task<IEnumerable<LanguageExt.Common.Result<T>>> ExecuteIndependentInParallelAsync<T>(
         IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks,
         CancellationTokenSource cts)
@@ -130,6 +160,9 @@ internal static class ParallelUtils
         return HandleTaskIndependentCompletionAsync(tasks);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task HandleTaskIndependentCompletionAsync(IEnumerable<Task> tasks)
     {
         var tasksList = tasks.ToList();
@@ -143,6 +176,9 @@ internal static class ParallelUtils
         }
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<IEnumerable<LanguageExt.Common.Result<T>>> HandleTaskIndependentCompletionAsync<T>(
         IEnumerable<Task<LanguageExt.Common.Result<T>>> tasks)
     {

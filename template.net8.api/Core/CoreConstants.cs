@@ -1,15 +1,22 @@
-﻿using template.net8.api.Core.Attributes;
+﻿namespace template.net8.api.Core;
 
-namespace template.net8.api.Core;
-
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class CoreConstants
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal const string PackageJsonFile = "package.json";
 
-    internal const string ApiName = "template.net8.api";
-
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal const string ApiErrorCodesPrefix = "BE-";
 
-    internal static Guid GuidInstance { get; set; } = Guid.NewGuid();
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal static Guid GuidInstance { get; } = Guid.NewGuid();
 }

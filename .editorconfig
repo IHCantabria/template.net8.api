@@ -1,0 +1,4 @@
+[*.cs]
+# Roslynator
+dotnet_diagnostic.RCS1124.severity = warning
+dotnet_diagnostic.RCS1021.severity = warning

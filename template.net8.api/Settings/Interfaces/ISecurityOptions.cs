@@ -1,15 +1,12 @@
-﻿using template.net8.api.Core.Attributes;
-
-namespace template.net8.api.Settings.Interfaces;
+﻿namespace template.net8.api.Settings.Interfaces;
 
 /// <summary>
-///     Interface for Security Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public interface ISecurityOptions
+internal interface ISecurityOptions
 {
     /// <summary>
-    ///     AppSettings key for the Security Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    static readonly string Security = nameof(Security);
+    const string Security = nameof(Security);
 }

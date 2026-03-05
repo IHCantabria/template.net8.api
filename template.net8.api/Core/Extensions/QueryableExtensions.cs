@@ -1,18 +1,20 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using HotChocolate.Resolvers;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
-using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Core.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class QueryableExtensions
 {
     /// <summary>
-    ///     Applies the verification to the queryable, modifying it based on the filters.
+    ///     ADD DOCUMENTATION
     /// </summary>
     internal static IQueryable<TEntity> ApplyVerification<TEntity>(this IQueryable<TEntity> query,
         IVerification<TEntity>? verification) where TEntity : class, IEntity
@@ -27,15 +29,8 @@ internal static class QueryableExtensions
     }
 
     /// <summary>
-    ///     Applies the specification to the queryable, modifying it based on the filters, includes, group by, order by,
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="InvalidOperationException">
-    ///     The
-    ///     <see>
-    ///         <cref>P:System.Nullable`1.HasValue</cref>
-    ///     </see>
-    ///     property is <see langword="false" />.
-    /// </exception>
     internal static IQueryable<TEntity> ApplySpecification<TEntity>(this IQueryable<TEntity> query,
         ISpecification<TEntity>? specification) where TEntity : class, IEntity
     {
@@ -48,7 +43,7 @@ internal static class QueryableExtensions
         query = specification.Includes.Count > 0 ? query.ApplyIncludes(specification.Includes) : query;
         query = specification.GroupBy is not null ? query.ApplyGroupBy(specification.GroupBy) : query;
         query = specification.OrderBys.Count > 0 ? query.ApplyOrderBys(specification.OrderBys) : query;
-        query = specification.TakeRows.HasValue ? query.ApplyTakeRows(specification.TakeRows.Value) : query;
+        query = specification.TakeRows is not null ? query.ApplyTakeRows((int)specification.TakeRows) : query;
         query = query.ApplyQuerySplitStrategy(specification.QuerySplitStrategy);
         query = query.ApplyQueryTrackStrategy(specification.QueryTrackStrategy);
 
@@ -56,18 +51,13 @@ internal static class QueryableExtensions
     }
 
     /// <summary>
-    ///     Applies the projection to the queryable, modifying it based on the projection expression.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>selector</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static IQueryable<TDto> ApplyProjection<TEntity, TDto>(this IQueryable<TEntity> query,
         IProjection<TEntity, TDto> projection) where TEntity : class, IEntity where TDto : class, IDto
     {
@@ -75,39 +65,13 @@ internal static class QueryableExtensions
     }
 
     /// <summary>
-    ///     Projects the queryable to a DTO using the provided projection and resolver context.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>selector</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>member</name>
-    ///     </paramref>
-    ///     does not represent a field or property.
-    ///     -or-
-    ///     The property represented by
-    ///     <paramref>
-    ///         <name>member</name>
-    ///     </paramref>
-    ///     does not have a <see langword="set" /> accessor.
-    ///     -or-
-    ///     <paramref>
-    ///         <name>expression</name>
-    ///     </paramref>
-    ///     .Type is not assignable to the type of the field or property that
-    ///     <paramref>
-    ///         <name>member</name>
-    ///     </paramref>
-    ///     represents.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static IQueryable<TDto> ApplyProjection<TEntity, TDto>(this IQueryable<TEntity> query,
         IProjection<TEntity, TDto> projection,
         IResolverContext context) where TEntity : class, IEntity where TDto : class, IDto
@@ -118,6 +82,9 @@ internal static class QueryableExtensions
         return query.Select(lambda);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Expression BuildMemberInit(Expression source, Dictionary<string, HashSet<string>> selectedFieldsTree,
         string path = "")
     {
@@ -144,6 +111,9 @@ internal static class QueryableExtensions
         return Expression.MemberInit(Expression.New(init.Type), bindings);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static BinaryExpression BuildCollectionInit(
         Expression source,
         Type elementType,
@@ -155,7 +125,7 @@ internal static class QueryableExtensions
 
         var selectMethod = typeof(Queryable)
             .GetMethods()
-            .First(m => m.Name == "Select" && m.GetParameters().Length == 2)
+            .First(static m => m.Name == "Select" && m.GetParameters().Length == 2)
             .MakeGenericMethod(elementType, elementType);
 
         var selectCall = Expression.Call(selectMethod, source, Expression.Lambda(itemInit, itemParam));
@@ -164,11 +134,17 @@ internal static class QueryableExtensions
         return Expression.Coalesce(selectCall, defaultValue);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool IsSelected(string path, string propName, Dictionary<string, HashSet<string>> tree)
     {
         return tree.TryGetValue(path, out var props) && props.Contains(propName);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool IsSimpleType(Type type)
     {
         type = Nullable.GetUnderlyingType(type) ?? type;
@@ -182,10 +158,13 @@ internal static class QueryableExtensions
                || type == typeof(TimeSpan);
     }
 
-    private static bool IsCollectionType(Type type, out Type elementType)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static bool IsCollectionType(Type type, [NotNullWhen(true)] out Type? elementType)
     {
         var enumerableType = type.GetInterfaces()
-            .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            .FirstOrDefault(static i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
         if (enumerableType != null)
         {
@@ -193,33 +172,46 @@ internal static class QueryableExtensions
             return true;
         }
 
-        elementType = null!;
+        elementType = null;
         return false;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyFilters<TEntity>(this IQueryable<TEntity> queryable,
-        ICollection<Expression<Func<TEntity, bool>>> filters) where TEntity : class, IEntity
+        IEnumerable<Expression<Func<TEntity, bool>>> filters) where TEntity : class, IEntity
     {
         var predicate = PredicateBuilder.New<TEntity>();
 
-        predicate = filters.Aggregate(predicate, (current, filter) => current.And(filter));
+        predicate = filters.Aggregate(predicate, static (current, filter) => current.And(filter));
 
-        return queryable.Where(predicate);
+        var expandedPredicate = (Expression<Func<TEntity, bool>>)predicate.Expand();
+        return queryable.Where(expandedPredicate);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyIncludes<TEntity>(this IQueryable<TEntity> queryable,
         IEnumerable<Func<IQueryable<TEntity>, IQueryable<TEntity>>> includes)
     {
-        return includes.Aggregate(queryable, (current, include) => include(current));
+        return includes.Aggregate(queryable, static (current, include) => include(current));
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyOrderBys<TEntity>(this IQueryable<TEntity> queryable,
-        ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> orderBys) where TEntity : class, IEntity
+        IEnumerable<Tuple<Expression<Func<TEntity, object>>, OrderByType>> orderBys) where TEntity : class, IEntity
     {
         return orderBys.Aggregate(queryable,
             (current, orderBy) => current.SmartOrderBy(orderBy.Item1, orderBy.Item2, current.Equals(queryable)));
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> SmartOrderBy<TEntity>(this IQueryable<TEntity> queryable,
         Expression<Func<TEntity, object>> expression, OrderByType orderType, bool isFirstIteration)
         where TEntity : class, IEntity
@@ -235,18 +227,27 @@ internal static class QueryableExtensions
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyGroupBy<TEntity>(this IQueryable<TEntity> queryable,
         Expression<Func<TEntity, object>> groupBy) where TEntity : class, IEntity
     {
-        return queryable.GroupBy(groupBy).SelectMany(x => x);
+        return queryable.GroupBy(groupBy).SelectMany(static x => x);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyTakeRows<TEntity>(this IQueryable<TEntity> queryable,
         int takeRows) where TEntity : class, IEntity
     {
         return queryable.Take(takeRows);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyQuerySplitStrategy<TEntity>(this IQueryable<TEntity> queryable,
         QuerySplittingBehavior querySplitStrategy) where TEntity : class, IEntity
     {
@@ -257,6 +258,9 @@ internal static class QueryableExtensions
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IQueryable<TEntity> ApplyQueryTrackStrategy<TEntity>(this IQueryable<TEntity> queryable,
         QueryTrackingBehavior queryTrackStrategy) where TEntity : class, IEntity
     {

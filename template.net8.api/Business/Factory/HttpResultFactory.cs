@@ -4,36 +4,19 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Extensions;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Factory;
 using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Business.Factory;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class HttpResultFactory
 {
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     <paramref>
-    ///         <name>index</name>
-    ///     </paramref>
-    ///     is less than 0.
-    ///     -or-
-    ///     <paramref>
-    ///         <name>index</name>
-    ///     </paramref>
-    ///     is equal to or greater than
-    ///     <see>
-    ///         <cref>P:System.Collections.Generic.List`1.Count</cref>
-    ///     </see>
-    ///     .
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateValidationResult(
         ValidationException vex, IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
@@ -41,6 +24,9 @@ internal static class HttpResultFactory
         return ManageValidationResultCreation(httpStatusCode, vex, localizer, features);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static BadRequestResult ManageValidationResultCreation(HttpStatusCode httpStatusCode,
         ValidationException vex,
         IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
@@ -55,12 +41,9 @@ internal static class HttpResultFactory
         };
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateBadRequestResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
@@ -70,6 +53,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static BadRequestResult CreateValidationResult(HttpStatusCode statusCode, ValidationException exception,
         IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
@@ -80,12 +66,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateUnauthorizedResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
@@ -95,12 +78,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateForbiddenResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
@@ -110,12 +90,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateNotFoundResult(Exception exception, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
@@ -124,12 +101,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateRequestTimeoutResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer, IFeatureCollection features)
     {
@@ -138,12 +112,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateConflictResult(Exception exception, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
@@ -152,12 +123,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateGoneResult(Exception exception, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
@@ -166,12 +134,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateUnprocessableEntityResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
@@ -182,12 +147,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateInternalServerErrorResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
@@ -198,12 +160,9 @@ internal static class HttpResultFactory
         return new BadRequestResult();
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static BadRequestResult CreateNotImplementedResult(Exception exception,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)

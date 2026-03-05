@@ -1,50 +1,43 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 using template.net8.api.Core.Base;
-using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Domain.Specifications.Generic;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class EntityVerificationById<TEntity, TKey> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithId<TKey> where TKey : struct
 {
     /// <summary>
-    ///     Constructs a specification to filter an entity by its ID.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="id"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal EntityVerificationById(TKey id)
     {
         AddFilter(e => e.Id.Equals(id));
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntitiesVerificationByIds<TEntity, TKey> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithId<TKey> where TKey : struct
 {
     /// <summary>
-    ///     Constructs a specification to filter entities by a collection of IDs.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal EntitiesVerificationByIds(IEnumerable<TKey>? entityIds = null)
     {
         if (entityIds is null) return;
@@ -54,46 +47,45 @@ internal sealed class EntitiesVerificationByIds<TEntity, TKey> : VerificationBas
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntityVerificationByDatahubId<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithDatahubId
 {
     /// <summary>
-    ///     Constructs a specification to filter an entity by its Datahub ID.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal EntityVerificationByDatahubId(short id)
     {
         AddFilter(e => e.DatahubId == id);
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntitiesVerificationByDatahubIds<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithDatahubId
 {
     /// <summary>
-    ///     Constructs a specification to filter entities by a collection of Datahub IDs.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal EntitiesVerificationByDatahubIds(IEnumerable<short>? entityIds = null)
     {
         if (entityIds is null) return;
@@ -103,46 +95,40 @@ internal sealed class EntitiesVerificationByDatahubIds<TEntity> : VerificationBa
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class EntityVerificationByUuid<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithUuid
 {
     /// <summary>
-    ///     Constructs a specification to filter an entity by its UUID.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal EntityVerificationByUuid(Guid uuid)
     {
         AddFilter(e => e.Uuid == uuid);
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntitiesVerificationByUuids<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithUuid
 {
     /// <summary>
-    ///     Constructs a specification to filter entities by a collection of UUIDs.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal EntitiesVerificationByUuids(IEnumerable<string>? entityUuids = null)
     {
         if (entityUuids is null) return;
@@ -152,46 +138,40 @@ internal sealed class EntitiesVerificationByUuids<TEntity> : VerificationBase<TE
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class EntityVerificationByNameKey<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithNameKey
 {
     /// <summary>
-    ///     Constructs a specification to filter an entity by its Name.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal EntityVerificationByNameKey(string name)
     {
         AddFilter(e => e.Name == name);
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntitiesVerificationByNameKeys<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithNameKey
 {
     /// <summary>
-    ///     Constructs a specification to filter entities by a collection of Names.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal EntitiesVerificationByNameKeys(IEnumerable<string>? entityNames = null)
     {
         if (entityNames is null) return;
@@ -201,46 +181,45 @@ internal sealed class EntitiesVerificationByNameKeys<TEntity> : VerificationBase
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntityVerificationByName<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithName
 {
     /// <summary>
-    ///     Constructs a specification to filter an entity by its Name.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal EntityVerificationByName(string name)
     {
         AddFilter(e => e.Name == name);
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntitiesVerificationByNames<TEntity> : VerificationBase<TEntity>
     where TEntity : class, IEntityWithNameKey
 {
     /// <summary>
-    ///     Constructs a specification to filter entities by a collection of Names.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal EntitiesVerificationByNames(IEnumerable<string>? entityNames = null)
     {
         if (entityNames is null) return;

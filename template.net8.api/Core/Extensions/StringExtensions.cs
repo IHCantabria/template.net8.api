@@ -1,25 +1,33 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification = "General-purpose helper type; usage depends on consumer requirements.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "General-purpose helper methods; not all members are used in every scenario.")]
 internal static class StringExtensions
 {
     /// <summary>
-    ///     Precompiled regex for unwanted characters (invisible, emojis, etc.)
+    ///     ADD DOCUMENTATION
     /// </summary>
     private static readonly Regex UnwantedCharsRegex = new(
         @"[\p{C}\p{Zl}\p{Zp}\u200B-\u200D\uFEFF\p{So}]", // Incluye caracteres invisibles y emojis
         RegexOptions.Compiled);
 
     /// <summary>
-    ///     Removes unwanted characters such as invisible characters, emojis, and trims spaces from the input.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="input">The input string to be cleaned.</param>
-    /// <returns>A string with unwanted characters removed.</returns>
     private static string RemoveUnwantedCharacters(string input)
     {
         if (string.IsNullOrWhiteSpace(input)) return string.Empty;
@@ -30,27 +38,13 @@ internal static class StringExtensions
     }
 
     /// <summary>
-    ///     Cleans a string by removing unwanted characters and optionally additional user-defined characters.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="input">The input string to be cleaned.</param>
-    /// <param name="additionalCharsToRemove">Optional: Additional characters to remove from the string.</param>
-    /// <returns>A cleaned string.</returns>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     <paramref>
-    ///         <name>capacity</name>
-    ///     </paramref>
-    ///     is less than zero.
-    /// </exception>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>predicate</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static string CleanString(this string input, char[]? additionalCharsToRemove = null)
     {
         // Remove unwanted characters first
@@ -69,22 +63,21 @@ internal static class StringExtensions
     }
 
     /// <summary>
-    ///     Remove the Diacritics characters from a string.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>values</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     /// <exception cref="ArgumentException">The current instance contains invalid Unicode characters.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static string RemoveDiacritics(string text)
     {
         if (string.IsNullOrWhiteSpace(text)) return text;
 
         return string.Concat(
             text.Normalize(NormalizationForm.FormD)
-                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                .Where(static c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
         ).Normalize(NormalizationForm.FormC);
     }
 }

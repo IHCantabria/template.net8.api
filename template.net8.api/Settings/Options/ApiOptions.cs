@@ -1,37 +1,34 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     Api Options class to hold the Api Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record ApiOptions : IEqualityOperators<ApiOptions, ApiOptions, bool>
+internal sealed record ApiOptions : IEqualityOperators<ApiOptions, ApiOptions, bool>
 {
     /// <summary>
-    ///     AppSettings key for the Api Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public static readonly string Api = nameof(Api);
+    public const string Api = nameof(Api);
 
     /// <summary>
-    ///     Name of the Api
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string Name { get; init; }
 
     /// <summary>
-    ///     Address of the Api
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string Address { get; init; }
 }
 
 /// <summary>
-///     Api Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class ApiOptionsValidator : IValidateOptions<ApiOptions>;
+internal sealed partial class ApiOptionsValidator : IValidateOptions<ApiOptions>;

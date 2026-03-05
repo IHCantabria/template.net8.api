@@ -1,35 +1,30 @@
-﻿using Microsoft.IdentityModel.Protocols.Configuration;
+﻿using JetBrains.Annotations;
+using Microsoft.IdentityModel.Protocols.Configuration;
 using template.net8.api.Core;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
-using CorsOptions = template.net8.api.Settings.Options.CorsOptions;
+using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Cors Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class CorsInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class CorsInstaller : IServiceInstaller
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static readonly string[] AllowedMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"];
 
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 15;
 
-    /// <summary>
-    ///     Install Cors Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
+    /// <exception cref="InvalidConfigurationException">
+    ///     The Cors configuration in the appsettings file is incorrect.
     /// </exception>
-    /// <exception cref="InvalidConfigurationException">Condition.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -41,6 +36,9 @@ public sealed class CorsInstaller : IServiceInstaller
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void AddCors(WebApplicationBuilder builder, CorsOptions? apiOptions)
     {
         if (apiOptions is null) return;

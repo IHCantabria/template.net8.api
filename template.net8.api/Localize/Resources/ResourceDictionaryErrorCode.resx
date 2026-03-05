@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BE-CD-EV-001" xml:space="preserve">
-    <value>El campo texto al crear un dummy es obligatorio.</value>
-  </data>
-  <data name="BE-GD-EV-001" xml:space="preserve">
-    <value>No existe el Dummy con el identificador enviado en la petición.</value>
-  </data>
   <data name="BE-R-E-001" xml:space="preserve">
     <value>Esta API no permite conexiones usando HTTP, use el protocolo HTTPS</value>
   </data>

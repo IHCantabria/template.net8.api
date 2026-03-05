@@ -1,18 +1,50 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Contracts;
 
 /// <summary>
-///     Query Get Dummy Params Resource
+///     ADD DOCUMENTATION
 /// </summary>
-public sealed partial record QueryGetDummyParamsResource : IPublicApiContract,
-    IEqualityOperators<QueryGetDummyParamsResource, QueryGetDummyParamsResource, bool>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
+public sealed partial record QueryGetUserParamsResource : IPublicApiContract,
+    IEqualityOperators<QueryGetUserParamsResource, QueryGetUserParamsResource, bool>
 {
-    /// <summary>Dummy Key</summary>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [Required]
-    [FromRoute(Name = "dummy-key")]
-    public required string Key { get; init; }
+    [FromRoute(Name = "user-key")]
+    public required Guid Key { get; init; }
+}
+
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
+public sealed partial record QueryLoginUserParamsResource : IPublicApiContract,
+    IEqualityOperators<QueryLoginUserParamsResource, QueryLoginUserParamsResource, bool>
+{
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [JsonRequired]
+    [EmailAddress]
+    public required string Email { get; init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [JsonRequired]
+    public required string Password { get; init; }
 }

@@ -1,19 +1,22 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Text.Json.Serialization;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Core.Contracts;
 
 /// <summary>
-///     Problem Details Base Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public record ProblemDetailsBaseResource : IPublicApiContract,
     IEqualityOperators<ProblemDetailsBaseResource, ProblemDetailsBaseResource, bool>
 {
     /// <summary>
-    ///     Problem Details Base Resource
+    ///     ADD DOCUMENTATION
     /// </summary>
     protected internal ProblemDetailsBaseResource()
     {
@@ -69,9 +72,12 @@ public record ProblemDetailsBaseResource : IPublicApiContract,
 }
 
 /// <summary>
-///     Bad Request Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record BadRequestProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<BadRequestProblemDetailsResource, BadRequestProblemDetailsResource, bool>
 {
@@ -96,9 +102,12 @@ public sealed record BadRequestProblemDetailsResource : ProblemDetailsBaseResour
 }
 
 /// <summary>
-///     Unauthorized Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record UnauthorizedProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<UnauthorizedProblemDetailsResource, UnauthorizedProblemDetailsResource, bool>
 {
@@ -123,9 +132,12 @@ public sealed record UnauthorizedProblemDetailsResource : ProblemDetailsBaseReso
 }
 
 /// <summary>
-///     Forbidden Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record ForbiddenProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<ForbiddenProblemDetailsResource, ForbiddenProblemDetailsResource, bool>
 {
@@ -150,9 +162,12 @@ public sealed record ForbiddenProblemDetailsResource : ProblemDetailsBaseResourc
 }
 
 /// <summary>
-///     NotFound Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record NotFoundProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<NotFoundProblemDetailsResource, NotFoundProblemDetailsResource, bool>
 {
@@ -177,9 +192,12 @@ public sealed record NotFoundProblemDetailsResource : ProblemDetailsBaseResource
 }
 
 /// <summary>
-///     Request Timeout Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record RequestTimeoutProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<RequestTimeoutProblemDetailsResource, RequestTimeoutProblemDetailsResource, bool>
 {
@@ -204,9 +222,12 @@ public sealed record RequestTimeoutProblemDetailsResource : ProblemDetailsBaseRe
 }
 
 /// <summary>
-///     Conflict Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record ConflictProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<ConflictProblemDetailsResource, ConflictProblemDetailsResource, bool>
 {
@@ -231,9 +252,12 @@ public sealed record ConflictProblemDetailsResource : ProblemDetailsBaseResource
 }
 
 /// <summary>
-///     Gone Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record GoneProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<GoneProblemDetailsResource, GoneProblemDetailsResource, bool>
 {
@@ -258,9 +282,12 @@ public sealed record GoneProblemDetailsResource : ProblemDetailsBaseResource,
 }
 
 /// <summary>
-///     Unprocessable Entity Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record UnprocessableEntityProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<UnprocessableEntityProblemDetailsResource, UnprocessableEntityProblemDetailsResource, bool>
 {
@@ -285,9 +312,12 @@ public sealed record UnprocessableEntityProblemDetailsResource : ProblemDetailsB
 }
 
 /// <summary>
-///     Internal Server Error Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record InternalServerProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<InternalServerProblemDetailsResource, InternalServerProblemDetailsResource, bool>
 {
@@ -312,9 +342,12 @@ public sealed record InternalServerProblemDetailsResource : ProblemDetailsBaseRe
 }
 
 /// <summary>
-///     Not Implemented Problem Details Resource
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Contracts must remain public to allow proper discovery and schema generation by OpenAPI.")]
 public sealed record NotImplementedProblemDetailsResource : ProblemDetailsBaseResource,
     IEqualityOperators<NotImplementedProblemDetailsResource, NotImplementedProblemDetailsResource, bool>
 {

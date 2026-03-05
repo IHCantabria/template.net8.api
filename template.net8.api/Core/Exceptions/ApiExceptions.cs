@@ -1,195 +1,464 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace template.net8.api.Core.Exceptions;
 
 /// <summary>
-///     Core Exception
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-//TODO: Improve this class and childs Investigate How Log When This Exception is Created or Thrown.
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
 public class CoreException : Exception
 {
     /// <summary>
-    ///     Core Exception Constructor
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public CoreException()
+    protected CoreException()
     {
     }
 
     /// <summary>
-    ///     Core Exception Constructor with message
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="message"></param>
-    public CoreException(string message) : base(message)
+    internal CoreException(string message) : base(message)
     {
     }
 
     /// <summary>
-    ///     Core Exception Constructor with message and inner exception
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="innerException"></param>
-    public CoreException(string message, Exception innerException) : base(message, innerException)
+    protected CoreException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class BadRequestException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class BadRequestException : CoreException
 {
-    internal BadRequestException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public BadRequestException()
     {
     }
 
-    internal BadRequestException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public BadRequestException(string message) : base(message)
     {
     }
 
-    internal BadRequestException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public BadRequestException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class UnauthorizedException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class UnauthorizedException : CoreException
 {
-    internal UnauthorizedException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public UnauthorizedException()
     {
     }
 
-    internal UnauthorizedException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public UnauthorizedException(string message) : base(message)
     {
     }
 
-    internal UnauthorizedException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public UnauthorizedException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class ForbiddenException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class ForbiddenException : CoreException
 {
-    internal ForbiddenException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public ForbiddenException()
     {
     }
 
-    internal ForbiddenException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public ForbiddenException(string message) : base(message)
     {
     }
 
-    internal ForbiddenException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public ForbiddenException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class NotFoundException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class NotFoundException : CoreException
 {
-    internal NotFoundException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public NotFoundException()
     {
     }
 
-    internal NotFoundException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public NotFoundException(string message) : base(message)
     {
     }
 
-    internal NotFoundException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public NotFoundException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class RequestTimeoutException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class RequestTimeoutException : CoreException
 {
-    internal RequestTimeoutException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public RequestTimeoutException()
     {
     }
 
-    internal RequestTimeoutException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public RequestTimeoutException(string message) : base(message)
     {
     }
 
-    internal RequestTimeoutException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public RequestTimeoutException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class ConflictException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class ConflictException : CoreException
 {
-    internal ConflictException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public ConflictException()
     {
     }
 
-    internal ConflictException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public ConflictException(string message) : base(message)
     {
     }
 
-    internal ConflictException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public ConflictException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class GoneException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class GoneException : CoreException
 {
-    internal GoneException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public GoneException()
     {
     }
 
-    internal GoneException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public GoneException(string message) : base(message)
     {
     }
 
-    internal GoneException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public GoneException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class UnprocessableEntityException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class UnprocessableEntityException : CoreException
 {
-    internal UnprocessableEntityException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public UnprocessableEntityException()
     {
     }
 
-    internal UnprocessableEntityException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public UnprocessableEntityException(string message) : base(message)
     {
     }
 
-    internal UnprocessableEntityException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public UnprocessableEntityException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class InternalServerErrorException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class InternalServerErrorException : CoreException
 {
-    internal InternalServerErrorException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public InternalServerErrorException()
     {
     }
 
-    internal InternalServerErrorException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public InternalServerErrorException(string message) : base(message)
     {
     }
 
-    internal InternalServerErrorException(string message, Exception innerException) : base(message, innerException)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public InternalServerErrorException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
 
-[CoreLibrary]
-internal sealed class NotImplementedException : CoreException
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
+public sealed class NotImplementedException : CoreException
 {
-    internal NotImplementedException()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public NotImplementedException()
     {
     }
 
-    internal NotImplementedException(string message) : base(message)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public NotImplementedException(string message) : base(message)
     {
     }
 
-    internal NotImplementedException(string message, Exception innerException) : base(
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public NotImplementedException(string message, Exception innerException) : base(
         message, innerException)
     {
     }

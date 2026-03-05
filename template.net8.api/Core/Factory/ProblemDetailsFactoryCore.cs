@@ -1,22 +1,25 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Localization;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Core.Factory;
 
-[CoreLibrary]
-// ReSharper disable once ClassTooBig
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "ClassTooBig",
+    Justification =
+        "Centralized ProblemDetails factory. The class intentionally groups all HTTP status mappings in one place.")]
 internal static class ProblemDetailsFactoryCore
 {
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ProblemDetails CreateProblemDetailsByHttpStatusCode(HttpStatusCode httpStatusCode, Exception ex,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -40,46 +43,36 @@ internal static class ProblemDetailsFactoryCore
         };
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>keySelector</name>
-    ///     </paramref>
-    ///     or
-    ///     <paramref>
-    ///         <name>elementSelector</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    ///     -or-
-    ///     <paramref>
-    ///         <name>keySelector</name>
-    ///     </paramref>
-    ///     produces a key that is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>keySelector</name>
-    ///     </paramref>
-    ///     produces duplicate keys for two elements.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsBadRequestValidationPayload(ModelStateDictionary modelState,
         IStringLocalizer<ResourceMain> localizer)
     {
-        var errors = modelState.ToDictionary(
-            kvp => kvp.Key,
-            kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage)
-        ).Where(k => k.Value is not null && k.Value.Any()).ToDictionary();
+        var errors = modelState.ToDictionary(static kvp => kvp.Key,
+            static kvp => kvp.Value?.Errors.Select(static e => e.ErrorMessage)
+        ).Where(static k => k.Value is not null && k.Value.Any()).ToDictionary();
         return ProblemDetailsFactoryCoreUtils.IsRootFileFail(modelState.Keys)
             ? CreateProblemDetailsBadRequestValidationJsonMalformed(errors, localizer)
             : CreateProblemDetailsBadRequestValidationJsonInvalid(errors, localizer);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     private static ProblemDetails CreateProblemDetailsBadRequestValidationJsonMalformed(
         Dictionary<string, IEnumerable<string>?> errors,
-        IStringLocalizer<ResourceMain> localizer)
+        IStringLocalizer localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -94,9 +87,17 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     private static ProblemDetails CreateProblemDetailsBadRequestValidationJsonInvalid(
         Dictionary<string, IEnumerable<string>?> errors,
-        IStringLocalizer<ResourceMain> localizer)
+        IStringLocalizer localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -110,12 +111,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsBadRequest(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -130,12 +133,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsBadRequestHttpNotSupported(
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -150,12 +155,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsUnauthorized(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -170,12 +177,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsUnauthorizedMissingToken(
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -190,12 +199,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsUnauthorizedProcessFail(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -210,12 +221,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsForbiddenAccess(IStringLocalizer<ResourceMain> localizer)
     {
         var problemDetails = new ProblemDetails
@@ -229,12 +242,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsForbidden(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -249,12 +264,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsNotFound(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -269,8 +286,16 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     private static ProblemDetails CreateProblemDetailsMethodNotAllowed(Exception exception,
-        IStringLocalizer<ResourceMain> localizer)
+        IStringLocalizer localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -283,12 +308,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsRequestTimeout(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -303,12 +330,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsConflict(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -323,12 +352,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsGone(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -343,8 +374,11 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static ProblemDetails CreateProblemDetailsUnsupportedMediaType(Exception exception,
-        IStringLocalizer<ResourceMain> localizer)
+        IStringLocalizer localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -357,12 +391,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsUnprocessableEntity(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -377,8 +413,16 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     private static ProblemDetails CreateProblemDetailsTooManyRequest(Exception exception,
-        IStringLocalizer<ResourceMain> localizer)
+        IStringLocalizer localizer)
     {
         var problemDetails = new ProblemDetails
         {
@@ -391,12 +435,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsInternalServerError(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -411,12 +457,14 @@ internal static class ProblemDetailsFactoryCore
         return problemDetails;
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static ProblemDetails CreateProblemDetailsNotImplemented(Exception exception,
         IStringLocalizer<ResourceMain> localizer)
     {
@@ -433,16 +481,18 @@ internal static class ProblemDetailsFactoryCore
 }
 
 /// <summary>
-///     Problem Details Factory Core Utils
+///     ADD DOCUMENTATION
 /// </summary>
-public static class ProblemDetailsFactoryCoreUtils
+file static class ProblemDetailsFactoryCoreUtils
 {
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static bool IsRootFileFail(ModelStateDictionary.KeyEnumerable keys)
     {
         return keys.Contains("$");

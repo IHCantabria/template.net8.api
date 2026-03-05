@@ -2,16 +2,11 @@
 
 namespace template.net8.api.Core.Geometries.Contracts;
 
-/// <summary>
-///     Create Extent Resource
-/// </summary>
 public sealed partial record CreateExtentResource
 {
     /// <summary>
-    ///     Convert Resource to Dto
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="resource"></param>
-    /// <returns></returns>
     public static implicit operator CreateExtentDto(CreateExtentResource resource)
     {
         ArgumentNullException.ThrowIfNull(resource);
@@ -25,16 +20,17 @@ public sealed partial record CreateExtentResource
     }
 
     /// <summary>
-    ///     This method converts a CreateExtentResource to a CreateExtentDto
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="resource"></param>
-    /// <returns></returns>
     public static CreateExtentDto ToCreateExtentDto(
         CreateExtentResource resource)
     {
         return resource;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static IEnumerable<CreateExtentDto> ToCollection(
         IReadOnlyList<CreateExtentResource> resources)
     {
@@ -44,16 +40,11 @@ public sealed partial record CreateExtentResource
     }
 }
 
-/// <summary>
-///     Create Point Resource
-/// </summary>
 public sealed partial record CreatePointResource
 {
     /// <summary>
-    ///     Convert Resource to Dto
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="resource"></param>
-    /// <returns></returns>
     public static implicit operator CreatePointDto(CreatePointResource resource)
     {
         ArgumentNullException.ThrowIfNull(resource);
@@ -64,16 +55,17 @@ public sealed partial record CreatePointResource
     }
 
     /// <summary>
-    ///     This method converts a CreatePointResource to a CreatePointDto
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="resource"></param>
-    /// <returns></returns>
     public static CreatePointDto ToCreatePointDto(
         CreatePointResource resource)
     {
         return resource;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static IEnumerable<CreatePointDto> ToCollection(
         IReadOnlyList<CreatePointResource> resources)
     {

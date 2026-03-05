@@ -2,56 +2,42 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Serilog.Core;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Logger.Sinks;
 using ILogger = Serilog.ILogger;
 
 namespace template.net8.api.Core.Logger.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class LoggerExtensions
 {
     /// <summary>
-    ///     Check if the current logger has sinks
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="logger"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">Condition.</exception>
-    /// <exception cref="ArgumentException">
-    ///     The method is neither declared nor inherited by the class of
-    ///     <paramref>
-    ///         <name>obj</name>
-    ///     </paramref>
-    ///     .
+    /// <exception cref="NotSupportedException">
+    ///     A field is marked literal, but the field does not have one of the accepted
+    ///     literal types.
     /// </exception>
     /// <exception cref="FieldAccessException">
     ///     The caller does not have permission to access this field.
     ///     Note: In .NET for Windows Store apps or the Portable Class Library, catch the base class exception,
     ///     <see cref="MemberAccessException" />, instead.
     /// </exception>
-    /// <exception cref="TargetException">
-    ///     The field is non-static and
-    ///     <paramref>
-    ///         <name>obj</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    ///     Note: In .NET for Windows Store apps or the Portable Class Library, catch <see cref="Exception" /> instead.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     A field is marked literal, but the field does not have one of the accepted
-    ///     literal types.
-    /// </exception>
-    /// <exception cref="InvalidCastException">
-    ///     An element in the sequence cannot be cast to type
-    ///     <paramref>
-    ///         <name>TResult</name>
-    ///     </paramref>
-    ///     .
-    /// </exception>
     [SuppressMessage("Security",
         "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
         Justification =
-            "Access to the non-public field is necessary because Serilog dont provide with a form to know if the current log has Sinks configured")]
+            "Reflection is required to access internal Serilog state because no public API is available to determine whether sinks are configured.")]
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumented",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static bool CurrentLoggerHasSinks(this ILogger? logger)
     {
         var innerLoggerField = logger?.GetType().GetField("_logger", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -68,13 +54,16 @@ internal static class LoggerExtensions
         if (sinksField == null) return false;
 
         var sinks = sinksField.GetValue(pipeline) as IEnumerable;
-        return sinks != null && sinks.Cast<ILogEventSink>().Any(s => !IsOrWrapsMemorySink(s));
+        return sinks != null && sinks.Cast<ILogEventSink>().Any(static s => !IsOrWrapsMemorySink(s));
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [SuppressMessage("Security",
         "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
         Justification =
-            "Access to the non-public field is necessary because Serilog dont provide with a method to know the current configurated")]
+            "Reflection is required to access internal Serilog state because no public API is available to determine whether sinks are configured.")]
     private static bool IsOrWrapsMemorySink(ILogEventSink sink)
     {
         switch (sink)

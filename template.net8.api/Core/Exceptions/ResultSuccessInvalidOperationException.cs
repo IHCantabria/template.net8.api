@@ -1,33 +1,45 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace template.net8.api.Core.Exceptions;
 
 /// <summary>
-///     Result Success Invalid Operation Exception
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "MemberCanBeInternal",
+    Justification =
+        "Exception types are part of the public contract and must remain public to be consumed by external callers.")]
+[SuppressMessage("ReSharper",
+    "ClassNeverInstantiated.Global",
+    Justification =
+        "Exception type is part of the public API; instantiation depends on usage by consumers or higher-level layers.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "Standard exception constructor required by CA1032 and RCS1194.")]
 public sealed class ResultSuccessInvalidOperationException : CoreException
 {
     /// <summary>
-    ///     Result Success Invalid Operation Exception Constructor
+    ///     ADD DOCUMENTATION
     /// </summary>
     public ResultSuccessInvalidOperationException()
     {
     }
 
     /// <summary>
-    ///     Result Success Invalid Operation Exception Constructor with message
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="message"></param>
     public ResultSuccessInvalidOperationException(string message) : base(message)
     {
     }
 
     /// <summary>
-    ///     Result Success Invalid Operation Exception Constructor with message and inner exception
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="innerException"></param>
     public ResultSuccessInvalidOperationException(string message, Exception innerException) : base(message,
         innerException)
     {

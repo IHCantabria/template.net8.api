@@ -2,22 +2,25 @@
 using System.Globalization;
 using System.Text;
 using Serilog.Context;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Logger;
 
 namespace template.net8.api.Core.Logger;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class RequestLogger
 {
-    private const int MaxBodySizeBytes = 1024 * 1024 * 10; // Máximo 10MB
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private const int MaxBodySizeBytes = 1024 * 1024 * 10; // Max 10MB
 
     /// <summary>
-    ///     Log Action Request
+    ///     ADD DOCUMENTATION
     /// </summary>
     [SuppressMessage("ReSharper", "InconsistentContextLogPropertyNaming",
-        Justification =
-            "Open Telemetry fields should have this format: father.child")]
+        Justification = "OpenTelemetry log properties follow a hierarchical naming convention (parent.child).")]
     internal static async Task LogActionRequestAsync(HttpContext context, ILogger logger)
     {
         var methodName = context.Request.Method;
@@ -30,29 +33,34 @@ internal static class RequestLogger
         using (LogContext.PushProperty("request.params.query", queryParams, true))
         using (LogContext.PushProperty("request.params.route", routeParams, true))
         using (LogContext.PushProperty("request.params.body", bodyContent ?? string.Empty, true))
-        using (LogContext.PushProperty("request.params.form_field", formFields ?? new Dictionary<string, string>(),
+        using (LogContext.PushProperty("request.params.form_field", formFields ?? [],
                    true))
         {
-            logger.LogActionRequestReceived(methodName, requestPath);
+            if (logger.IsEnabled(LogLevel.Information)) logger.LogActionRequestReceived(methodName, requestPath);
         }
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Dictionary<string, string> ExtractQueryParams(HttpContext context)
     {
-        return context.Request.Query.ToDictionary(
-            kvp => kvp.Key,
-            kvp => kvp.Value.ToString());
+        return context.Request.Query.ToDictionary(static kvp => kvp.Key, static kvp => kvp.Value.ToString());
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Dictionary<string, string> ExtractRouteParams(HttpContext context)
     {
         return context.GetRouteData()?.Values
-                   .ToDictionary(
-                       kvp => kvp.Key,
-                       kvp => kvp.Value?.ToString() ?? string.Empty)
-               ?? new Dictionary<string, string>();
+                   .ToDictionary(static kvp => kvp.Key, static kvp => kvp.Value?.ToString() ?? string.Empty)
+               ?? [];
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<(string? BodyContent, Dictionary<string, string>? FormFields)>
         ExtractRequestBodyAsync(HttpContext context)
     {
@@ -64,6 +72,9 @@ internal static class RequestLogger
         return (bodyContent, formFields);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<string?> TryReadJsonBodyAsync(HttpContext context)
     {
         var contentType = context.Request.ContentType ?? string.Empty;
@@ -79,6 +90,9 @@ internal static class RequestLogger
         return body;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<Dictionary<string, string>?> TryReadFormFieldsAsync(HttpContext context)
     {
         var contentType = context.Request.ContentType ?? string.Empty;
@@ -88,13 +102,16 @@ internal static class RequestLogger
 
         context.Request.EnableBuffering();
         var form = await context.Request.ReadFormAsync().ConfigureAwait(false);
-        var formFields = form.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.ToString());
+        var formFields = form.ToDictionary(static kvp => kvp.Key, static kvp => kvp.Value.ToString());
 
         context.Request.Body.Position = 0;
         return formFields;
     }
 
-    private static async Task<string> ReadLimitedAsync(StreamReader reader)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static async Task<string> ReadLimitedAsync(TextReader reader)
     {
         var buffer = new char[MaxBodySizeBytes / sizeof(char)];
         var read = await reader.ReadBlockAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
@@ -102,7 +119,7 @@ internal static class RequestLogger
     }
 
     /// <summary>
-    ///     Log Action Response
+    ///     ADD DOCUMENTATION
     /// </summary>
     internal static void LogActionResponseSuccess(HttpContext context,
         ILogger logger)
@@ -114,11 +131,11 @@ internal static class RequestLogger
             ? context.Request.Method
             : $"{controller}.{action}";
         var requestPath = context.Request.Path;
-        logger.LogActionRequestResponsedSuccess(methodName, requestPath);
+        if (logger.IsEnabled(LogLevel.Information)) logger.LogActionRequestResponsedSuccess(methodName, requestPath);
     }
 
     /// <summary>
-    ///     Log Action Response
+    ///     ADD DOCUMENTATION
     /// </summary>
     [SuppressMessage("ReSharper", "InconsistentContextLogPropertyNaming",
         Justification =

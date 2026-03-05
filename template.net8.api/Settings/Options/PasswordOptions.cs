@@ -1,32 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     Password Options for the user password hashing
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record PasswordOptions : IEqualityOperators<PasswordOptions, PasswordOptions, bool>
+internal sealed record PasswordOptions : IEqualityOperators<PasswordOptions, PasswordOptions, bool>
 {
     /// <summary>
-    ///     AppSettings Key for Password
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public static readonly string Password = $"{ISecurityOptions.Security}:{nameof(Password)}";
+    public const string Password = $"{ISecurityOptions.Security}:{nameof(Password)}";
 
     /// <summary>
-    ///     Pepper
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string Pepper { get; init; } = null!;
+    public required string Pepper { get; init; }
 }
 
 /// <summary>
-///     Password Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class PasswordOptionsValidator : IValidateOptions<PasswordOptions>;
+internal sealed partial class PasswordOptionsValidator : IValidateOptions<PasswordOptions>;

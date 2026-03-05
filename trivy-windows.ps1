@@ -5,16 +5,16 @@
 # and checks for vulnerabilities in the scan results.
  
 #usage:
-#   .\trivy-windows.ps1 -TrivyVersion "0.66.0" -ScanTarget "." -ReportsFolder "trivy-reports" -SkipVulnerabilityCheck
+#   .\trivy-windows.ps1 -TrivyVersion "0.69.3" -ScanTarget "." -ReportsFolder "trivy-reports" -SkipVulnerabilityCheck
 #
 # Parameters:
-#   -TrivyVersion           : Trivy version to download (default: "0.66.0")
+#   -TrivyVersion           : Trivy version to download (default: "0.69.3")
 #   -ScanTarget            : Target directory or file to scan (default: ".")
 #   -ReportsFolder         : Output folder for reports (default: "trivy-reports")
 #   -SkipVulnerabilityCheck: Don't fail if vulnerabilities are found (switch)
  
 param(
-    [string]$TrivyVersion = "0.66.0",
+    [string]$TrivyVersion = "0.69.3",
     [string]$ScanTarget = ".",
     [string]$ReportsFolder = "trivy-reports",
     [switch]$SkipVulnerabilityCheck = $false

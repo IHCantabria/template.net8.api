@@ -1,17 +1,16 @@
 ﻿using HotChocolate.Language;
 using HotChocolate.Resolvers;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class ResolverContextExtensions
 {
     /// <summary>
-    ///     Gets the names of the fields selected in the GraphQL query.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
     internal static Dictionary<string, HashSet<string>> GetSelectedFieldsTree(this IResolverContext context)
     {
         var result = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
@@ -19,6 +18,9 @@ internal static class ResolverContextExtensions
         return result;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void VisitSelection(FieldNode fieldNode, Dictionary<string, HashSet<string>> tree, string parentPath)
     {
         var currentPath = string.IsNullOrEmpty(parentPath)

@@ -1,6 +1,14 @@
-﻿using template.net8.api.Core.Attributes;
+﻿namespace template.net8.api.Business;
 
-namespace template.net8.api.Business;
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+internal static class BusinessConstants
+{
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal const string ApiName = "{PROJECT_NAMESPACE}";
 
-[CoreLibrary]
-internal static class BusinessConstants;
+    // add more constants here as needed
+}

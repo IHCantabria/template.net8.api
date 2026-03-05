@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Http.Timeouts;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using template.net8.api.Controllers.Extensions;
 using template.net8.api.Core;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Core.DTOs;
 using template.net8.api.Core.Timeout;
@@ -17,12 +17,15 @@ using template.net8.api.Settings.Attributes;
 namespace template.net8.api.Controllers;
 
 /// <summary>
-///     Application System Controller
+///     ADD DOCUMENTATION
 /// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Controllers must remain public to allow OpenAPI discovery and correct API exposure.")]
 [SwaggerTag(SwaggerDocumentation.System.ControllerDescription)]
 [Route(ApiRoutes.SystemController.PathController)]
 [ApiController]
-[CoreLibrary]
 public sealed class ApplicationSystem(
     IMediator mediator,
     IStringLocalizer<ResourceMain> localizer,
@@ -30,28 +33,13 @@ public sealed class ApplicationSystem(
     : MyControllerBase(mediator, localizer, logger)
 {
     /// <summary>
-    ///     Get the Application Code Errors.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="localizer"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>comparisonType</name>
-    ///     </paramref>
-    ///     is not a <see cref="StringComparison" /> value.
-    /// </exception>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>value</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     [HttpGet]
     [DevSwagger]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
@@ -66,21 +54,19 @@ public sealed class ApplicationSystem(
         typeof(IEnumerable<ErrorCodeResource>), MediaTypeNames.Application.Json)]
     public Task<IActionResult> GetErrorCodesAsync(IStringLocalizer<ResourceDictionaryErrorCode> localizer)
     {
-        var resources = localizer.GetAllStrings().Filter(s =>
+        var resources = localizer.GetAllStrings().Filter(static s =>
                 s.Name.StartsWith(CoreConstants.ApiErrorCodesPrefix, StringComparison.Ordinal))
             .ToList();
         var result = new LanguageExt.Common.Result<IEnumerable<LocalizedString>>(resources);
         var action =
-            ActionResultPayload<IEnumerable<LocalizedString>, IEnumerable<ErrorCodeResource>>.Ok(obj =>
+            ActionResultPayload<IEnumerable<LocalizedString>, IEnumerable<ErrorCodeResource>>.Ok(static obj =>
                 ErrorCodeResource.ToCollection(obj.ToList()));
         return Task.FromResult(result.ToActionResult(this, action, Localizer));
     }
 
     /// <summary>
-    ///     Get Version.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     [HttpGet]
     [RequestTimeout(RequestConstants.RequestQueryGenericPolicy)]
     [Route(ApiRoutes.SystemController.GetVersion)]
@@ -96,7 +82,7 @@ public sealed class ApplicationSystem(
     {
         var query = new QueryGetVersion();
         var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
-        var action = ActionResultPayload<VersionDto, VersionResource>.Ok(obj => obj);
+        var action = ActionResultPayload<VersionDto, VersionResource>.Ok(static obj => obj);
         return result.ToActionResult(this, action, Localizer);
     }
 }

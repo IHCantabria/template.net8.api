@@ -5,49 +5,41 @@ using NetTopologySuite.Geometries;
 namespace template.net8.api.GraphQL.Types;
 
 /// <summary>
+///     ADD DOCUMENTATION
 /// </summary>
 [UsedImplicitly]
 internal class PointSortInputType : SortInputType<Point>
 {
     /// <summary>
-    ///     Configure Point Sort Input Type
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="descriptor"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="descriptor" /> is <see langword="null" />.</exception>
     protected override void Configure(ISortInputTypeDescriptor<Point> descriptor)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
-        descriptor.Ignore(f => f.Boundary);
-        descriptor.Ignore(f => f.Envelope);
-        descriptor.Ignore(f => f.Factory);
+        descriptor.Ignore(static f => f.Boundary);
+        descriptor.Ignore(static f => f.Envelope);
+        descriptor.Ignore(static f => f.Factory);
     }
 }
 
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 [UsedImplicitly]
 internal class PolygonSortInputType : SortInputType<Polygon>
 {
     /// <summary>
-    ///     Configure Polygon Sort Input Type
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="descriptor"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="descriptor" /> is <see langword="null" />.</exception>
     protected override void Configure(ISortInputTypeDescriptor<Polygon> descriptor)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
-        descriptor.Ignore(f => f.Boundary);
-        descriptor.Ignore(f => f.Envelope);
-        descriptor.Ignore(f => f.ExteriorRing);
-        descriptor.Ignore(f => f.Factory);
-        descriptor.Ignore(f => f.Shell);
+        descriptor.Ignore(static f => f.Boundary);
+        descriptor.Ignore(static f => f.Envelope);
+        descriptor.Ignore(static f => f.ExteriorRing);
+        descriptor.Ignore(static f => f.Factory);
+        descriptor.Ignore(static f => f.Shell);
     }
 }

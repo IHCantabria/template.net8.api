@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using JetBrains.Annotations;
 using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
 using template.net8.api.Settings.Interfaces;
@@ -8,33 +9,22 @@ using ZLinq.Linq;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Business Services Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class ServicesInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class ServicesInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 11;
 
-    /// <summary>
-    ///     Install Business Services
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        var serviceTypes = GetExportedServiceTypes();
+
         //Should be Serial
-        foreach (var serviceType in serviceTypes)
+        foreach (var serviceType in GetExportedServiceTypes())
         {
             var interfaceType = GetInterfaceType(serviceType);
 
@@ -44,26 +34,34 @@ public sealed class ServicesInstaller : IServiceInstaller
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static ValueEnumerable<ArrayWhere<Type>, Type> GetExportedServiceTypes()
     {
         return typeof(Program).Assembly
-            .GetExportedTypes()
-            .Where(t => typeof(IServiceImplementation).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+            .GetTypes()
+            .Where(static t => typeof(IServiceImplementation).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Type? GetInterfaceType(Type serviceType)
     {
         return serviceType.GetInterfaces().SingleOrDefault(i => i.Name == $"I{serviceType.Name}");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void RegisterService(IServiceCollection services, Type serviceType, Type interfaceType)
     {
         var serviceLifetimeAttribute =
             serviceType
                 .GetCustomAttributes<ServiceLifetimeAttribute>().FirstOrDefault();
-        var serviceLifetime = serviceLifetimeAttribute?.ServiceLifetime ?? ServiceLifetime.Scoped;
 
-        switch (serviceLifetime)
+        switch (serviceLifetimeAttribute?.ServiceLifetime ?? ServiceLifetime.Scoped)
         {
             case ServiceLifetime.Scoped:
                 services.AddScoped(interfaceType, serviceType);

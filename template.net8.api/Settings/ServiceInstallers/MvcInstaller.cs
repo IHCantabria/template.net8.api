@@ -1,43 +1,31 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     MVC Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class MvcInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class MvcInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 6;
 
-    /// <summary>
-    ///     Install MVC Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     In a set operation, the
-    ///     <see>
-    ///         <cref>P:System.Globalization.CultureInfo.Name</cref>
-    ///     </see>
-    ///     property value is invalid.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.Services.Configure<MvcOptions>(options =>
+        builder.Services.Configure<MvcOptions>(static options =>
         {
             options.SuppressAsyncSuffixInActionNames = false;
 

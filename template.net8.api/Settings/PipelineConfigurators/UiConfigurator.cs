@@ -1,34 +1,23 @@
 ﻿using HotChocolate.AspNetCore;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Settings.PipelineConfigurators;
 
 /// <summary>
-///     UI Configurator
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class UiConfigurator : IPipelineConfigurator
+[UsedImplicitly]
+internal sealed class UiConfigurator : IPipelineConfigurator
 {
-    /// <summary>
-    ///     Load order of the pipeline configurator
-    /// </summary>
+    /// <inheritdoc cref="IPipelineConfigurator.LoadOrder" />
     public short LoadOrder => 2;
 
-    /// <summary>
-    ///     Configure Pipeline for the UI
-    /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <inheritdoc cref="IPipelineConfigurator.ConfigurePipelineAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="app" /> is <see langword="null" />.</exception>
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
@@ -39,6 +28,9 @@ public sealed class UiConfigurator : IPipelineConfigurator
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void UseSwagger(WebApplication app)
     {
         //Get swagger configuration from service with strongly typed options object.
@@ -56,6 +48,9 @@ public sealed class UiConfigurator : IPipelineConfigurator
         });
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void UseReDoc(WebApplication app)
     {
         //Get ReDoc configuration from service with strongly typed options object.
@@ -70,7 +65,10 @@ public sealed class UiConfigurator : IPipelineConfigurator
         });
     }
 
-    private static void UseBananaCakePop(WebApplication app)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static void UseBananaCakePop(IEndpointRouteBuilder app)
     {
         // Enable middleware to serve the GraphQL IDE.
         app.MapGraphQL().WithOptions(

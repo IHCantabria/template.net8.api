@@ -1,44 +1,71 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using template.net8.api.Core.Attributes;
+using template.net8.api.Business;
 using template.net8.api.Core.Authorization;
 
 namespace template.net8.api.Settings.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class AuthorizationBuilderExtensions
 {
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static void AddPolicies(this AuthorizationBuilder authorizationBuilder, bool isProduction)
     {
-        var policies = GetPolicies();
+        var claimLogic = isProduction ? ClaimLogic.All : ClaimLogic.Any;
 
-        foreach (var policy in policies)
-            authorizationBuilder.AddPolicy(policy.Key, policyOptions =>
-            {
-                var requirements = policy.Value(isProduction);
-                var claimLogic = isProduction ? ClaimLogic.All : ClaimLogic.Any;
-                policyOptions.AddRequirements(new ClaimRequirements(requirements, claimLogic));
-            });
+        foreach (var (policyName, requirements) in GetPolicies(isProduction))
+            authorizationBuilder.AddPolicy(policyName,
+                policyOptions => policyOptions.AddRequirements(new ClaimRequirements(requirements, claimLogic)));
     }
 
-    private static Dictionary<string, Func<bool, List<ClaimRequirement>>> GetPolicies()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static Dictionary<string, List<ClaimRequirement>> GetPolicies(bool isProduction)
     {
-        var policies = new Dictionary<string, Func<bool, List<ClaimRequirement>>>();
+        return new Dictionary<string, List<ClaimRequirement>>
+        {
+            [PoliciesConstants.ApiAccessPolicy] = Create(ClaimIdentityConstants.AccessClaimValue),
+            [PoliciesConstants.UserReadPolicy] = Create(ClaimIdentityConstants.UserReadClaimValue),
+            [PoliciesConstants.UserCreationPolicy] = Create(ClaimIdentityConstants.UserCreateClaimValue),
+            [PoliciesConstants.UserResetPasswordPolicy] = Create(ClaimIdentityConstants.UserResetPasswordClaimValue),
+            [PoliciesConstants.UserUpdatePolicy] = Create(ClaimIdentityConstants.UserEditClaimValue),
+            [PoliciesConstants.UserDeletePolicy] = Create(ClaimIdentityConstants.UserDeleteClaimValue),
+            [PoliciesConstants.UserDisablePolicy] = Create(ClaimIdentityConstants.UserEditDisableClaimValue),
+            [PoliciesConstants.UserEnablePolicy] = Create(ClaimIdentityConstants.UserEditEnableClaimValue)
+        };
 
-        //ADD Here the policies like this. ApplicationAccessPolicy is the name of the policy. ApplicationAccessClaimValue is the value of the claim
-        //policies.Add(PoliciesConstants.ApplicationAccessPolicy, isProduction =>
-        //    CreatePolicy(isProduction, ClaimIdentityConstants.ApplicationAccessClaimValue));
-        return policies;
+        List<ClaimRequirement> Create(string claimValue)
+        {
+            return isProduction
+                ? CreateProductionPolicy(claimValue)
+                : CreateDevelopmentPolicy(claimValue);
+        }
     }
 
-    private static List<ClaimRequirement> CreatePolicy(bool isProduction, string claimValue)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static List<ClaimRequirement> CreateProductionPolicy(string claimValue)
     {
-        return isProduction
-            ? [new ClaimRequirement(ClaimCoreConstants.ApplicationPrivilegesClaim, claimValue)]
-            :
-            [
-                new ClaimRequirement(ClaimCoreConstants.ScopeClaim, GenieIdentityConstants.Scope),
-                new ClaimRequirement(ClaimCoreConstants.ApplicationPrivilegesClaim, claimValue)
-            ];
+        return
+        [
+            new ClaimRequirement(ClaimCoreConstants.ApplicationPrivilegesClaim, claimValue)
+        ];
+    }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static List<ClaimRequirement> CreateDevelopmentPolicy(string claimValue)
+    {
+        return
+        [
+            new ClaimRequirement(ClaimCoreConstants.ScopeClaim, GenieIdentityConstants.Scope),
+            new ClaimRequirement(ClaimCoreConstants.ApplicationPrivilegesClaim, claimValue)
+        ];
     }
 }

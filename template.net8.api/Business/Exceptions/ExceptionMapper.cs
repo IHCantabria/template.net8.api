@@ -1,38 +1,90 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Factory;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Localize.Resources;
 using NotImplementedException = template.net8.api.Core.Exceptions.NotImplementedException;
 
 namespace template.net8.api.Business.Exceptions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal enum ExceptionType
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     BadRequest = 400,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     Unauthorized = 401,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     Forbidden = 403,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     NotFound = 404,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     RequestTimeout = 408,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     Conflict = 409,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     Gone = 410,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     Validation = 601,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     UnprocessableEntity = 422,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     InternalServerError = 500,
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     NotImplemented = 501,
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     NotSupported = 602
     // Add more exception types as needed
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class ExceptionMapper
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static readonly Dictionary<ExceptionType,
             Func<Exception, IStringLocalizer<ResourceMain>, IFeatureCollection, IActionResult>>
         ActionResultHandlers = new()
@@ -63,8 +115,7 @@ internal static class ExceptionMapper
             },
             { ExceptionType.Gone, HttpResultFactory.CreateGoneResult },
             {
-                ExceptionType.Validation,
-                (ex, localizer, features) =>
+                ExceptionType.Validation, static (ex, localizer, features) =>
                     HttpResultFactory.CreateValidationResult((ValidationException)ex, localizer, features)
             },
             {
@@ -82,31 +133,16 @@ internal static class ExceptionMapper
             // Add more exception type mappings as needed
         };
 
-    private static readonly Dictionary<ExceptionType, HttpStatusCode>
-        HttpStatusCodeHandlers = new()
-        {
-            { ExceptionType.BadRequest, HttpStatusCode.BadRequest },
-            { ExceptionType.Unauthorized, HttpStatusCode.Unauthorized },
-            { ExceptionType.Forbidden, HttpStatusCode.Forbidden },
-            { ExceptionType.NotFound, HttpStatusCode.NotFound },
-            { ExceptionType.Conflict, HttpStatusCode.Conflict },
-            { ExceptionType.RequestTimeout, HttpStatusCode.RequestTimeout },
-            { ExceptionType.Gone, HttpStatusCode.Gone },
-            { ExceptionType.Validation, HttpStatusCode.BadRequest },
-            { ExceptionType.UnprocessableEntity, HttpStatusCode.UnprocessableEntity },
-            { ExceptionType.InternalServerError, HttpStatusCode.InternalServerError },
-            { ExceptionType.NotImplemented, HttpStatusCode.NotImplemented }
-            // Add more exception type mappings as needed
-        };
-
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     /// <exception cref="NotSupportedException">Condition.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static IActionResult MapExceptionToResult(Exception ex, IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
     {
@@ -119,28 +155,9 @@ internal static class ExceptionMapper
             : throw new NotSupportedException(localizer["MapperExceptionResultNotSupported", exceptionType]);
     }
 
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">Condition.</exception>
-    internal static HttpStatusCode ExceptionToHttpStatusCode(Exception ex, IStringLocalizer<ResourceMain> localizer)
-    {
-        var exceptionType = GetExceptionType(ex);
-        if (exceptionType is ExceptionType.NotSupported)
-            throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
-
-        return HttpStatusCodeHandlers.TryGetValue(exceptionType, out var statusCode)
-            ? statusCode
-            : throw new NotSupportedException(localizer["ExceptionStatusCodeNotSupported", exceptionType]);
-    }
-
     /// <summary>
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="exception"></param>
-    /// <returns></returns>
     private static ExceptionType GetExceptionType(Exception exception)
     {
         return exception switch

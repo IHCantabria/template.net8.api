@@ -1,20 +1,23 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace template.net8.api.Core.Interfaces;
 
 /// <summary>
-///     Interface for Procedure Call Implementation for Querying Data with EF Core
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public interface IProcedureCall
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "The interface is part of the public API contract and must remain publicly accessible.")]
+internal interface IProcedureCall
 {
     /// <summary>
-    ///     Procedure name to execute
+    ///     ADD DOCUMENTATION
     /// </summary>
     string ProcedureName { get; }
 
     /// <summary>
-    ///     Parameters to pass to the procedure
+    ///     ADD DOCUMENTATION
     /// </summary>
     IEnumerable<object> Parameters { get; }
 }

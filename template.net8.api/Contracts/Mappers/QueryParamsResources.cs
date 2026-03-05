@@ -2,35 +2,51 @@
 
 namespace template.net8.api.Contracts;
 
-/// <summary>
-///     Query Get Dummy Params Resource
-/// </summary>
-public sealed partial record QueryGetDummyParamsResource
+public sealed partial record QueryGetUserParamsResource
 {
     /// <summary>
-    ///     Convert Resource to Dto
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="resource"></param>
-    /// <returns></returns>
-    public static implicit operator QueryGetDummyParamsDto(QueryGetDummyParamsResource resource)
+    public static implicit operator QueryGetUserParamsDto(QueryGetUserParamsResource resource)
     {
         ArgumentNullException.ThrowIfNull(resource);
-        return new QueryGetDummyParamsDto
+        return new QueryGetUserParamsDto
         {
             Key = resource.Key
         };
     }
 
     /// <summary>
-    ///     This method converts a QueryGetDummyParamsResource to a QueryGetDummyParamsDto
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException"><paramref /> is <see langword="null" />.</exception>
-    public static QueryGetDummyParamsDto ToQueryGetDummyParamsDto(
-        QueryGetDummyParamsResource dto)
+    public static QueryGetUserParamsDto ToQueryGetUserParamsDto(
+        QueryGetUserParamsResource resource)
     {
-        ArgumentNullException.ThrowIfNull(dto);
-        return dto;
+        return resource;
+    }
+}
+
+public sealed partial record QueryLoginUserParamsResource
+{
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public static implicit operator QueryLoginUserParamsDto(QueryLoginUserParamsResource resource)
+    {
+        ArgumentNullException.ThrowIfNull(resource);
+        return new QueryLoginUserParamsDto
+        {
+            Email = resource.Email,
+            Password = resource.Password
+        };
+    }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public static QueryLoginUserParamsDto ToQueryLoginUserParamsDto(
+        QueryLoginUserParamsResource resource)
+    {
+        return resource;
     }
 }

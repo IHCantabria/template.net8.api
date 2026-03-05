@@ -1,22 +1,26 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
+using template.net8.api.Controllers.Extensions;
 using template.net8.api.Core.Contracts;
+using template.net8.api.Core.DTOs;
+using template.net8.api.Features.Querys;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Attributes;
-using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Controllers;
 
 /// <summary>
-///     Health Check Controller
+///     ADD DOCUMENTATION
 /// </summary>
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Controllers must remain public to allow OpenAPI discovery and correct API exposure.")]
 [Route(ApiRoutes.HealthController.PathController)]
 [ApiController]
 [DevSwagger]
-[CoreLibrary]
 public sealed class Health(
     IMediator mediator,
     IStringLocalizer<ResourceMain> localizer,
@@ -24,24 +28,15 @@ public sealed class Health(
     : MyControllerBase(mediator, localizer, logger)
 {
     /// <summary>
-    ///     Health Check.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     [HttpGet]
     [Route(ApiRoutes.HealthController.HealthCheck)]
-    public Task<IActionResult> HealthCheckAsync(IOptions<ProjectOptions> options)
+    public async Task<IActionResult> HealthCheckAsync(CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(options);
-        return Task.FromResult<IActionResult>(Ok(new InfoResource
-        {
-            Status = StatusCodes.Status200OK,
-            Version = options.Value.Version
-        }));
+        var query = new QueryCheckStatus();
+        var result = await Mediator.Send(query, cancellationToken).ConfigureAwait(false);
+        var action = ActionResultPayload<InfoDto, InfoResource>.Ok(static obj => obj);
+        return result.ToActionResult(this, action, Localizer);
     }
 }

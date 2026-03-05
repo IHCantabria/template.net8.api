@@ -1,91 +1,92 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.OpenTelemetry.Options;
 
 /// <summary>
-///     OpenTelemetry Options class to hold the OpenTelemetry Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOptions, OpenTelemetryOptions, bool>
+internal sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOptions, OpenTelemetryOptions, bool>
 {
     /// <summary>
-    ///     AppSettings key for the Open Telemetry Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public static readonly string OpenTelemetry = nameof(OpenTelemetry);
+    public const string OpenTelemetry = nameof(OpenTelemetry);
 
     /// <summary>
-    ///     Log Active
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required bool IsLogActive { get; set; }
+    public required bool IsLogActive { get; init; }
 
     /// <summary>
-    ///     Log Service Name
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string ServiceName { get; set; }
+    public required string ServiceName { get; init; }
 
     /// <summary>
-    ///     Log Endpoint Api Key Header
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public string? LogEndpointApiKeyHeader { get; set; }
+    public required string? LogEndpointApiKeyHeader { get; init; }
 
     /// <summary>
-    ///     Log Endpoint Api Key Value
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public string? LogEndpointApiKeyValue { get; set; }
+    public required string? LogEndpointApiKeyValue { get; init; }
 
     /// <summary>
-    ///     Log Endpoint Url
-    /// </summary>
-    [Required]
-    public required Uri LogEndpointUrl { get; set; }
-
-    /// <summary>
-    ///     Metric Endpoint Api Key Header
-    /// </summary>
-    public string? MetricEndpointApiKeyHeader { get; set; }
-
-    /// <summary>
-    ///     Metric Endpoint Api Key Value
-    /// </summary>
-    public string? MetricEndpointApiKeyValue { get; set; }
-
-    /// <summary>
-    ///     Metric Active
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required bool IsMetricActive { get; set; }
+    public required Uri LogEndpointUrl { get; init; }
 
     /// <summary>
-    ///     Metric Endpoint Url
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public Uri? MetricEndpointUrl { get; set; }
+    public required string? MetricEndpointApiKeyHeader { get; init; }
 
     /// <summary>
-    ///     Trace Endpoint Api Key Header
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public string? TraceEndpointApiKeyHeader { get; set; }
+    public required string? MetricEndpointApiKeyValue { get; init; }
 
     /// <summary>
-    ///     Trace Endpoint Api Key Value
-    /// </summary>
-    public string? TraceEndpointApiKeyValue { get; set; }
-
-    /// <summary>
-    ///     Trace Active
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required bool IsTraceActive { get; set; }
+    public required bool IsMetricActive { get; init; }
 
     /// <summary>
-    ///     Trace Endpoint Url
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public Uri? TraceEndpointUrl { get; set; }
+    public required Uri? MetricEndpointUrl { get; init; }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public required string? TraceEndpointApiKeyHeader { get; init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public required string? TraceEndpointApiKeyValue { get; init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [Required]
+    public required bool IsTraceActive { get; init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    public required Uri? TraceEndpointUrl { get; init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal bool UseLogHeaderApiKey()
     {
         if (string.IsNullOrEmpty(LogEndpointApiKeyHeader))
@@ -94,6 +95,9 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
         return !string.IsNullOrEmpty(LogEndpointApiKeyValue);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal bool UseMetricHeaderApiKey()
     {
         if (string.IsNullOrEmpty(MetricEndpointApiKeyHeader))
@@ -102,11 +106,17 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
         return !string.IsNullOrEmpty(MetricEndpointApiKeyValue);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal bool IsValidMetricUri()
     {
         return !string.IsNullOrEmpty(MetricEndpointUrl?.ToString());
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal bool UseTraceHeaderApiKey()
     {
         if (string.IsNullOrEmpty(TraceEndpointApiKeyHeader))
@@ -115,6 +125,9 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
         return !string.IsNullOrEmpty(TraceEndpointApiKeyValue);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal bool IsValidTraceUri()
     {
         return !string.IsNullOrEmpty(TraceEndpointUrl?.ToString());
@@ -122,8 +135,7 @@ public sealed record OpenTelemetryOptions : IEqualityOperators<OpenTelemetryOpti
 }
 
 /// <summary>
-///     OpenTelemetry Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class OpenTelemetryOptionsValidator : IValidateOptions<OpenTelemetryOptions>;
+internal sealed partial class OpenTelemetryOptionsValidator : IValidateOptions<OpenTelemetryOptions>;

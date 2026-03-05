@@ -1,27 +1,20 @@
-﻿using template.net8.api.Core.Attributes;
-
-namespace template.net8.api.Settings.Middlewares;
+﻿namespace template.net8.api.Settings.Middlewares;
 
 /// <summary>
-///     This middleware is used to add security headers to the response.
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="next"></param>
-[CoreLibrary]
-public sealed class AuthenticationHeaderMiddleware(RequestDelegate next)
+internal sealed class AuthenticationHeaderMiddleware(RequestDelegate next)
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
     /// <summary>
-    ///     Invoke Async method to invoke the middleware. This method adds the security headers to the response.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     public Task InvokeAsync(HttpContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -49,6 +42,9 @@ public sealed class AuthenticationHeaderMiddleware(RequestDelegate next)
         return _next(context);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void SetUnauthorizedHeader(HttpContext context)
     {
         var err = context.Items.TryGetValue("BearerError", out var e) ? e as string : "invalid_token";
@@ -63,6 +59,9 @@ public sealed class AuthenticationHeaderMiddleware(RequestDelegate next)
         );
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void SetForbiddenHeader(HttpContext context)
     {
         var desc = context.Items.TryGetValue("BearerErrorDescription", out var d)

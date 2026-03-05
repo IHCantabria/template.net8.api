@@ -1,79 +1,76 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     Swagger Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
 public sealed record SwaggerOptions : IEqualityOperators<SwaggerOptions, SwaggerOptions, bool>
 {
     /// <summary>
-    ///     AppSettings Key
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public static readonly string Swagger = nameof(Swagger);
+    public const string Swagger = nameof(Swagger);
 
     /// <summary>
-    ///     Json Route
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string JsonRoute { get; init; }
 
     /// <summary>
-    ///     Short Description
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string ShortDescription { get; init; }
 
     /// <summary>
-    ///     UI Endpoint
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string UiEndpoint { get; init; }
 
     /// <summary>
-    ///     Document Title
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string DocumentTitle { get; init; }
 
     /// <summary>
-    ///     Title
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string Title { get; init; }
 
     /// <summary>
-    ///     Version Swagger
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string VersionSwagger { get; init; }
 
     /// <summary>
-    ///     Long Description
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string LongDescription { get; init; }
 
     /// <summary>
-    ///     License
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required string License { get; init; }
 
     /// <summary>
-    ///     Server Url
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
     public required Uri ServerUrl { get; init; }
 }
 
 /// <summary>
-///     Swagger Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class SwaggerOptionsValidator : IValidateOptions<SwaggerOptions>;
+internal sealed partial class SwaggerOptionsValidator : IValidateOptions<SwaggerOptions>;

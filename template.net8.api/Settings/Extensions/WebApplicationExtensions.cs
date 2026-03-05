@@ -1,49 +1,49 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 using ZLinq;
 using ZLinq.Linq;
 
 namespace template.net8.api.Settings.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class WebApplicationExtensions
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static async Task ConfigurePipelinesInAssemblyAsync(this WebApplication app)
     {
         var pipelines = GetPipelineConfigurators();
-        //Call the ConfigureServices for all IConfigurator implementations.
         //MUST BE Serial, keeping order of the LoadOrder
-        foreach (var pipeline in pipelines.OrderBy(o => o.LoadOrder))
+        foreach (var pipeline in pipelines.OrderBy(static o => o.LoadOrder))
             await pipeline.ConfigurePipelineAsync(app).ConfigureAwait(false);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static
         ValueEnumerable<Cast<ArrayWhereSelect<Type, object?>, object?, IPipelineConfigurator>, IPipelineConfigurator>
         GetPipelineConfigurators()
     {
         //Get all Types in the assembly that implement IConfigurator, create a instance of the type and order it by LoadOrder.
-        var exportedTypes = typeof(Program).Assembly.GetExportedTypes().Where(x =>
+        var exportedTypes = typeof(Program).Assembly.GetTypes().Where(static x =>
             typeof(IPipelineConfigurator).IsAssignableFrom(x) && x is { IsInterface: false, IsAbstract: false });
         return exportedTypes.Select(Activator.CreateInstance).Cast<IPipelineConfigurator>();
     }
 
     /// <summary>
-    ///     Configures the Localization Middleware for the application.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>name</name>
-    ///     </paramref>
-    ///     is null.
-    /// </exception>
-    /// <exception cref="CultureNotFoundException">
-    ///     <paramref>
-    ///         <name>name</name>
-    ///     </paramref>
-    ///     is not a valid culture name. For more information, see the Notes to Callers section.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static void ConfigureLocalizationMiddleware(this WebApplication app)
     {
         // Define the supported cultures

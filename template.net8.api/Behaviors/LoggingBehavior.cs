@@ -2,39 +2,54 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using MediatR;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Logger;
 
 namespace template.net8.api.Behaviors;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private const string IsBottom = nameof(LanguageExt.Common.Result<bool>.IsBottom);
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private const string IsSuccess = nameof(LanguageExt.Common.Result<bool>.IsSuccess);
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private const string IsFaulted = nameof(LanguageExt.Common.Result<bool>.IsBottom);
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private const string Exception = "exception";
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger =
         logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <summary>
-    ///     Handle the request
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="next"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
         return BehaviorLogicAsync(next);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private async Task<TResponse> BehaviorLogicAsync(RequestHandlerDelegate<TResponse> next)
     {
         var start = Stopwatch.GetTimestamp();
@@ -46,12 +61,18 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
         return result;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private void LogHandledRequest(TResponse? result, long startTimestamp)
     {
         var delta = Stopwatch.GetElapsedTime(startTimestamp);
         LogResponse(result, delta);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private void LogResponse(TResponse? result, TimeSpan delta)
     {
         if (result is null)
@@ -69,27 +90,43 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
         LogResponseSuccess(delta);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private void LogResponseEmpty(TimeSpan delta)
     {
         _logger.LogHandledRequestIsEmpty(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private void LogResponseSuccess(TimeSpan delta)
     {
-        _logger.LogHandledRequestSuccess(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogHandledRequestSuccess(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private void LogResponseError(Exception ex, TimeSpan delta)
     {
         LogResponseError(delta);
         _logger.LogExceptionClient(ex);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private void LogResponseError(TimeSpan delta)
     {
         _logger.LogHandledRequestError(typeof(TRequest).Name, $"{delta.TotalMilliseconds}ms");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [SuppressMessage("Security",
         "S3011:Reflection should not be used to increase accessibility of classes, methods, or fields",
         Justification =
@@ -106,6 +143,9 @@ internal sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavi
             LogResponseSuccess(delta);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool IsResultType(Type type)
     {
         return type.GetProperty(IsFaulted) != null

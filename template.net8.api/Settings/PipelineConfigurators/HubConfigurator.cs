@@ -1,25 +1,20 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using JetBrains.Annotations;
 using template.net8.api.Hubs.Extensions;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.PipelineConfigurators;
 
 /// <summary>
-///     Hubs Configurator
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class HubsConfigurator : IPipelineConfigurator
+[UsedImplicitly]
+internal sealed class HubsConfigurator : IPipelineConfigurator
 {
-    /// <summary>
-    ///     Load order of the pipeline configurator
-    /// </summary>
+    /// <inheritdoc cref="IPipelineConfigurator.LoadOrder" />
     public short LoadOrder => 5;
 
-    /// <summary>
-    ///     Configure Pipeline for the Hubs
-    /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
+
+    /// <inheritdoc cref="IPipelineConfigurator.ConfigurePipelineAsync" />
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         app.ConfigureHubs();

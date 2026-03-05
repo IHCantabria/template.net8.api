@@ -1,58 +1,41 @@
-﻿using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.Persistence.Context;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 using template.net8.api.GraphQL;
 using template.net8.api.GraphQL.Types;
+using template.net8.api.Persistence.Context;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Graph QL Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class GraphQLInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class GraphQLInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 25;
 
-    /// <summary>
-    ///     Install Mediator Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     -
-    ///     <typeparamref>
-    ///         <name>TQuery</name>
-    ///     </typeparamref>
-    ///     is either not a class or is not inheriting from
-    ///     <see>
-    ///         <cref>ObjectType`1</cref>
-    ///     </see>
-    ///     .
-    ///     - A query type was already added.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
         var graphQLServer = builder.Services.AddGraphQLServer();
         if (builder.Environment.EnvironmentName is Envs.Development or Envs.Local)
-            graphQLServer.ModifyRequestOptions(opt => { opt.IncludeExceptionDetails = true; });
+            graphQLServer.ModifyRequestOptions(static opt => opt.IncludeExceptionDetails = true);
 
         graphQLServer.AddFiltering().AddProjections().AddSorting().AddSpatialTypes().AddSpatialProjections()
             .AddSpatialFiltering()
             .AddQueryType<QueryProvider>()
             .AddType<PointSortInputType>()
             .AddType<PolygonSortInputType>()
-            .RegisterDbContextFactory<ProjectDbContext>();
+            .RegisterDbContextFactory<AppDbContext>();
         return Task.CompletedTask;
     }
 }

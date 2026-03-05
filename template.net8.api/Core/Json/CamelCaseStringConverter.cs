@@ -1,24 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Json;
 
 /// <summary>
-///     Converts a string to camelCase format during JSON serialization and deserialization.
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
 internal sealed class CamelCaseStringConverter : JsonConverter<string>
 {
     /// <summary>
-    ///     Reads a string from JSON and converts it to camelCase format.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="reader">The UTF-8 JSON reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">The serialization options.</param>
-    /// <returns>A string in camelCase format or null if the token is null.</returns>
-    /// <exception cref="JsonException">Thrown when the token is neither a string nor null.</exception>
+    /// <exception cref="JsonException">Expected JSON string</exception>
     /// <exception cref="InvalidOperationException">
     ///     The JSON token value isn't a string (that is, not a <see cref="System.Text.Json.JsonTokenType.String" />,
     ///     <see cref="System.Text.Json.JsonTokenType.PropertyName" />, or <see cref="System.Text.Json.JsonTokenType.Null" />).
@@ -36,13 +30,11 @@ internal sealed class CamelCaseStringConverter : JsonConverter<string>
     }
 
     /// <summary>
-    ///     Writes a string to JSON, converting it to camelCase format.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="writer">The UTF-8 JSON writer.</param>
-    /// <param name="value">The string to write.</param>
-    /// <param name="options">The serialization options.</param>
     /// <exception cref="InvalidOperationException">
-    ///     Validation is enabled, and the operation would result in writing invalid JSON.
+    ///     Validation is enabled, and the operation would result in writing invalid
+    ///     JSON.
     /// </exception>
     /// <exception cref="ArgumentException">The specified value is too large.</exception>
     public override void Write(Utf8JsonWriter writer, string? value, JsonSerializerOptions options)
@@ -57,13 +49,10 @@ internal sealed class CamelCaseStringConverter : JsonConverter<string>
     }
 
     /// <summary>
-    ///     Converts a string to camelCase format.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="str">The string to convert.</param>
-    /// <returns>The string in camelCase format.</returns>
-    [SuppressMessage("Pragma", "CA1308",
-        Justification =
-            "Business logic is change this string ToLowerInvariant")]
+    [SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase",
+        Justification = "Lowercase normalization is required to implement camelCase naming rules.")]
     private static string? ToCamelCase(string? str)
     {
         // Handle special cases

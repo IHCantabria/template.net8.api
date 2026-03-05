@@ -1,71 +1,65 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using HotChocolate.Resolvers;
 using JetBrains.Annotations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Domain.DTOs;
-using template.net8.api.Domain.Persistence.Context;
-using template.net8.api.Domain.Persistence.Models;
+using template.net8.api.Persistence.Context;
+using template.net8.api.Persistence.Models;
 
 namespace template.net8.api.Features.GraphQL;
 
 /// <summary>
-///     GraphQL Query Get Dummies CQRS
+///     ADD DOCUMENTATION
 /// </summary>
-public sealed record GraphQLQueryGetDummies(IResolverContext Context) : IRequest<IQueryable<DummyDto>>,
-    IEqualityOperators<GraphQLQueryGetDummies, GraphQLQueryGetDummies, bool>;
+[SuppressMessage(
+    "Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "Public visibility is required because this request is part of the application messaging contract (MediatR).")]
+[SuppressMessage(
+    "Design",
+    "MemberCanBeInternal",
+    Justification =
+        "Public visibility is required because this request is part of the application messaging contract (MediatR).")]
+public sealed record GraphQLQueryGetUsers(IResolverContext Context) : IRequest<IQueryable<UserDto>>,
+    IEqualityOperators<GraphQLQueryGetUsers, GraphQLQueryGetUsers, bool>;
 
-[UsedImplicitly]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 [MustDisposeResource]
-internal sealed class GraphQLGetDummiesHandlerQuery(IDbContextFactory<ProjectDbContext> context)
-    : IRequestHandler<GraphQLQueryGetDummies, IQueryable<DummyDto>>, IAsyncDisposable
+internal sealed class GraphQLGetUsersHandlerQuery(IDbContextFactory<AppDbContext> context)
+    : IRequestHandler<GraphQLQueryGetUsers, IQueryable<UserDto>>, IAsyncDisposable
 {
-    private readonly ProjectDbContext _context =
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private readonly AppDbContext _context =
         context.CreateDbContext() ?? throw new ArgumentNullException(nameof(context));
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     public ValueTask DisposeAsync()
     {
         return _context.DisposeAsync();
     }
 
     /// <summary>
-    ///     Handle the Get Dummies Query request
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>member</name>
-    ///     </paramref>
-    ///     does not represent a field or property.
-    ///     -or-
-    ///     The property represented by
-    ///     <paramref>
-    ///         <name>member</name>
-    ///     </paramref>
-    ///     does not have a <see langword="set" /> accessor.
-    ///     -or-
-    ///     <paramref>
-    ///         <name>expression</name>
-    ///     </paramref>
-    ///     .Type is not assignable to the type of the field or property that
-    ///     <paramref>
-    ///         <name>member</name>
-    ///     </paramref>
-    ///     represents.
-    /// </exception>
-    public Task<IQueryable<DummyDto>> Handle(GraphQLQueryGetDummies request,
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
+    public Task<IQueryable<UserDto>> Handle(GraphQLQueryGetUsers request,
         CancellationToken cancellationToken)
     {
-        return Task.FromResult(_context.Dummies.AsNoTracking().AsSplitQuery()
-            .ApplyProjection(DummyProjections.Projection, request.Context));
+        return Task.FromResult(_context.Users.AsNoTracking().AsSplitQuery()
+            .ApplyProjection(UserProjections.UserProjection, request.Context));
     }
 }

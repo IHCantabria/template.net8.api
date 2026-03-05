@@ -1,13 +1,12 @@
 ﻿using System.Diagnostics;
-using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using template.net8.api.Core;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Logger;
 using template.net8.api.Core.OpenTelemetry.Options;
 using template.net8.api.Settings.Interfaces;
@@ -16,43 +15,22 @@ using template.net8.api.Settings.Options;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Logger Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class OpenTelemetryInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class OpenTelemetryInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 4;
 
-    /// <summary>
-    ///     Install Logger Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
+    /// <exception cref="InvalidConfigurationException">
+    ///     The Open Telemetry configuration in the appsettings file is incorrect.
+    ///     The Api configuration in the appsettings file is incorrect.
     /// </exception>
     /// <exception cref="InvalidOperationException">The name of this computer cannot be obtained.</exception>
-    /// <exception cref="InvalidConfigurationException">Condition.</exception>
     /// <exception cref="NotSupportedException">The process is not on this computer.</exception>
-    /// <exception cref="SocketException">An error is encountered when resolving the local host name.</exception>
-    /// <exception cref="ArgumentOutOfRangeException">
-    ///     The length of
-    ///     <paramref>
-    ///         <name>hostNameOrAddress</name>
-    ///     </paramref>
-    ///     is greater than 255 characters.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>hostNameOrAddress</name>
-    ///     </paramref>
-    ///     is an invalid IP address.
-    /// </exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -73,6 +51,10 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
         OptionsValidator.ValidateApiOptions(apiOptions);
         var version = builder.Configuration.Get<ProjectOptions>()?.Version ?? "";
 
+        if (apiOptions is null)
+            throw new InvalidConfigurationException(
+                "The Api configuration in the appsettings file is incorrect.");
+
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resource => resource
                 .AddService(
@@ -82,7 +64,7 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
                 .AddAttributes([
                     new KeyValuePair<string, object>("service.thread.id", Environment.CurrentManagedThreadId),
                     new KeyValuePair<string, object>("service.thread.name", Thread.CurrentThread.Name ?? string.Empty),
-                    new KeyValuePair<string, object>("server.address", apiOptions!.Address),
+                    new KeyValuePair<string, object>("server.address", apiOptions.Address),
                     new KeyValuePair<string, object>("service.environment", builder.Environment.EnvironmentName),
                     new KeyValuePair<string, object>("host.name", Environment.MachineName),
                     new KeyValuePair<string, object>("host.ip", HostInfo.GetHostIp()),
@@ -101,6 +83,9 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void ConfigureMetrics(MeterProviderBuilder builder, OpenTelemetryOptions options)
     {
         if (!options.IsMetricActive)
@@ -114,7 +99,7 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
         builder.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation()
             .AddOtlpExporter(otlpOptions =>
             {
-                otlpOptions.Endpoint = options.MetricEndpointUrl!;
+                if (options.MetricEndpointUrl != null) otlpOptions.Endpoint = options.MetricEndpointUrl;
                 otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
                 if (options.UseMetricHeaderApiKey())
                     otlpOptions.Headers = $"{options.MetricEndpointApiKeyHeader}={options.MetricEndpointApiKeyValue}";
@@ -123,6 +108,9 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
         MainLoggerMethods.LogMetricCollectorEnable();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void ConfigureTracing(TracerProviderBuilder builder, OpenTelemetryOptions options,
         IHostEnvironment environment)
     {
@@ -134,20 +122,15 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
 
         IsTraceOpenTelemetryAvailable(options);
 
-        if (environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
-            builder.SetSampler<AlwaysOnSampler>();
-
-        builder.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddOtlpExporter(otlpOptions =>
-        {
-            otlpOptions.Endpoint = options.TraceEndpointUrl!;
-            otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
-            if (options.UseTraceHeaderApiKey())
-                otlpOptions.Headers = $"{options.TraceEndpointApiKeyHeader}={options.TraceEndpointApiKeyValue}";
-        });
+        ConfigureTraceSampler(builder, environment);
+        ConfigureTraceExporter(builder, options);
 
         MainLoggerMethods.LogTraceCollectorEnable();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void IsMetricOpenTelemetryAvailable(OpenTelemetryOptions config)
     {
         if (!config.IsValidMetricUri())
@@ -155,6 +138,43 @@ public sealed class OpenTelemetryInstaller : IServiceInstaller
                 "The OpenTelemetry Metric configuration in the appsettings file is incorrect or the endpoint for the metrics is down. Missing MetricEndpointUrl value.");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static void ConfigureTraceSampler(TracerProviderBuilder builder, IHostEnvironment environment)
+    {
+        if (environment.EnvironmentName is Envs.Development or Envs.Local or Envs.Test)
+            builder.SetSampler<AlwaysOnSampler>();
+    }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static void ConfigureTraceExporter(TracerProviderBuilder builder, OpenTelemetryOptions options)
+    {
+        builder
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddOtlpExporter(otlpOptions => ConfigureOtlpExporter(otlpOptions, options));
+    }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private static void ConfigureOtlpExporter(OtlpExporterOptions otlpOptions, OpenTelemetryOptions options)
+    {
+        if (options.TraceEndpointUrl is not null)
+            otlpOptions.Endpoint = options.TraceEndpointUrl;
+
+        otlpOptions.Protocol = OtlpExportProtocol.HttpProtobuf;
+
+        if (options.UseTraceHeaderApiKey())
+            otlpOptions.Headers = $"{options.TraceEndpointApiKeyHeader}={options.TraceEndpointApiKeyValue}";
+    }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void IsTraceOpenTelemetryAvailable(OpenTelemetryOptions config)
     {
         if (!config.IsValidTraceUri())

@@ -3,10 +3,10 @@
 # and checks the Quality Gate status after the scan.
 
 #usage:
-#   .\sonarqube-windows.ps1 -SonarScannerVersion "11.0.0" -ProjectKey "my_project_key" -SonarHostUrl "http://mysonarqube.server:9000" -SonarToken "my_sonar_token" -ProjectDir "path\to\my\project" -SolutionFile "MySolution.sln" -SkipConnectivityTest -SkipQualityGateCheck
+#   .\sonarqube-windows.ps1 -SonarScannerVersion "11.1.0" -ProjectKey "my_project_key" -SonarHostUrl "http://mysonarqube.server:9000" -SonarToken "my_sonar_token" -ProjectDir "path\to\my\project" -SolutionFile "MySolution.sln" -SkipConnectivityTest -SkipQualityGateCheck
 #
 # Parameters:
-#   -SonarScannerVersion  : SonarScanner for .NET version (default: "11.0.0")
+#   -SonarScannerVersion  : SonarScanner for .NET version (default: "11.1.0")
 #   -ProjectKey           : SonarQube project key (default: "PROJECT_KEY")
 #   -SonarHostUrl         : SonarQube server URL (default: "https://ihsonarqube.ihcantabria.com")
 #   -SonarToken           : SonarQube authentication token (default: "SONAR_TOKEN_KEY")
@@ -16,7 +16,7 @@
 #   -SkipQualityGateCheck : Skip Quality Gate verification (switch)
 
 param(
-    [string]$SonarScannerVersion = "11.0.0",
+    [string]$SonarScannerVersion = "11.1.0",
     [string]$ProjectKey = "PROJECT_KEY",
     [string]$SonarHostUrl = "https://ihsonarqube.ihcantabria.com",
     [string]$SonarToken = "SONAR_TOKEN_KEY",

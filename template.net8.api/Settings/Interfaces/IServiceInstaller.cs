@@ -1,21 +1,17 @@
-﻿using template.net8.api.Core.Attributes;
-
-namespace template.net8.api.Settings.Interfaces;
+﻿namespace template.net8.api.Settings.Interfaces;
 
 /// <summary>
-///     Interface for Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public interface IServiceInstaller
+internal interface IServiceInstaller
 {
     /// <summary>
-    ///     Lord Order of the Service
+    ///     ADD DOCUMENTATION
     /// </summary>
     short LoadOrder { get; }
 
     /// <summary>
-    ///     Install Service Async method to install the service in the WebApplicationBuilder.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="builder"></param>
     Task InstallServiceAsync(WebApplicationBuilder builder);
 }

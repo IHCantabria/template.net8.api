@@ -1,111 +1,102 @@
 ﻿{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:56665",
       "sslPort": 44301
     }
   },
   "profiles": {
-    "http": {
+    "{PROJECT_NAME} (DEV)": {
+      "applicationUrl": "https://localhost:7187;http://localhost:5290",
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "dev"
+      },
       "hotReloadEnabled": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5290",
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    },
+    "{PROJECT_NAME} (LOCAL)": {
+      "applicationUrl": "https://localhost:7187;http://localhost:5290",
+      "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "local",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false",
         "OTEL_DOTNET_DEBUG": "true",
-        "OTEL_LOG_LEVEL": "debug",
-        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
-      }
+        "OTEL_LOG_LEVEL": "debug"
+      },
+      "hotReloadEnabled": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    },
+    "{PROJECT_NAME} (PRE)": {
+      "applicationUrl": "https://localhost:7187;http://localhost:5290",
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "pre"
+      },
+      "hotReloadEnabled": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    },
+    "{PROJECT_NAME} (PROD)": {
+      "applicationUrl": "https://localhost:7187;http://localhost:5290",
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "prod"
+      },
+      "hotReloadEnabled": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    },
+    "{PROJECT_NAME} (Test)": {
+      "applicationUrl": "https://localhost:7187;http://localhost:5290",
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "test"
+      },
+      "hotReloadEnabled": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger"
+    },
+    "http": {
+      "applicationUrl": "http://localhost:5290",
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "local",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false",
+        "OTEL_DOTNET_DEBUG": "true",
+        "OTEL_LOG_LEVEL": "debug"
+      },
+      "hotReloadEnabled": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger"
     },
     "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "hotReloadEnabled": false,
-      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7187;http://localhost:5290",
+      "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "local",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false",
         "OTEL_DOTNET_DEBUG": "true",
-        "OTEL_LOG_LEVEL": "debug",
-        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
-      }
+        "OTEL_LOG_LEVEL": "debug"
+      },
+      "hotReloadEnabled": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger"
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
-      "hotReloadEnabled": false,
-      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "local",
+        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false",
         "OTEL_DOTNET_DEBUG": "true",
-        "OTEL_LOG_LEVEL": "debug",
-        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
-      }
-    },
-    "{PROJECT_NAME} (LOCAL)": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
+        "OTEL_LOG_LEVEL": "debug"
+      },
       "hotReloadEnabled": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7187;http://localhost:5290",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "local",
-        "OTEL_DOTNET_DEBUG": "true",
-        "OTEL_LOG_LEVEL": "debug",
-        "DOTNET_PRINT_TELEMETRY_MESSAGE": "false"
-      }
-    },
-    "{PROJECT_NAME} (Test)": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
-      "hotReloadEnabled": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7187;http://localhost:5290",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "test"
-      }
-    },
-    "{PROJECT_NAME} (DEV)": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "hotReloadEnabled": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7187;http://localhost:5290",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "dev"
-      }
-    },
-    "{PROJECT_NAME} (PRE)": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "hotReloadEnabled": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7187;http://localhost:5290",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "pre"
-      }
-    },
-    "{PROJECT_NAME} (PROD)": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "hotReloadEnabled": false,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7187;http://localhost:5290",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "prod"
-      }
+      "launchUrl": "swagger"
     }
   }
 }

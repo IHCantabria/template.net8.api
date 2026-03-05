@@ -1,31 +1,30 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Numerics;
 using template.net8.api.Core.Interfaces;
 
 namespace template.net8.api.Core.DTOs;
 
 /// <summary>
-///     Version DTO
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed partial record VersionDto : IDto
+internal sealed partial record VersionDto : IDto, IEqualityOperators<VersionDto, VersionDto, bool>
 {
     /// <summary>
-    ///     id
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required short Id { get; init; }
+    internal required short Id { get; init; }
 
     /// <summary>
-    ///     Name
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required string Name { get; init; } = null!;
+    internal required string Name { get; init; }
 
     /// <summary>
-    ///     Tag
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required string Tag { get; init; } = null!;
+    internal required string Tag { get; init; }
 
     /// <summary>
-    ///     Date UTC
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required DateTimeOffset Date { get; init; }
+    internal required DateTimeOffset Date { get; init; }
 }

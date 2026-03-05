@@ -129,7 +129,7 @@ Select only if needed:
 **Do you need any other configuration?**
 
 - [ ] `Configuración de Dashboard de logs en IH-Telemetry`
-- [ ] `Variables de entorno, sustituir los sigientes placeholders en los ficheros appsettings: HOST_API_URL, HOST_API_DOMAIN, OPEN_TELEMETRY_ENDPOINT_LOG_URL`
+- [ ] `Variables de entorno, sustituir los sigientes placeholders en los ficheros appsettings: HOST_API_URL, HOST_API_DOMAIN, OPEN_TELEMETRY_ENDPOINT_LOG_URL, APP_DB_CONNECTION, HOST_API_CORS_ALLOWED_ORIGINS, `
 
 <br>
 

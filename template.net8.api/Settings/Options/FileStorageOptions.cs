@@ -1,40 +1,48 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Attributes;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     File Storage Options for the application
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record FileStorageOptions : IEqualityOperators<FileStorageOptions, FileStorageOptions, bool>
+[SuppressMessage(
+    "Performance",
+    "IDE0051:Remove unused private members",
+    Justification = "Instantiated via configuration binding (IOptions) when the feature is enabled.")]
+[SuppressMessage(
+    "Performance",
+    "UnusedAutoPropertyAccessor.Global",
+    Justification = "Instantiated via configuration binding (IOptions) when the feature is enabled.")]
+internal sealed record FileStorageOptions : IEqualityOperators<FileStorageOptions, FileStorageOptions, bool>
 {
     /// <summary>
-    ///     AppSettings Key for File Storage
+    ///     ADD DOCUMENTATION
     /// </summary>
     public const string FileStorage = nameof(FileStorage);
 
     /// <summary>
-    ///     Root Temp Path
+    ///     ADD DOCUMENTATION
     /// </summary>
-    [Required]
     [LocalAbsolutePath]
-    public string RootTempPath { get; init; } = null!;
+    public required string RootTempPath { get; init; }
 
     /// <summary>
-    ///     Root File Path
+    ///     ADD DOCUMENTATION
     /// </summary>
-    [Required]
     [LocalAbsolutePath]
-    public string RootFilePath { get; init; } = null!;
+    public required string RootFilePath { get; init; }
 }
 
 /// <summary>
 ///     File Storage Options Validator
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class FileStorageOptionsValidator : IValidateOptions<FileStorageOptions>;
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Validator for options instantiated via configuration binding (IOptions) when the feature is enabled.")]
+internal sealed partial class FileStorageOptionsValidator : IValidateOptions<FileStorageOptions>;

@@ -1,49 +1,46 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     Jwt Options for the authentication token generation
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record JwtOptions : ISecurityOptions, IEqualityOperators<JwtOptions, JwtOptions, bool>
+internal sealed record JwtOptions : ISecurityOptions, IEqualityOperators<JwtOptions, JwtOptions, bool>
 {
     /// <summary>
-    ///     AppSettings Key for Jwt
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public static readonly string Jwt = $"{ISecurityOptions.Security}:{nameof(Jwt)}";
+    public const string Jwt = $"{ISecurityOptions.Security}:{nameof(Jwt)}";
 
     /// <summary>
-    ///     Audience
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string Audience { get; init; } = null!;
+    public required string Audience { get; init; }
 
     /// <summary>
-    ///     Issuer
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string Issuer { get; init; } = null!;
+    public required string Issuer { get; init; }
 
     /// <summary>
-    ///     Secret
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string Secret { get; init; } = null!;
+    public required string Secret { get; init; }
 
     /// <summary>
-    ///     Token Lifetime
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required TimeSpan? TokenLifetime { get; set; }
+    public required TimeSpan? TokenLifetime { get; init; }
 }
 
 /// <summary>
-///     Jwt Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class JwtOptionsValidator : IValidateOptions<JwtOptions>;
+internal sealed partial class JwtOptionsValidator : IValidateOptions<JwtOptions>;

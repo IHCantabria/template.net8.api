@@ -1,16 +1,32 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using LanguageExt;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
 
 namespace template.net8.api.Core.Json;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification = "General-purpose helper type; usage depends on consumer requirements.")]
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification = "General-purpose helper methods; not all members are used in every scenario.")]
 internal static class Cloner
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static readonly JsonSerializerOptions Options = new JsonSerializerOptions().AddCoreOptions();
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     /// <exception cref="ResultSuccessInvalidOperationException">
     ///     Result is not a success! Use ExtractException method instead
     ///     and Check the state of Result with IsSuccess or IsFaulted before use this method or ExtractException method
@@ -30,11 +46,17 @@ internal static class Cloner
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Try<string> Serialize<T>(T obj)
     {
         return () => JsonSerializer.Serialize(obj, Options);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Try<T> Deserialize<T>(string stringObj)
     {
         return () =>

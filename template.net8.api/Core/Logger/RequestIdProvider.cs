@@ -1,15 +1,19 @@
 ﻿using System.Diagnostics;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Logger;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class RequestIdProvider
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static readonly AsyncLocal<string> CurrentTraceIdentifier = new();
 
     /// <summary>
-    ///     Sets the current HttpContext.TraceIdentifier for use in logs and problem details
+    ///     ADD DOCUMENTATION
     /// </summary>
     public static void SetCurrentTraceIdentifier(string traceIdentifier)
     {
@@ -17,7 +21,7 @@ internal static class RequestIdProvider
     }
 
     /// <summary>
-    ///     Gets the current request ID from Activity.Current?.Id or the stored TraceIdentifier
+    ///     ADD DOCUMENTATION
     /// </summary>
     public static string? GetCurrentRequestId()
     {

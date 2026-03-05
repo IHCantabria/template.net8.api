@@ -1,15 +1,13 @@
 ﻿namespace template.net8.api.Core.Attributes;
 
 /// <summary>
-///     This attribute is used to define the lifetime of the service.
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="serviceLifetime"></param>
 [AttributeUsage(AttributeTargets.Class)]
-[CoreLibrary]
-public sealed class ServiceLifetimeAttribute(ServiceLifetime serviceLifetime) : Attribute
+internal sealed class ServiceLifetimeAttribute(ServiceLifetime serviceLifetime) : Attribute
 {
     /// <summary>
-    ///     The lifetime of the service.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public ServiceLifetime ServiceLifetime { get; private set; } = serviceLifetime;
+    public ServiceLifetime ServiceLifetime { get; } = serviceLifetime;
 }

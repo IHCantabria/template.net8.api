@@ -1,13 +1,17 @@
 ﻿using Serilog;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Logger;
 
 namespace template.net8.api.Settings.Handlers;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class GlobalErrorAndExitHandlers
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     public static void Register()
     {
         AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
@@ -16,6 +20,9 @@ internal static class GlobalErrorAndExitHandlers
         AppDomain.CurrentDomain.DomainUnload += OnDomainUnload;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void OnUnhandledException(object? sender, UnhandledExceptionEventArgs args)
     {
         var ex = args.ExceptionObject as Exception
@@ -29,17 +36,26 @@ internal static class GlobalErrorAndExitHandlers
         Log.CloseAndFlush();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs args)
     {
         MainLoggerMethods.LogUnobservedTaskException(args.Exception);
         args.SetObserved();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void OnProcessExit(object? sender, EventArgs e)
     {
         MainLoggerMethods.LogProcessExit();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void OnDomainUnload(object? sender, EventArgs e)
     {
         MainLoggerMethods.LogDomainUnload();

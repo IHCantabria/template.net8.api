@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Serilog;
 using template.net8.api.Core;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Logger;
 using template.net8.api.Settings.Interfaces;
@@ -12,54 +12,24 @@ using Path = System.IO.Path;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Logger Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class LoggerInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class LoggerInstaller : IServiceInstaller
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static readonly JsonSerializerOptions Options = new JsonSerializerOptions().AddCoreOptions();
 
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 1;
 
-    /// <summary>
-    ///     Install Logger Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="InvalidConfigurationException">
-    ///     The OpenTelemetry configuration in the appsettings file is incorrect.
-    ///     There was a problem trying to connecte to the OpenTelemetry endpoint
-    /// </exception>
-    /// <exception cref="IOException">Condition.</exception>
-    /// <exception cref="InvalidOperationException">Condition.</exception>
-    /// <exception cref="NotSupportedException">Condition.</exception>
-    /// <exception cref="PathTooLongException">
-    ///     When
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    ///     is too long
-    /// </exception>
-    /// <exception cref="UnauthorizedAccessException">
-    ///     The caller does not have the required permission to access the
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     Invalid
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
+    /// <exception cref="InvalidConfigurationException">Condition.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Given depth must be positive.</exception>
+    /// <exception cref="InvalidOperationException">When the logger is already created</exception>
     public async Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -77,11 +47,14 @@ public sealed class LoggerInstaller : IServiceInstaller
 
         SerilogLoggersFactory.RealApplicationLogFactory(config, builder.Environment.EnvironmentName, version);
 
-        builder.Services.AddHttpLogging(options =>
+        builder.Services.AddHttpLogging(static options =>
             options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders |
                                     HttpLoggingFields.ResponsePropertiesAndHeaders);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<string> ReadPackageJsonVersionAsync()
     {
         var ct = CancellationToken.None;
@@ -93,6 +66,7 @@ public sealed class LoggerInstaller : IServiceInstaller
 
         var jsonObject = JsonSerializer.Deserialize<JsonElement>(jsonContent, Options);
 
-        return jsonObject.TryGetProperty("version", out var version) ? version.GetString()! : string.Empty;
+        return (jsonObject.TryGetProperty("version", out var version) ? version.GetString() : string.Empty) ??
+               string.Empty;
     }
 }

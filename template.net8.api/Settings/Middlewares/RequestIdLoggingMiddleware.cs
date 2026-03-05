@@ -1,27 +1,21 @@
-﻿using template.net8.api.Core.Attributes;
-using template.net8.api.Core.Logger;
+﻿using template.net8.api.Core.Logger;
 
 namespace template.net8.api.Settings.Middlewares;
 
 /// <summary>
-///     Middleware to capture HttpContext.TraceIdentifier for RequestIdEnricher
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="next"></param>
-[CoreLibrary]
-public sealed class RequestIdLoggingMiddleware(RequestDelegate next)
+internal sealed class RequestIdLoggingMiddleware(RequestDelegate next)
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
     /// <summary>
-    ///     Invoke Async method to invoke the middleware.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     public Task InvokeAsync(HttpContext context)
     {

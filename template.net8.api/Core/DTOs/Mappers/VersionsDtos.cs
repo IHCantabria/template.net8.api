@@ -1,18 +1,12 @@
-﻿using JetBrains.Annotations;
-using template.net8.api.Core.Contracts;
+﻿using template.net8.api.Core.Contracts;
 
 namespace template.net8.api.Core.DTOs;
 
-/// <summary>
-///     Version DTO
-/// </summary>
-public sealed partial record VersionDto
+internal sealed partial record VersionDto
 {
     /// <summary>
-    ///     Convert Dto to Resource
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
     public static implicit operator VersionResource(VersionDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
@@ -23,16 +17,5 @@ public sealed partial record VersionDto
             Tag = dto.Tag,
             Date = dto.Date.UtcDateTime
         };
-    }
-
-    /// <summary>
-    ///     This method is used to convert VersionDto to a VersionResource.
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    [UsedImplicitly]
-    public static VersionResource ToVersionResource(VersionDto dto)
-    {
-        return dto;
     }
 }

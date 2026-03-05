@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using template.net8.api.Core.Attributes;
+﻿using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using template.net8.api.Core.Authorization;
 using template.net8.api.Settings.Extensions;
 using template.net8.api.Settings.Interfaces;
@@ -7,27 +7,16 @@ using template.net8.api.Settings.Interfaces;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Authorization Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class AuthorizationInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class AuthorizationInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 19;
 
-    /// <summary>
-    ///     Install Repository Services
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

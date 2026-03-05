@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using JetBrains.Annotations;
+using Microsoft.Extensions.Options;
 using template.net8.api.Core;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.OpenTelemetry.Options;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
@@ -8,26 +8,16 @@ using template.net8.api.Settings.Options;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Settings Services Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class SettingsInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class SettingsInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 3;
 
-    /// <summary>
-    ///     Install Settings services
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -36,13 +26,14 @@ public sealed class SettingsInstaller : IServiceInstaller
         builder.Configuration.AddJsonFile(CoreConstants.PackageJsonFile, false, false);
         InstallCoreOptionsServices(builder, config);
         InstallUiOptionsServices(builder, config);
-        //Commented because it is not implemented in the template
-        //InstallSecurityOptionsServices(builder, config);
-        InstallExternalOptionsServices(builder, config);
+        InstallSecurityOptionsServices(builder, config);
 
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void InstallCoreOptionsServices(WebApplicationBuilder builder, ConfigurationManager config)
     {
         //Install Options services
@@ -62,6 +53,9 @@ public sealed class SettingsInstaller : IServiceInstaller
         builder.Services.AddSingleton<IValidateOptions<OpenTelemetryOptions>, OpenTelemetryOptionsValidator>();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void InstallUiOptionsServices(WebApplicationBuilder builder, ConfigurationManager config)
     {
         builder.Services.Configure<ReDocOptions>(config.GetSection(ReDocOptions.ReDoc));
@@ -71,6 +65,9 @@ public sealed class SettingsInstaller : IServiceInstaller
         builder.Services.AddSingleton<IValidateOptions<SwaggerOptions>, SwaggerOptionsValidator>();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void InstallSecurityOptionsServices(WebApplicationBuilder builder, ConfigurationManager config)
     {
         builder.Services.Configure<SwaggerSecurityOptions>(config.GetSection(SwaggerSecurityOptions.SwaggerSecurity));
@@ -81,9 +78,5 @@ public sealed class SettingsInstaller : IServiceInstaller
 
         builder.Services.Configure<PasswordOptions>(config.GetSection(PasswordOptions.Password));
         builder.Services.AddSingleton<IValidateOptions<PasswordOptions>, PasswordOptionsValidator>();
-    }
-
-    private static void InstallExternalOptionsServices(WebApplicationBuilder builder, ConfigurationManager config)
-    {
     }
 }

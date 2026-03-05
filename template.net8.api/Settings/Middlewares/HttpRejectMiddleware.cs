@@ -1,41 +1,39 @@
 ﻿using Microsoft.Extensions.Localization;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Factory;
 using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Settings.Middlewares;
 
 /// <summary>
-///     This middleware is used to reject HTTP requests.
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="next"></param>
-/// <param name="problemDetailsService"></param>
-/// <param name="localizer"></param>
-[CoreLibrary]
-public sealed class HttpRejectMiddleware(
+internal sealed class HttpRejectMiddleware(
     RequestDelegate next,
     IProblemDetailsService problemDetailsService,
     IStringLocalizer<ResourceMain> localizer)
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly IProblemDetailsService _problemDetailsService =
         problemDetailsService ?? throw new ArgumentNullException(nameof(problemDetailsService));
 
     /// <summary>
-    ///     Invoke Async method to check if the request is HTTPS.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     public async Task InvokeAsync(HttpContext context)
     {
         ArgumentNullException.ThrowIfNull(context);

@@ -1,8 +1,9 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Factory;
 using template.net8.api.Core.Json;
@@ -13,47 +14,29 @@ using template.net8.api.Settings.Interfaces;
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Controllers Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class ControllersInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class ControllersInstaller : IServiceInstaller
 {
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 12;
 
-    /// <summary>
-    ///     Install Controller Services
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="InvalidOperationException">
-    ///     There is no service of type
-    ///     <typeparamref>
-    ///         <name>T</name>
-    ///     </typeparamref>
-    ///     .
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>keySelector</name>
-    ///     </paramref>
-    ///     produces duplicate keys for two elements.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
         builder.Services.AddControllers(x => ConfigureControllers(x, builder))
             .AddJsonOptions(ConfigureJsonOptions)
-            .ConfigureApiBehaviorOptions(x =>
+            .ConfigureApiBehaviorOptions(static x =>
             {
-                x.InvalidModelStateResponseFactory = context =>
+                x.InvalidModelStateResponseFactory = static context =>
                 {
                     var localizer = context.HttpContext.RequestServices
                         .GetRequiredService<IStringLocalizer<ResourceMain>>();
@@ -63,12 +46,12 @@ public sealed class ControllersInstaller : IServiceInstaller
                     return new ObjectResult(problemDetails) { StatusCode = problemDetails.Status };
                 };
             });
-        //TODO: fix Body params Json Serializer error with missing properties
-        //TODO: Add OutputFormatter default with msg Header negotiation fail
-        //.AddMvcOptions(options => options.OutputFormatters.Add(new FallBackOutputFormatter()));
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void ConfigureControllers(MvcOptions options, WebApplicationBuilder builder)
     {
         options.RespectBrowserAcceptHeader = true;
@@ -76,6 +59,9 @@ public sealed class ControllersInstaller : IServiceInstaller
         options.Conventions.Add(new ActionHidingConvention(builder.Environment.EnvironmentName));
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void ConfigureJsonOptions(JsonOptions options)
     {
         options.JsonSerializerOptions.AddCoreOptions();

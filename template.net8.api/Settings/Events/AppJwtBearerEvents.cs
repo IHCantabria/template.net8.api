@@ -1,40 +1,46 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
-using template.net8.api.Core.Authorization;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Extensions;
 using template.net8.api.Core.Factory;
+using template.net8.api.Domain.Factory;
 using template.net8.api.Localize.Resources;
 using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Settings.Events;
 
 /// <summary>
-///     App Jwt Bearer Events
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocalizer<ResourceMain> localizer)
+internal sealed class AppJwtBearerEvents(
+    IOptions<JwtOptions> jwtConfig,
+    IOptions<AppOptions> appConfig,
+    IStringLocalizer<ResourceMain> localizer)
     : JwtBearerEvents
 {
-    private readonly IOptions<JwtOptions> _config = config ?? throw new ArgumentNullException(nameof(config));
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private readonly AppOptions _appConfig = appConfig.Value ?? throw new ArgumentNullException(nameof(appConfig));
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private readonly JwtOptions _jwtConfig = jwtConfig.Value ?? throw new ArgumentNullException(nameof(jwtConfig));
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     /// <summary>
-    ///     AuthenticationFailed event handler
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     public override Task AuthenticationFailed(AuthenticationFailedContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -45,30 +51,14 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     }
 
     /// <summary>
-    ///     AuthenticationFailed event handler
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>IDictionary`2</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
-    /// <exception cref="System.Collections.Generic.KeyNotFoundException">
-    ///     The property is retrieved and
-    ///     <paramref>
-    ///         <name>key</name>
-    ///     </paramref>
-    ///     is not found.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public override Task Challenge(JwtBearerChallengeContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -92,16 +82,9 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     }
 
     /// <summary>
-    ///     AuthenticationFailed event handler
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     public override Task TokenValidated(TokenValidatedContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -109,16 +92,9 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     }
 
     /// <summary>
-    ///     AuthenticationFailed event handler
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>dictionary</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     public override Task Forbidden(ForbiddenContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -128,16 +104,9 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
     }
 
     /// <summary>
-    ///     MessageReceived event handler
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>s</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     public override Task MessageReceived(MessageReceivedContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
@@ -149,6 +118,9 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool TryExtractSignalRAccessToken(MessageReceivedContext context, out string? token)
     {
         token = null;
@@ -163,24 +135,32 @@ public sealed class AppJwtBearerEvents(IOptions<JwtOptions> config, IStringLocal
         return true;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool HasAuthorizationHeader(MessageReceivedContext context)
     {
         return !string.IsNullOrEmpty(context.HttpContext.Request.Headers.Authorization);
     }
 
-    private static bool IsDevEnvironment()
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private bool IsDevEnvironment()
     {
-        var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-        return env is Envs.Local or Envs.Test;
+        return _appConfig.Env is Envs.Local or Envs.Test;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private bool TryExtractDevToken(MessageReceivedContext context, out string? token)
     {
         token = null;
         if (!IsDevEnvironment()) return false;
         if (HasAuthorizationHeader(context)) return false;
 
-        var result = TokenFactory.GenerateGenieAccessToken(_config.Value).Try();
+        var result = TokenFactory.GenerateGenieAccessToken(_jwtConfig, _appConfig).Try();
         if (result.IsFaulted)
             throw new InternalServerErrorException(
                 _localizer["GenieAccessTokenServerError"],

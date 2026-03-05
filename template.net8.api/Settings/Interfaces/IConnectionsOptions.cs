@@ -1,15 +1,12 @@
-﻿using template.net8.api.Core.Attributes;
-
-namespace template.net8.api.Settings.Interfaces;
+﻿namespace template.net8.api.Settings.Interfaces;
 
 /// <summary>
-///     Interface for Connections Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public interface IConnectionsOptions
+internal interface IConnectionsOptions
 {
     /// <summary>
-    ///     AppSettings key for the Connections Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    static readonly string Connections = nameof(Connections);
+    const string Connections = nameof(Connections);
 }

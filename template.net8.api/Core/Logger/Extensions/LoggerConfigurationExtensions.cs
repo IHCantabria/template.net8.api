@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net.Http.Headers;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using LanguageExt;
 using Microsoft.IdentityModel.Protocols.Configuration;
@@ -8,10 +10,11 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
+using Serilog.Exceptions.Destructurers;
 using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.OpenTelemetry;
-using template.net8.api.Core.Attributes;
+using template.net8.api.Business;
 using template.net8.api.Core.Logger.Enrichers;
 using template.net8.api.Core.OpenTelemetry.Options;
 using template.net8.api.Settings.Options;
@@ -19,24 +22,25 @@ using Path = System.IO.Path;
 
 namespace template.net8.api.Core.Logger.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class LoggerConfigurationExtensions
 {
     /// <summary>
-    ///     Enrich Log Extension
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="lc"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">Condition.</exception>
-    /// <exception cref="ArgumentException">
-    ///     When any element of
-    ///     <paramref>
-    ///         <name>enrichers</name>
-    ///     </paramref>
-    ///     is <code>null</code>
-    /// </exception>
+    /// <exception cref="ArgumentOutOfRangeException">Given depth must be positive.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static LoggerConfiguration EnrichLog(this LoggerConfiguration lc)
     {
+        var destructures = new List<IExceptionDestructurer> { new DbUpdateExceptionDestructurer() };
+        destructures.AddRange(DestructuringOptionsBuilder.DefaultDestructurers);
+
         return lc.Enrich.FromLogContext()
             .Enrich.With<ActivityEnricher>()
             .Enrich.With<RequestIdentifierEnricher>()
@@ -45,23 +49,26 @@ internal static class LoggerConfigurationExtensions
             .Enrich.With<ClientIpEnricher>()
             .Enrich.With(new CorrelationIdEnricher("x-correlation-id", false))
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
-                .WithDefaultDestructurers()
-                .WithDestructurers([new DbUpdateExceptionDestructurer()]));
+                .WithDestructurers(destructures)
+                .WithDestructuringDepth(1)
+                .WithoutReflectionBasedDestructurer());
     }
 
     /// <summary>
-    ///     Configure Min Levels Log Extension
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="lc"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">Condition.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static LoggerConfiguration ConfigureMinLevels(this LoggerConfiguration lc)
     {
         return lc.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
             .MinimumLevel.Override("System", LogEventLevel.Information)
             .MinimumLevel.Override("Program", LogEventLevel.Information)
             .MinimumLevel.Override("Npgsql", LogEventLevel.Information)
-            .MinimumLevel.Override(CoreConstants.ApiName, LogEventLevel.Information)
+            .MinimumLevel.Override(BusinessConstants.ApiName, LogEventLevel.Information)
             .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
@@ -72,46 +79,9 @@ internal static class LoggerConfigurationExtensions
     }
 
     /// <summary>
-    ///     Configure Log Sinks Extension
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="lc"></param>
-    /// <param name="builderConfiguration"></param>
-    /// <param name="envName"></param>
-    /// <param name="version"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidConfigurationException">
-    ///     The OpenTelemetry configuration in the appsettings file is incorrect.
-    ///     There was a problem trying to connecte to the OpenTelemetry endpoint
-    /// </exception>
-    /// <exception cref="ArgumentNullException">
-    ///     When
-    ///     <paramref>
-    ///         <name>sinkConfiguration</name>
-    ///     </paramref>
-    ///     is <code>null</code>
-    /// </exception>
-    /// <exception cref="IOException">Condition.</exception>
-    /// <exception cref="InvalidOperationException">Condition.</exception>
-    /// <exception cref="NotSupportedException">Condition.</exception>
-    /// <exception cref="PathTooLongException">
-    ///     When
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    ///     is too long
-    /// </exception>
-    /// <exception cref="UnauthorizedAccessException">
-    ///     The caller does not have the required permission to access the
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     Invalid
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    /// </exception>
+    /// <exception cref="InvalidConfigurationException">Condition.</exception>
     internal static LoggerConfiguration ConfigureSinks(this LoggerConfiguration lc,
         ConfigurationManager builderConfiguration, string envName, string version)
     {
@@ -129,17 +99,23 @@ internal static class LoggerConfigurationExtensions
 
         var apiOptionsConfig = builderConfiguration.GetSection(ApiOptions.Api).Get<ApiOptions>();
         OptionsValidator.ValidateApiOptions(apiOptionsConfig);
+        if (apiOptionsConfig is null)
+            throw new InvalidConfigurationException(
+                "The Api configuration in the appsettings file is incorrect.");
 
         var config = new OpenTelemetryConfig
         {
             OpenTelemetryOptions = openTelemetryOptions,
-            ApiOptions = apiOptionsConfig!,
+            ApiOptions = apiOptionsConfig,
             EnvName = envName,
             Version = version
         };
         return lc.ConfigureSinkTelemetry(config);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static LoggerConfiguration ConfigureSinkTelemetry(this LoggerConfiguration lc, OpenTelemetryConfig config)
     {
         return lc.WriteTo.Async(s => s.OpenTelemetry(x =>
@@ -149,11 +125,13 @@ internal static class LoggerConfigurationExtensions
                     .ToString(); //for loki use http://localhost:3100/otlp // for seq use http://localhost:5341/ingest/otlp/v1/logs
             x.Protocol = OtlpProtocol.HttpProtobuf;
             x.HttpMessageHandler = new SocketsHttpHandler { ActivityHeadersPropagator = null };
-            if (config.OpenTelemetryOptions.UseLogHeaderApiKey())
+            if (config.OpenTelemetryOptions.UseLogHeaderApiKey() &&
+                config.OpenTelemetryOptions.LogEndpointApiKeyHeader != null &&
+                config.OpenTelemetryOptions.LogEndpointApiKeyValue != null)
                 x.Headers = new Dictionary<string, string>
                 {
-                    [config.OpenTelemetryOptions.LogEndpointApiKeyHeader!] =
-                        config.OpenTelemetryOptions.LogEndpointApiKeyValue!
+                    [config.OpenTelemetryOptions.LogEndpointApiKeyHeader] =
+                        config.OpenTelemetryOptions.LogEndpointApiKeyValue
                 };
             x.ResourceAttributes = new Dictionary<string, object>
             {
@@ -179,37 +157,13 @@ internal static class LoggerConfigurationExtensions
     }
 
     /// <summary>
-    ///     Configure Log Sink Local
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <exception cref="ArgumentNullException">
-    ///     When
-    ///     <paramref>
-    ///         <name>sinkConfiguration</name>
-    ///     </paramref>
-    ///     is <code>null</code>
-    /// </exception>
-    /// <exception cref="IOException">Condition.</exception>
-    /// <exception cref="InvalidOperationException">Condition.</exception>
-    /// <exception cref="NotSupportedException">Condition.</exception>
-    /// <exception cref="PathTooLongException">
-    ///     When
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    ///     is too long
-    /// </exception>
-    /// <exception cref="UnauthorizedAccessException">
-    ///     The caller does not have the required permission to access the
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     Invalid
-    ///     <paramref>
-    ///         <name>path</name>
-    ///     </paramref>
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal static LoggerConfiguration ConfigureSinkLocal(this LoggerConfiguration lc)
     {
         var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "log.txt");
@@ -217,6 +171,9 @@ internal static class LoggerConfigurationExtensions
             rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true, buffered: true));
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static Try<bool> IsLogOpenTelemetryAvailable(OpenTelemetryOptions config)
     {
         return () =>
@@ -224,8 +181,8 @@ internal static class LoggerConfigurationExtensions
             using var client = new HttpClient();
             using var request = new HttpRequestMessage(HttpMethod.Post, config.LogEndpointUrl);
 
-            if (config.UseLogHeaderApiKey())
-                request.Headers.Add(config.LogEndpointApiKeyHeader!, config.LogEndpointApiKeyValue);
+            if (config.UseLogHeaderApiKey() && config.LogEndpointApiKeyHeader != null)
+                request.Headers.Add(config.LogEndpointApiKeyHeader, config.LogEndpointApiKeyValue);
 
             // Send a minimal valid OpenTelemetry log entry
             request.Content = new ByteArrayContent([]);
@@ -239,28 +196,27 @@ internal static class LoggerConfigurationExtensions
 }
 
 /// <summary>
-///     OpenTelemetry Config
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record OpenTelemetryConfig
+internal sealed record OpenTelemetryConfig : IEqualityOperators<OpenTelemetryConfig, OpenTelemetryConfig, bool>
 {
     /// <summary>
-    ///     Environment Name
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required string EnvName { get; init; } = null!;
+    public required string EnvName { get; init; }
 
     /// <summary>
-    ///     version
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required string Version { get; init; } = null!;
+    public required string Version { get; init; }
 
     /// <summary>
-    ///     OpenTelemetry Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required OpenTelemetryOptions OpenTelemetryOptions { get; init; } = null!;
+    public required OpenTelemetryOptions OpenTelemetryOptions { get; init; }
 
     /// <summary>
-    ///     Api Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    public required ApiOptions ApiOptions { get; init; } = null!;
+    public required ApiOptions ApiOptions { get; init; }
 }

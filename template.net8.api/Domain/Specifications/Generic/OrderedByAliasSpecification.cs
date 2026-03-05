@@ -1,29 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
-using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Base;
 using template.net8.api.Core.Interfaces;
-using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Domain.Specifications.Generic;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class DtosOrderedByAliasSpecifications<TEntity> : SpecificationBase<TEntity>
     where TEntity : class, IEntityWithAlias
 {
     /// <summary>
-    ///     Constructs a specification to order entities by their alias text.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="trackData"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal DtosOrderedByAliasSpecifications(bool trackData = false)
     {
-        AddOrderBy(e => e.AliasText, OrderByType.Asc);
+        AddOrderBy(static e => e.AliasText, OrderByType.Asc);
         SetQueryTrackStrategy(trackData ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking);
+        SetQuerySplitStrategy(QuerySplittingBehavior.SingleQuery);
     }
 }

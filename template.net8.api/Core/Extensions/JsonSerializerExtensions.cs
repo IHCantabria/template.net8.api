@@ -1,12 +1,16 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class JsonSerializerExtensions
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     /// <exception cref="InvalidOperationException">This property is set after serialization or deserialization has occurred.</exception>
     internal static JsonSerializerOptions AddCoreOptions(this JsonSerializerOptions options)
     {

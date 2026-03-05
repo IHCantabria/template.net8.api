@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Settings.Filters;
 
 /// <summary>
-///     Remove System Types Document Filter
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class RemoveSystemTypesDocumentFilter : IDocumentFilter, IOrderedFilter
+[UsedImplicitly]
+internal sealed class RemoveSystemTypesDocumentFilter : IDocumentFilter, IOrderedFilter
 {
     /// <summary>
-    ///     Default Constructor
+    ///     ADD DOCUMENTATION
     /// </summary>
     public RemoveSystemTypesDocumentFilter()
     {
@@ -20,23 +21,17 @@ public sealed class RemoveSystemTypesDocumentFilter : IDocumentFilter, IOrderedF
     }
 
     /// <summary>
-    ///     Apply the filter to the operation.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="swaggerDoc"></param>
-    /// <param name="context"></param>
     /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
+    ///     <paramref name="swaggerDoc" /> is <see langword="null" />.
+    ///     <paramref name="context" /> is <see langword="null" />.
     /// </exception>
-    /// <exception cref="NotSupportedException">The <see cref="IDictionary{TKey,TValue}" /> is read-only.</exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>comparisonType</name>
-    ///     </paramref>
-    ///     is not a <see cref="StringComparison" /> value.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
         ArgumentNullException.ThrowIfNull(swaggerDoc);
@@ -52,6 +47,7 @@ public sealed class RemoveSystemTypesDocumentFilter : IDocumentFilter, IOrderedF
     }
 
     /// <summary>
+    ///     ADD DOCUMENTATION
     /// </summary>
     public int Order { get; }
 }

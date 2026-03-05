@@ -1,23 +1,17 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Json;
 
 /// <summary>
-///     Converts strings to camelCase format during JSON serialization and deserialization.
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
 internal sealed class CamelCaseStringEnumerableConverter : JsonConverter<IEnumerable<string>>
 {
     /// <summary>
-    ///     Reads a collection of strings from JSON and converts each item to camelCase format.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="reader">The UTF-8 JSON reader.</param>
-    /// <param name="typeToConvert">The type to convert.</param>
-    /// <param name="options">The serialization options.</param>
-    /// <returns>A collection of strings in camelCase format or null if the token is null.</returns>
     /// <exception cref="JsonException">Thrown when the current token is not the start of an array.</exception>
     public override IEnumerable<string> Read(ref Utf8JsonReader reader, Type typeToConvert,
         JsonSerializerOptions options)
@@ -27,9 +21,8 @@ internal sealed class CamelCaseStringEnumerableConverter : JsonConverter<IEnumer
     }
 
     /// <summary>
-    ///     Validates that the current token is the start of an array.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="reader">The JSON reader.</param>
     /// <exception cref="JsonException">Thrown when the current token is not the start of an array.</exception>
     private static void ValidateArrayStart(Utf8JsonReader reader)
     {
@@ -38,10 +31,13 @@ internal sealed class CamelCaseStringEnumerableConverter : JsonConverter<IEnumer
     }
 
     /// <summary>
-    ///     Reads a string array from JSON, converting each element to camelCase.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="reader">The JSON reader.</param>
-    /// <returns>A collection of camelCase strings.</returns>
+    [SuppressMessage(
+        "ReSharper",
+        "ReturnTypeCanBeEnumerable.Local",
+        Justification =
+            "Concrete return type is intentional for performance and to avoid interface-based enumeration overhead.")]
     private static List<string> ReadStringArray(ref Utf8JsonReader reader)
     {
         var result = new List<string>();
@@ -59,11 +55,13 @@ internal sealed class CamelCaseStringEnumerableConverter : JsonConverter<IEnumer
     }
 
     /// <summary>
-    ///     Reads a single element from a JSON array.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="reader">The JSON reader.</param>
-    /// <returns>The element converted to camelCase if it's a string.</returns>
     /// <exception cref="JsonException">Thrown when the token is neither a string nor null.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault",
+        Justification = "Default case intentionally throws for unsupported JSON token types.")]
     private static string? ReadArrayElement(ref Utf8JsonReader reader)
     {
         return reader.TokenType switch
@@ -75,11 +73,8 @@ internal sealed class CamelCaseStringEnumerableConverter : JsonConverter<IEnumer
     }
 
     /// <summary>
-    ///     Writes a collection of strings to JSON, converting each to camelCase format.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="writer">The UTF-8 JSON writer.</param>
-    /// <param name="value">The collection to write.</param>
-    /// <param name="options">The serialization options.</param>
     /// <exception cref="InvalidOperationException">
     ///     Validation is enabled, and the operation would result in writing invalid
     ///     JSON.
@@ -105,13 +100,10 @@ internal sealed class CamelCaseStringEnumerableConverter : JsonConverter<IEnumer
     }
 
     /// <summary>
-    ///     Converts a string to camelCase format.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="str">The string to convert.</param>
-    /// <returns>The string in camelCase format.</returns>
-    [SuppressMessage("Pragma", "CA1308",
-        Justification =
-            "Business logic is change this string ToLowerInvariant")]
+    [SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase",
+        Justification = "Lowercase normalization is required to implement camelCase naming rules.")]
     private static string? ToCamelCase(string? str)
     {
         // Handle special cases

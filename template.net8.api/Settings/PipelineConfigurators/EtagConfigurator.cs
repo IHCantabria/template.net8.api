@@ -1,67 +1,43 @@
-﻿using Delta;
+﻿using System.Diagnostics.CodeAnalysis;
+using Delta;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core;
-using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.Persistence.Context;
+using template.net8.api.Business;
+using template.net8.api.Persistence.Context;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Settings.PipelineConfigurators;
 
 /// <summary>
-///     Etag Db Tracking Configurator
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class EtagConfigurator : IPipelineConfigurator
+[UsedImplicitly]
+internal sealed class EtagConfigurator : IPipelineConfigurator
 {
-    /// <summary>
-    ///     Load order of the pipeline configurator
-    /// </summary>
+    /// <inheritdoc cref="IPipelineConfigurator.LoadOrder" />
     public short LoadOrder => 4;
 
-    /// <summary>
-    ///     Configure Pipeline for the Etag Db Tracking
-    /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException">
-    ///     There is no service of type
-    ///     <typeparamref>
-    ///         <name>T</name>
-    ///     </typeparamref>
-    ///     .
-    /// </exception>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     <paramref>
-    ///         <name>comparisonType</name>
-    ///     </paramref>
-    ///     is not a <see cref="StringComparison" /> value.
-    /// </exception>
+    /// <inheritdoc cref="IPipelineConfigurator.ConfigurePipelineAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="app" /> is <see langword="null" />.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
         DeltaExtensions.UseResponseDiagnostics = true;
 
         //Get swagger configuration from service with strongly typed options object.
-        var configuration = app.Services.GetRequiredService<IOptions<ProjectDbOptions>>().Value;
+        var configuration = app.Services.GetRequiredService<IOptions<AppDbOptions>>().Value;
         if (string.IsNullOrEmpty(configuration.ConnectionString)) return Task.CompletedTask;
 
-        app.UseDelta<ProjectDbContext>(_ => CoreConstants.ApiName,
-            httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
+        app.UseDelta<AppDbContext>(static _ => BusinessConstants.ApiName,
+            static httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
 
-        //Beware of caching on permission-segregated data, use logic similar to this:
-        //app.UseDelta<ProjectDbContext>(httpContext =>
-        //        httpContext.User.Identity is not null && httpContext.User.Identity.IsAuthenticated
-        //            ? $"{CoreConstants.ApiName}:{BusinessConstants.AuthenticatedUser}"
-        //            : $"{CoreConstants.ApiName}:{BusinessConstants.AnonymousUser}",
-        //    httpContext => httpContext.Request.Method.Equals("GET", StringComparison.OrdinalIgnoreCase));
-
+        //Beware of caching on permission-segregated or user-segregated data, use suffix and Identity access to separate cache entries.
         return Task.CompletedTask;
     }
 }

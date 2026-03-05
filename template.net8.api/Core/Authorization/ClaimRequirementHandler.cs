@@ -1,27 +1,20 @@
 ﻿using System.Numerics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Authorization;
 
 /// <summary>
-///     Claim Requirement Handler
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class ClaimRequirementHandler : AuthorizationHandler<ClaimRequirements>
+internal sealed class ClaimRequirementHandler : AuthorizationHandler<ClaimRequirements>
 {
     /// <summary>
-    ///     Handle Requirement Async
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="requirement"></param>
-    /// <returns></returns>
     /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
+    ///     <paramref name="context" /> is <see langword="null" />.
+    ///     <paramref name="requirement" /> is <see langword="null" />.
     /// </exception>
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimRequirements requirement)
     {
@@ -32,6 +25,9 @@ public sealed class ClaimRequirementHandler : AuthorizationHandler<ClaimRequirem
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool HasRequiredClaims(ClaimsPrincipal principal, ClaimRequirements requirements)
     {
         return requirements.ClaimLogic switch
@@ -44,6 +40,9 @@ public sealed class ClaimRequirementHandler : AuthorizationHandler<ClaimRequirem
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static bool HasRequiredClaim(IEnumerable<Claim> claims, ClaimRequirement requirement)
     {
         return claims.Any(c =>
@@ -53,60 +52,53 @@ public sealed class ClaimRequirementHandler : AuthorizationHandler<ClaimRequirem
 }
 
 /// <summary>
-///     Claim Requirements
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="ClaimRequirementsCollection"></param>
-/// <param name="ClaimLogic"></param>
-[CoreLibrary]
-public sealed record ClaimRequirements(
+internal sealed record ClaimRequirements(
     IEnumerable<ClaimRequirement> ClaimRequirementsCollection,
     ClaimLogic ClaimLogic = ClaimLogic.All)
     : IAuthorizationRequirement, IEqualityOperators<ClaimRequirements, ClaimRequirements, bool>
 {
     /// <summary>
-    ///     Claim Requirements
+    ///     ADD DOCUMENTATION
     /// </summary>
     public IEnumerable<ClaimRequirement> ClaimRequirementsCollection { get; } = ClaimRequirementsCollection;
 
     /// <summary>
-    ///     Claim Logic
+    ///     ADD DOCUMENTATION
     /// </summary>
     public ClaimLogic ClaimLogic { get; } = ClaimLogic;
 }
 
 /// <summary>
-///     Claim Requirement
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="ClaimType"></param>
-/// <param name="ClaimValue"></param>
-[CoreLibrary]
-public sealed record ClaimRequirement(string ClaimType, string ClaimValue)
+internal sealed record ClaimRequirement(string ClaimType, string ClaimValue)
     : IEqualityOperators<ClaimRequirement, ClaimRequirement, bool>
 {
     /// <summary>
-    ///     Claim Type
+    ///     ADD DOCUMENTATION
     /// </summary>
     public string ClaimType { get; } = ClaimType;
 
     /// <summary>
-    ///     Claim Value
+    ///     ADD DOCUMENTATION
     /// </summary>
     public string ClaimValue { get; } = ClaimValue;
 }
 
 /// <summary>
-///     Enum Claim Logic
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public enum ClaimLogic
+internal enum ClaimLogic
 {
     /// <summary>
-    ///     All Must be satisfied
+    ///     ADD DOCUMENTATION
     /// </summary>
     All = 0,
 
     /// <summary>
-    ///     Any Must be satisfied
+    ///     ADD DOCUMENTATION
     /// </summary>
     Any = 1
 }

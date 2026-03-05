@@ -4,23 +4,27 @@ using ILogger = Serilog.ILogger;
 
 namespace template.net8.api.Core.Logger.Sinks;
 
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class MemorySink : ILogEventSink
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly List<LogEvent> _events = new();
 
     /// <summary>
-    ///     Emit the log event
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="logEvent"></param>
     public void Emit(LogEvent logEvent)
     {
         _events.Add(logEvent);
     }
 
     /// <summary>
-    ///     Flush the events to the real logger
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="logger"></param>
     public void FlushToLogger(ILogger logger)
     {
         var eventsToFlush = _events.ToList();

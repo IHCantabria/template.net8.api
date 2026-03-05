@@ -1,31 +1,24 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using JetBrains.Annotations;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Security Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class SecurityInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class SecurityInstaller : IServiceInstaller
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly TimeSpan _maxAge = TimeSpan.FromDays(365);
 
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 21;
 
-    /// <summary>
-    ///     Install Security Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);

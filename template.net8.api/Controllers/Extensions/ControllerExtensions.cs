@@ -1,22 +1,24 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using template.net8.api.Business.Exceptions;
 using template.net8.api.Contracts.Interfaces;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Exceptions;
 using template.net8.api.Core.Factory;
 using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Controllers.Extensions;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class ControllerExtensions
 {
     /// <summary>
-    ///     This extension method is used to convert a result to an IActionResult.
+    ///     ADD DOCUMENTATION
     /// </summary>
     internal static IActionResult ToActionResult<TResult, TContract>(this LanguageExt.Common.Result<TResult> result,
         MyControllerBase controller,
@@ -26,6 +28,9 @@ internal static class ControllerExtensions
             ex => ManageExceptionActionResult(ex, localizer, controller.HttpContext.Features));
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IActionResult HandleSuccessResult<TResult, TContract>(
         ControllerBase controller,
         ActionResultPayload<TResult, TContract> action,
@@ -44,6 +49,9 @@ internal static class ControllerExtensions
         return HandleMappedAction(controller, action, response);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static void AddLinkHeaderIfNeeded<TResult, TContract>(ControllerBase controller,
         ActionResultPayload<TResult, TContract> action)
     {
@@ -51,6 +59,9 @@ internal static class ControllerExtensions
             controller.Response.Headers.TryAdd("Link", action.LinkHeader);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IActionResult HandleUnmappedAction<TResult, TContract>(ControllerBase controller,
         ActionResultPayload<TResult, TContract> action)
     {
@@ -63,6 +74,9 @@ internal static class ControllerExtensions
                 "Error Creating the Http Action Result. The mapping action for endpoint is not defined");
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IActionResult HandleMappedAction<TResult, TContract>(ControllerBase controller,
         ActionResultPayload<TResult, TContract> action, TContract response)
     {
@@ -75,6 +89,9 @@ internal static class ControllerExtensions
         return HandleOkResult(controller, action, response);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IActionResult ManageExceptionActionResult(Exception ex,
         IStringLocalizer<ResourceMain> localizer,
         IFeatureCollection features)
@@ -90,6 +107,9 @@ internal static class ControllerExtensions
         return new BadRequestResult();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static OkObjectResult HandleOkResult<TResult, TContract>(ControllerBase controller,
         ActionResultPayload<TResult, TContract> action, TContract response)
     {
@@ -99,9 +119,12 @@ internal static class ControllerExtensions
         var dictionary = new RouteValueDictionary();
         var type = typeof(TContract);
 
-        var value = type.GetProperty(action.ActionParam!.Value.Item1)!.GetValue(response);
+        if (action.ActionParam != null)
+        {
+            var value = type.GetProperty(action.ActionParam.Value.Item1)?.GetValue(response);
 
-        dictionary.Add(action.ActionParam.Value.Item2, value?.ToString());
+            dictionary.Add(action.ActionParam.Value.Item2, value?.ToString());
+        }
 
         var locationUrl = controller.Url.Action(
             action.ActionPath?.Item2,
@@ -114,6 +137,9 @@ internal static class ControllerExtensions
         return new OkObjectResult(response);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static CreatedAtActionResult HandleCreatedAtActionResult<TResult, TContract>(TContract response,
         ActionResultPayload<TResult, TContract> action)
     {
@@ -122,33 +148,50 @@ internal static class ControllerExtensions
 
         var dictionary = new RouteValueDictionary();
         var type = typeof(TContract);
-        var value = type.GetProperty(action.ActionParam!.Value.Item1)!.GetValue(response);
+        if (action.ActionParam == null)
+            return action.IsEmptyResponse
+                ? new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, null)
+                : new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, response);
 
-        dictionary.Add(action.ActionParam.Value.Item2, value!.ToString());
+        var value = type.GetProperty(action.ActionParam.Value.Item1)?.GetValue(response);
+
+        dictionary.Add(action.ActionParam.Value.Item2, value?.ToString());
+
         return action.IsEmptyResponse
             ? new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, null)
             : new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, response);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static CreatedAtActionResult HandleCreatedAtActionResult<TResult, TContract>(
         ActionResultPayload<TResult, TContract> action)
     {
         if (!action.AddLocationHeader)
             return new CreatedAtActionResult(null, null, null, null);
 
-        var dictionary = new RouteValueDictionary
-            { { action.ActionParam!.Value.Item2, action.ActionParam.Value.Item1 } };
+        RouteValueDictionary? dictionary = null;
+        if (action.ActionParam != null)
+            dictionary = new RouteValueDictionary
+                { { action.ActionParam.Value.Item2, action.ActionParam.Value.Item1 } };
         return new CreatedAtActionResult(action.ActionPath?.Item2, action.ActionPath?.Item1, dictionary, null);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static AcceptedResult HandleAcceptedContentResult<TResult, TContract>(ControllerBase controller,
         ActionResultPayload<TResult, TContract> action)
     {
         if (!action.AddLocationHeader)
             return new AcceptedResult();
 
-        var dictionary = new RouteValueDictionary
-            { { action.ActionParam!.Value.Item2, action.ActionParam.Value.Item1 } };
+        RouteValueDictionary? dictionary = null;
+
+        if (action.ActionParam != null)
+            dictionary = new RouteValueDictionary
+                { { action.ActionParam.Value.Item2, action.ActionParam.Value.Item1 } };
 
         var locationUrl = controller.Url.Action(
             action.ActionPath?.Item2,
@@ -159,6 +202,9 @@ internal static class ControllerExtensions
         return new AcceptedResult(locationUrl, null);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static AcceptedResult HandleAcceptedContentResult<TResult, TContract>(ControllerBase controller,
         ActionResultPayload<TResult, TContract> action, TContract response)
     {
@@ -168,9 +214,12 @@ internal static class ControllerExtensions
         var dictionary = new RouteValueDictionary();
         var type = typeof(TContract);
 
-        var value = type.GetProperty(action.ActionParam!.Value.Item1)!.GetValue(response);
+        if (action.ActionParam != null)
+        {
+            var value = type.GetProperty(action.ActionParam.Value.Item1)?.GetValue(response);
 
-        dictionary.Add(action.ActionParam.Value.Item2, value?.ToString());
+            dictionary.Add(action.ActionParam.Value.Item2, value?.ToString());
+        }
 
         var locationUrl = controller.Url.Action(
             action.ActionPath?.Item2,
@@ -183,6 +232,9 @@ internal static class ControllerExtensions
             : new AcceptedResult(locationUrl, response);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static FileContentResult HandleFileContentResult(IFileContract response)
     {
         return new FileContentResult(response.Data.ToArray(), response.ContentType)
@@ -192,20 +244,65 @@ internal static class ControllerExtensions
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification =
+        "General-purpose HTTP response builders. Not all response types are required in every API scenario.")]
 internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperators<
     ActionResultPayload<TResult, TContract>, ActionResultPayload<TResult, TContract>, bool>
 {
-    internal bool AddLocationHeader { get; init; }
-    internal bool AddLinkHeader { get; init; }
-    internal bool IsEmptyResponse { get; init; }
-    internal bool IsAcceptedAction { get; init; }
-    internal bool IsCreatedAction { get; init; }
-    internal string? LinkHeader { get; init; }
-    internal (string, string)? ActionParam { get; init; }
-    internal (string, string)? ActionPath { get; init; }
-    internal Func<TResult, TContract>? Mapper { get; init; }
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal bool AddLocationHeader { get; private init; }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal bool AddLinkHeader { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal bool IsEmptyResponse { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal bool IsAcceptedAction { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal bool IsCreatedAction { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal string? LinkHeader { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal (string, string)? ActionParam { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal (string, string)? ActionPath { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    internal Func<TResult, TContract>? Mapper { get; private init; }
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> Ok(
         Func<TResult, TContract> mapper,
         string? linkHeader = null)
@@ -218,6 +315,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> OkWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,
@@ -235,6 +335,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TRes, TFile> File<TRes, TFile>(
         Func<TRes, TFile> mapper,
         string? linkHeader = null) where TFile : IFileContract
@@ -247,6 +350,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> Created(
         Func<TResult, TContract> mapper,
         string? linkHeader = null)
@@ -260,6 +366,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> CreatedWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,
@@ -278,6 +387,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> CreatedEmpty(
         string? linkHeader = null)
     {
@@ -290,6 +402,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> CreatedEmptyWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,
@@ -307,6 +422,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> CreatedEmptyWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,
@@ -326,6 +444,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> Accepted(
         Func<TResult, TContract> mapper,
         string? linkHeader = null)
@@ -339,6 +460,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> AcceptedWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,
@@ -357,6 +481,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> AcceptedEmpty(
         string? linkHeader = null)
     {
@@ -369,6 +496,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> AcceptedEmptyWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,
@@ -386,6 +516,9 @@ internal sealed record ActionResultPayload<TResult, TContract> : IEqualityOperat
         };
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static ActionResultPayload<TResult, TContract> AcceptedEmptyWithLocation(
         (string ControllerName, string ActionName) actionPath,
         (string PropertyName, string RouteParamName) actionParam,

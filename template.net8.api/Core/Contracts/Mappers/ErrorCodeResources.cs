@@ -2,16 +2,11 @@
 
 namespace template.net8.api.Core.Contracts;
 
-/// <summary>
-///     Create Extent Resource
-/// </summary>
 public sealed partial record ErrorCodeResource
 {
     /// <summary>
-    ///     Convert Object to Resource
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
     public static implicit operator ErrorCodeResource(LocalizedString obj)
     {
         ArgumentNullException.ThrowIfNull(obj);
@@ -23,16 +18,17 @@ public sealed partial record ErrorCodeResource
     }
 
     /// <summary>
-    ///     This method converts a LocalizedString to a ErrorCodeResource
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
     public static ErrorCodeResource ToErrorCodeResource(
         LocalizedString obj)
     {
         return obj;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     internal static IEnumerable<ErrorCodeResource> ToCollection(
         IReadOnlyList<LocalizedString> objs)
     {

@@ -1,220 +1,167 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Interfaces;
-using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Core.Base;
 
-// Generic Verification
-// For additional expressions, class needs to be derived.
 /// <summary>
-///     Verification Base
+///     ADD DOCUMENTATION
 /// </summary>
-/// <typeparam name="TEntity"></typeparam>
-[CoreLibrary]
-public class VerificationBase<TEntity> : IVerification<TEntity> where TEntity : class, IEntity
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification =
+        "Base infrastructure class. Members are intended to be used selectively by derived verification implementations.")]
+internal class VerificationBase<TEntity> : IVerification<TEntity> where TEntity : class, IEntity
 {
     /// <summary>
-    ///     Constructs a VerificationBase instance.
+    ///     ADD DOCUMENTATION
     /// </summary>
     protected VerificationBase()
     {
     }
 
-    /// <summary>
-    ///     Filters for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable Extensions.
-    /// </summary>
+    /// <inheritdoc cref="IVerification{TEntity}.Filters" />
     public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } = [];
 
-    /// <summary>
-    ///     OrderBy Conditions for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
-    /// </summary>
+    /// <inheritdoc cref="IVerification{TEntity}.OrderBys" />
     public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } = [];
 
     /// <summary>
-    ///     Add an Include expression to load related data with the Query Specification Pattern Implementation for Querying
-    ///     Data with EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="orderByExpression"></param>
-    /// <param name="orderType"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
     }
 
     /// <summary>
-    ///     Add a filter expression to the collection of filters for the Query Specification Pattern Implementation for
-    ///     Querying Data with EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="filterExpression"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     protected void AddFilter(Expression<Func<TEntity, bool>> filterExpression)
     {
         Filters.Add(filterExpression);
     }
 }
 
-// Generic Specification
-// For additional expressions, class needs to be derived.
 /// <summary>
-///     Specification Base
+///     ADD DOCUMENTATION
 /// </summary>
-/// <typeparam name="TEntity"></typeparam>
-[CoreLibrary]
-public class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity : class, IEntity
+[SuppressMessage(
+    "ReSharper",
+    "UnusedMember.Global",
+    Justification =
+        "Base infrastructure class. Members are intended to be used selectively by derived verification implementations.")]
+internal class SpecificationBase<TEntity> : ISpecification<TEntity> where TEntity : class, IEntity
 {
     /// <summary>
-    ///     Constructs a SpecificationBase instance.
+    ///     ADD DOCUMENTATION
     /// </summary>
     protected SpecificationBase()
     {
     }
 
-    /// <summary>
-    ///     Query Splitting Behavior for the Query Specification Pattern Implementation for Querying Data with EF Core
-    ///     Queryable Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.QuerySplitStrategy" />
     public QuerySplittingBehavior QuerySplitStrategy { get; private set; } = QuerySplittingBehavior.SingleQuery;
 
-    /// <summary>
-    ///     Query Tracking Behavior for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.QueryTrackStrategy" />
     public QueryTrackingBehavior QueryTrackStrategy { get; private set; } = QueryTrackingBehavior.TrackAll;
 
-    /// <summary>
-    ///     Include collection to load related data with the Query Specification Pattern Implementation for Querying Data with
-    ///     EF Core Queryable Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.Includes" />
     public ICollection<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>>
         Includes { get; } = [];
 
-    /// <summary>
-    ///     OrderBy Conditions for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.OrderBys" />
     public ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; } = [];
 
-    /// <summary>
-    ///     Take Rows for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.TakeRows" />
     public int? TakeRows { get; private set; }
 
-    /// <summary>
-    ///     Filter Conditions for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.Filters" />
     public ICollection<Expression<Func<TEntity, bool>>> Filters { get; } = [];
 
-    /// <summary>
-    ///     GroupBy expression for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
-    /// </summary>
+    /// <inheritdoc cref="ISpecification{TEntity}.GroupBy" />
     public Expression<Func<TEntity, object>>? GroupBy { get; private set; }
 
     /// <summary>
-    ///     Add an Include expression to load related data with the Query Specification Pattern Implementation for Querying
-    ///     Data with EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="includeExpression"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     protected void AddInclude(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includeExpression)
     {
         Includes.Add(includeExpression);
     }
 
     /// <summary>
-    ///     Add an OrderBy expression to the collection of OrderBys for the Query Specification Pattern Implementation for
-    ///     Querying Data with EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="orderByExpression"></param>
-    /// <param name="orderType"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression, OrderByType orderType)
     {
         OrderBys.Add(new Tuple<Expression<Func<TEntity, object>>, OrderByType>(orderByExpression, orderType));
     }
 
     /// <summary>
-    ///     Add a Take expression to the collection of TakeRows for the Query Specification Pattern Implementation for Querying
-    ///     Data with EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="rows"></param>
     protected void AddTakeRows(int rows)
     {
         TakeRows = rows;
     }
 
     /// <summary>
-    ///     Add a filter expression to the collection of filters for the Query Specification Pattern Implementation for
-    ///     Querying Data with EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="filterExpression"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     protected void AddFilter(Expression<Func<TEntity, bool>> filterExpression)
     {
         Filters.Add(filterExpression);
     }
 
     /// <summary>
-    ///     Add a GroupBy expression to the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="groupByExpression"></param>
     protected void ApplyGroupBy(Expression<Func<TEntity, object>> groupByExpression)
     {
         GroupBy = groupByExpression;
     }
 
     /// <summary>
-    ///     Sets the Query Split Strategy for the Query Specification Pattern Implementation for Querying Data with EF Core
-    ///     Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="querySplitStrategy"></param>
     protected void SetQuerySplitStrategy(QuerySplittingBehavior querySplitStrategy)
     {
         QuerySplitStrategy = querySplitStrategy;
     }
 
     /// <summary>
-    ///     Sets the Query Tracking Behavior for the Query Specification Pattern Implementation for Querying Data with EF Core
-    ///     Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="queryTrackStrategy"></param>
     protected void SetQueryTrackStrategy(QueryTrackingBehavior queryTrackStrategy)
     {
         QueryTrackStrategy = queryTrackStrategy;

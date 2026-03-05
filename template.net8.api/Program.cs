@@ -1,17 +1,18 @@
 using System.Runtime.InteropServices;
-using JetBrains.Annotations;
 using LinqKit;
 using Serilog;
-using template.net8.api.Core;
+using template.net8.api.Business;
 using template.net8.api.Core.Logger;
 using template.net8.api.Core.Logger.Extensions;
 using template.net8.api.Settings.Extensions;
 using template.net8.api.Settings.Handlers;
 using ZLinq;
 
+
+//TODO: Replace ADD DOCUMENTATION for real documentation and remove this comment
 [assembly: ComVisible(false), CLSCompliant(false)]
 // Define ZLinq DropIn for the assembly to generate optimized Linq queries
-[assembly: ZLinqDropIn(CoreConstants.ApiName, DropInGenerateTypes.Collection)]
+[assembly: ZLinqDropIn(BusinessConstants.ApiName, DropInGenerateTypes.Collection)]
 SerilogLoggersFactory.MainLogFactory();
 MainLoggerMethods.LogStartingMainService();
 
@@ -60,15 +61,3 @@ finally
     MainLoggerMethods.LogShutdown();
     await Log.CloseAndFlushAsync().ConfigureAwait(false);
 }
-
-namespace template.net8.api
-{
-    /// <summary>
-    ///     Program class to start the template.net8.API. This class is used to configure the API and
-    ///     launch it. Expose the Program class to use in the Integration Tests.
-    /// </summary>
-    [UsedImplicitly]
-    public sealed class Program;
-}
-//TODO: Review all the comments in the code and update them.  Document the implementatiosn using the Inheritdoc tag for the Interfaces. Example below
-// <inheritdoc cref="ISaveNotificationsDispatcher.ManageSaveEarthquakeNotificationsAsync" />

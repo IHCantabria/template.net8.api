@@ -1,22 +1,22 @@
 ﻿using System.Globalization;
 using System.Net.Mime;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using template.net8.api.Controllers;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 
 namespace template.net8.api.Settings.Filters;
 
 /// <summary>
-///     Documentation Operation Filter
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
+[UsedImplicitly]
+internal sealed class DocumentationOperationFilter : IOperationFilter, IOrderedFilter
 {
     /// <summary>
-    ///     Default Constructor
+    ///     ADD DOCUMENTATION
     /// </summary>
     public DocumentationOperationFilter()
     {
@@ -24,15 +24,11 @@ public sealed class DocumentationOperationFilter : IOperationFilter, IOrderedFil
     }
 
     /// <summary>
-    ///     Apply the filter to the operation.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="operation"></param>
-    /// <param name="context"></param>
     /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
+    ///     <paramref name="operation" /> is <see langword="null" />.
+    ///     <paramref name="context" /> is <see langword="null" />.
     /// </exception>
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
@@ -68,7 +64,7 @@ public sealed class DocumentationOperationFilter : IOperationFilter, IOrderedFil
     }
 
     /// <summary>
-    ///     Order of the filter
+    ///     ADD DOCUMENTATION
     /// </summary>
     public int Order { get; }
 }

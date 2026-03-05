@@ -1,16 +1,18 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using template.net8.api.Core.Attributes;
-using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Core.Interfaces;
 
 /// <summary>
-///     Enumeration for Query Splitting Behavior for the Query Specification Pattern Implementation for Querying Data with
-///     EF
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "The enum is part of the public API contract and must remain publicly accessible.")]
 public enum OrderByType
 {
     /// <summary>
@@ -25,60 +27,56 @@ public enum OrderByType
 }
 
 /// <summary>
-///     Interface for Verification Pattern Implementation for Querying Data with EF Core Queryable Extensions.
+///     ADD DOCUMENTATION
 /// </summary>
-/// <typeparam name="TEntity"></typeparam>
-[CoreLibrary]
-public interface IVerification<TEntity> where TEntity : class, IEntity
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "The interface is part of the public API contract and must remain publicly accessible.")]
+internal interface IVerification<TEntity> where TEntity : class, IEntity
 {
     /// <summary>
-    ///     Filter Conditions for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
     ICollection<Expression<Func<TEntity, bool>>> Filters { get; }
 
     /// <summary>
-    ///     OrderBy Conditions for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
     ICollection<Tuple<Expression<Func<TEntity, object>>, OrderByType>> OrderBys { get; }
 }
 
 /// <summary>
-///     Interface for Specification Pattern Implementation for Querying Data with EF Core Queryable Extensions and EF Core
-///     Queryable Extensions for Dto Projection.
+///     ADD DOCUMENTATION
 /// </summary>
-/// <typeparam name="TEntity"></typeparam>
-[CoreLibrary]
-public interface ISpecification<TEntity> : IVerification<TEntity> where TEntity : class, IEntity
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "The interface is part of the public API contract and must remain publicly accessible.")]
+internal interface ISpecification<TEntity> : IVerification<TEntity> where TEntity : class, IEntity
 {
     /// <summary>
-    ///     Include collection to load related data with the Query Specification Pattern Implementation for Querying Data with
-    ///     EF Core Queryable Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
     ICollection<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> Includes { get; }
 
     /// <summary>
-    ///     GroupBy expression for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
     Expression<Func<TEntity, object>>? GroupBy { get; }
 
     /// <summary>
-    ///     Partial Take expression for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions.
+    ///     ADD DOCUMENTATION
     /// </summary>
     int? TakeRows { get; }
 
     /// <summary>
-    ///     Query Split Strategy for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions. Default is SingleQuery.
+    ///     ADD DOCUMENTATION
     /// </summary>
     QuerySplittingBehavior QuerySplitStrategy { get; }
 
     /// <summary>
-    ///     Query Tracking Behavior for the Query Specification Pattern Implementation for Querying Data with EF Core Queryable
-    ///     Extensions. Default is TrackAll.
+    ///     ADD DOCUMENTATION
     /// </summary>
     QueryTrackingBehavior QueryTrackStrategy { get; }
 }

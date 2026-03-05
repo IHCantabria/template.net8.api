@@ -1,55 +1,52 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Numerics;
 using Microsoft.Extensions.Options;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Settings.Options;
 
 /// <summary>
-///     Swagger Security Options
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed record SwaggerSecurityOptions : IEqualityOperators<SwaggerSecurityOptions, SwaggerSecurityOptions, bool>
+internal sealed record SwaggerSecurityOptions : IEqualityOperators<SwaggerSecurityOptions, SwaggerSecurityOptions, bool>
 {
     /// <summary>
-    ///     AppSettings Key
+    ///     ADD DOCUMENTATION
     /// </summary>
     public const string SwaggerSecurity = nameof(SwaggerSecurity);
 
     /// <summary>
-    ///     Description
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string Description { get; init; } = null!;
+    public required string Description { get; init; }
 
     /// <summary>
-    ///     Name
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string Name { get; init; } = null!;
+    public required string Name { get; init; }
 
     /// <summary>
-    ///     Scheme Id
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string SchemeId { get; init; } = null!;
+    public required string SchemeId { get; init; }
 
     /// <summary>
-    ///     Scheme Name
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string SchemeName { get; init; } = null!;
+    public required string SchemeName { get; init; }
 
     /// <summary>
-    ///     Bearer Format
+    ///     ADD DOCUMENTATION
     /// </summary>
     [Required]
-    public required string BearerFormat { get; init; } = null!;
+    public required string BearerFormat { get; init; }
 }
 
 /// <summary>
-///     Swagger Security Options Validator
+///     ADD DOCUMENTATION
 /// </summary>
 [OptionsValidator]
-[CoreLibrary]
-public sealed partial class SwaggerSecurityOptionsValidator : IValidateOptions<SwaggerSecurityOptions>;
+internal sealed partial class SwaggerSecurityOptionsValidator : IValidateOptions<SwaggerSecurityOptions>;

@@ -1,12 +1,13 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Net.Mime;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using template.net8.api.Controllers;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Contracts;
 using template.net8.api.Settings.Options;
 using ZLinq;
@@ -14,41 +15,38 @@ using ZLinq;
 namespace template.net8.api.Settings.Filters;
 
 /// <summary>
-///     Auth Operation Filter
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class AuthOperationFilter : IOperationFilter, IOrderedFilter
+[UsedImplicitly]
+internal sealed class AuthOperationFilter : IOperationFilter, IOrderedFilter
 {
-    private readonly IOptions<SwaggerSecurityOptions> _config;
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private readonly SwaggerSecurityOptions _config;
 
     /// <summary>
-    ///     Default Constructor
+    ///     ADD DOCUMENTATION
     /// </summary>
     /// <exception cref="ArgumentNullException">Condition.</exception>
     public AuthOperationFilter(IOptions<SwaggerSecurityOptions> config)
     {
         Order = 2;
-        _config = config ?? throw new ArgumentNullException(nameof(config));
+        _config = config.Value ?? throw new ArgumentNullException(nameof(config));
     }
 
     /// <summary>
-    ///     Apply the filter to the operation.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="operation"></param>
-    /// <param name="context"></param>
     /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
+    ///     <paramref name="operation" /> is <see langword="null" />.
+    ///     <paramref name="context" /> is <see langword="null" />.
     /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         // Add common response types.
@@ -63,13 +61,13 @@ public sealed class AuthOperationFilter : IOperationFilter, IOrderedFilter
             return;
         }
 
-        var attr = attributes![0];
+        var attr = attributes?[0];
 
         // Add what should be show inside the security section
         IList<string> securityInfos =
         [
-            $"{nameof(AuthorizeAttribute.Policy)}:{attr.Policy}", $"{nameof(AuthorizeAttribute.Roles)}:{attr.Roles}",
-            $"{nameof(AuthorizeAttribute.AuthenticationSchemes)}:{attr.AuthenticationSchemes}"
+            $"{nameof(AuthorizeAttribute.Policy)}:{attr?.Policy}", $"{nameof(AuthorizeAttribute.Roles)}:{attr?.Roles}",
+            $"{nameof(AuthorizeAttribute.AuthenticationSchemes)}:{attr?.AuthenticationSchemes}"
         ];
 
         // Add common security response types.
@@ -109,7 +107,7 @@ public sealed class AuthOperationFilter : IOperationFilter, IOrderedFilter
                     {
                         Reference = new OpenApiReference
                         {
-                            Id = _config.Value
+                            Id = _config
                                 .SchemeId, // Must fit the defined SchemeId of SecurityDefinition in global configuration
                             Type = ReferenceType.SecurityScheme
                         }
@@ -121,18 +119,20 @@ public sealed class AuthOperationFilter : IOperationFilter, IOrderedFilter
     }
 
     /// <summary>
-    ///     Order of the filter
+    ///     ADD DOCUMENTATION
     /// </summary>
     public int Order { get; }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static List<AuthorizeAttribute> GetAttributes(OperationFilterContext context)
     {
         // Get Authorize attribute
         var declaringTypeAttributes = context.MethodInfo.DeclaringType?.GetCustomAttributes(true);
         var methodInfoAttributes = context.MethodInfo.GetCustomAttributes(true);
-        var attributes = declaringTypeAttributes is not null
+        return declaringTypeAttributes is not null
             ? methodInfoAttributes.Union(declaringTypeAttributes).OfType<AuthorizeAttribute>().ToList()
             : methodInfoAttributes.OfType<AuthorizeAttribute>().ToList();
-        return attributes;
     }
 }

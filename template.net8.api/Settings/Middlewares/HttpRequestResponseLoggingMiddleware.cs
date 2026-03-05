@@ -1,33 +1,31 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO.Compression;
 using System.Text;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Logger;
 
 namespace template.net8.api.Settings.Middlewares;
 
 /// <summary>
-///     Middleware
+///     ADD DOCUMENTATION
 /// </summary>
-/// <param name="next"></param>
-[CoreLibrary]
-public sealed class HttpRequestResponseLoggingMiddleware(
+internal sealed class HttpRequestResponseLoggingMiddleware(
     RequestDelegate next,
     ILogger<HttpRequestResponseLoggingMiddleware> logger)
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly RequestDelegate _next = next ?? throw new ArgumentNullException(nameof(next));
 
     /// <summary>
-    ///     Invoke Async method to invoke the middleware.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="context"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <exception cref="ArgumentNullException"><paramref name="context" /> is <see langword="null" />.</exception>
     /// <exception cref="Exception">A delegate callback throws an exception.</exception>
     [SuppressMessage("ReSharper", "CA2007",
         Justification =
@@ -52,7 +50,10 @@ public sealed class HttpRequestResponseLoggingMiddleware(
         }
     }
 
-    private async Task HandleResponseAsync(HttpContext context, MemoryStream buffer, Stream originalBody)
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    private async Task HandleResponseAsync(HttpContext context, Stream buffer, Stream originalBody)
     {
         if (context.Response.StatusCode >= 400)
         {
@@ -69,13 +70,16 @@ public sealed class HttpRequestResponseLoggingMiddleware(
         await buffer.CopyToAsync(originalBody).ConfigureAwait(false);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static async Task<string> ReadResponseTextAsync(
-        MemoryStream buffer,
+        Stream buffer,
         IHeaderDictionary headers)
     {
         buffer.Seek(0, SeekOrigin.Begin);
 
-        Stream payload = buffer;
+        var payload = buffer;
         if (headers.TryGetValue("Content-Encoding", out var enc))
         {
             var encVal = enc.ToString().ToUpperInvariant();

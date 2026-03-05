@@ -1,18 +1,17 @@
-﻿using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace template.net8.api.Core.Interfaces;
 
 /// <summary>
-///     This interfaces is intended to mark DTO records.
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public interface IDto
-{
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
-    public bool Check()
-    {
-        return true;
-    }
-}
+[SuppressMessage("Design",
+    "CA1515:Consider making public types internal",
+    Justification =
+        "The interface is part of the public API contract and must remain publicly accessible.")]
+[SuppressMessage(
+    "Design",
+    "CA1040:Avoid empty interfaces",
+    Justification =
+        "Marker interface used for generic type constraints and architectural separation of DTO contracts.")]
+internal interface IDto;

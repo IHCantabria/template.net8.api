@@ -1,26 +1,38 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using JetBrains.Annotations;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.Parallel;
 using template.net8.api.Localize.Resources;
 
 namespace template.net8.api.Behaviors;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[UsedImplicitly]
 internal sealed class ValidationBehavior<TRequest, TResponse>(
     IEnumerable<IValidator<TRequest>> validators,
     IStringLocalizer<ResourceMain> localizer)
     : IPipelineBehavior<TRequest, LanguageExt.Common.Result<TResponse>>
     where TRequest : notnull
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly IStringLocalizer<ResourceMain> _localizer =
         localizer ?? throw new ArgumentNullException(nameof(localizer));
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private readonly IEnumerable<IValidator<TRequest>> _validators =
         validators ?? throw new ArgumentNullException(nameof(validators));
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     public Task<LanguageExt.Common.Result<TResponse>> Handle(TRequest request,
         RequestHandlerDelegate<LanguageExt.Common.Result<TResponse>> next,
         CancellationToken cancellationToken)
@@ -28,6 +40,9 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
         return BehaviorLogicAsync(request, next, cancellationToken);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private async Task<LanguageExt.Common.Result<TResponse>> BehaviorLogicAsync(TRequest request,
         RequestHandlerDelegate<LanguageExt.Common.Result<TResponse>> next,
         CancellationToken cancellationToken = default)
@@ -38,6 +53,9 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
             : await next(cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private async Task<ICollection<ValidationFailure>> ValidateRequestAsync(TRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -46,6 +64,9 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
         return AggregateValidationResults(results).ToList();
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private async Task<IEnumerable<ValidationResult>> ValidateValidatorsAsync(TRequest request,
         CancellationTokenSource cts)
     {
@@ -61,11 +82,14 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
             : validateValidatorsAsync;
     }
 
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static IEnumerable<ValidationFailure> AggregateValidationResults(IEnumerable<ValidationResult> results)
     {
         return results
-            .Where(r => r?.Errors != null)
-            .SelectMany(r => r.Errors).Distinct()
-            .Where(f => f is not null);
+            .Where(static r => r?.Errors != null)
+            .SelectMany(static r => r.Errors).Distinct()
+            .Where(static f => f is not null);
     }
 }

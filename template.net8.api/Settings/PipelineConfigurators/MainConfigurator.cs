@@ -1,7 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Options;
 using Serilog;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Extensions;
 using template.net8.api.Settings.Interfaces;
 using template.net8.api.Settings.Middlewares;
@@ -12,41 +12,22 @@ using template.net8.api.Settings.Options;
 namespace template.net8.api.Settings.PipelineConfigurators;
 
 /// <summary>
-///     Main Configurator
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class MainConfigurator : IPipelineConfigurator
+[UsedImplicitly]
+internal sealed class MainConfigurator : IPipelineConfigurator
 {
-    /// <summary>
-    ///     Load order of the pipeline configurator
-    /// </summary>
+    /// <inheritdoc cref="IPipelineConfigurator.LoadOrder" />
     public short LoadOrder => 1;
 
-    /// <summary>
-    ///     Configure the main Pipeline for the application.
-    /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="InvalidOperationException">
-    ///     There is no service of type
-    ///     <typeparamref>
-    ///         <name>T</name>
-    ///     </typeparamref>
-    ///     .
-    /// </exception>
-    /// <exception cref="CultureNotFoundException">
-    ///     <paramref>
-    ///         <name>name</name>
-    ///     </paramref>
-    ///     is not a valid culture name. For more information,
-    ///     see the Notes to Callers section.
-    /// </exception>
+
+    /// <inheritdoc cref="IPipelineConfigurator.ConfigurePipelineAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="app" /> is <see langword="null" />.</exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public Task ConfigurePipelineAsync(WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
@@ -106,14 +87,14 @@ public sealed class MainConfigurator : IPipelineConfigurator
         // Enable cors middleware to allow cross domain requests.
         app.UseCors(configuration.CorsPolicy);
 
-        //Enable Authentication Header middleware. Commented out because it is not used in this template.
-        //app.UseMiddleware<AuthenticationHeaderMiddleware>();
+        //Enable Authentication Header middleware.
+        app.UseMiddleware<AuthenticationHeaderMiddleware>();
 
-        //Enable authentication middleware. Commented out because it is not used in this template.
-        //app.UseAuthentication();
+        //Enable authentication middleware.
+        app.UseAuthentication();
 
-        //Enable Authorization middleware. Commented out because it is not used in this template.
-        //app.UseAuthorization();
+        //Enable Authorization middleware.
+        app.UseAuthorization();
 
         //Enable Security Headers middleware.
         app.UseMiddleware<SecurityHeadersMiddleware>();

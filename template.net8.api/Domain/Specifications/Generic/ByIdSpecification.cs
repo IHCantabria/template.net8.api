@@ -1,57 +1,55 @@
-﻿using Microsoft.EntityFrameworkCore;
-using template.net8.api.Core.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using template.net8.api.Core.Base;
-using template.net8.api.Domain.Persistence.Models.Interfaces;
+using template.net8.api.Core.Interfaces;
+using template.net8.api.Persistence.Models.Interfaces;
 
 namespace template.net8.api.Domain.Specifications.Generic;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntityByIdSpecification<TEntity, TKey> : SpecificationBase<TEntity>
     where TEntity : class, IEntityWithId<TKey>
     where TKey : struct
 {
     /// <summary>
-    ///     Constructs a specification to filter an entity by its ID.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="entityId"></param>
-    /// <param name="trackData"></param>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
     internal EntityByIdSpecification(TKey entityId, bool trackData = false)
     {
         AddFilter(e => e.Id.Equals(entityId));
+        AddOrderBy(static e => e.Id, OrderByType.Asc);
         SetQueryTrackStrategy(trackData ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking);
+        SetQuerySplitStrategy(QuerySplittingBehavior.SingleQuery);
     }
 }
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
+[SuppressMessage(
+    "ReSharper",
+    "UnusedType.Global",
+    Justification =
+        "Generic specification type intended for reuse in repository queries; usage may be indirect or consumer-dependent.")]
 internal sealed class EntitiesByIdsSpecification<TEntity, TKey> : SpecificationBase<TEntity>
     where TEntity : class, IEntityWithId<TKey>
     where TKey : struct
 {
     /// <summary>
-    ///     Constructs a specification to filter entities by a collection of IDs.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="entityIds"></param>
-    /// <param name="trackData"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>source</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
-    /// <exception cref="NotSupportedException">
-    ///     The
-    ///     <see>
-    ///         <cref>ICollection`1</cref>
-    ///     </see>
-    ///     is read-only.
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     internal EntitiesByIdsSpecification(IEnumerable<TKey>? entityIds = null,
         bool trackData = false)
     {
@@ -61,6 +59,8 @@ internal sealed class EntitiesByIdsSpecification<TEntity, TKey> : SpecificationB
             AddFilter(e => enumerable.Contains(e.Id));
         }
 
+        AddOrderBy(static e => e.Id, OrderByType.Asc);
         SetQueryTrackStrategy(trackData ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking);
+        SetQuerySplitStrategy(QuerySplittingBehavior.SingleQuery);
     }
 }

@@ -1,17 +1,20 @@
 ﻿using System.IO.Compression;
 using System.Net.Mime;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.ResponseCompression;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Settings.Interfaces;
 
 namespace template.net8.api.Settings.ServiceInstallers;
 
 /// <summary>
-///     Response Compression Service Installer
+///     ADD DOCUMENTATION
 /// </summary>
-[CoreLibrary]
-public sealed class ResponseCompressionInstaller : IServiceInstaller
+[UsedImplicitly]
+internal sealed class ResponseCompressionInstaller : IServiceInstaller
 {
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     private static readonly string[] MimeTypes =
     [
         MediaTypeNames.Application.Json,
@@ -46,26 +49,16 @@ public sealed class ResponseCompressionInstaller : IServiceInstaller
         "text/xml; charset=utf-16be"
     ];
 
-    /// <summary>
-    ///     Load order of the service installer
-    /// </summary>
+    /// <inheritdoc cref="IServiceInstaller.LoadOrder" />
     public short LoadOrder => 20;
 
-    /// <summary>
-    ///     Install Compression Respònse Service
-    /// </summary>
-    /// <param name="builder"></param>
-    /// <exception cref="ArgumentNullException">
-    ///     <paramref>
-    ///         <name>argument</name>
-    ///     </paramref>
-    ///     is <see langword="null" />.
-    /// </exception>
+    /// <inheritdoc cref="IServiceInstaller.InstallServiceAsync" />
+    /// <exception cref="ArgumentNullException"><paramref name="builder" /> is <see langword="null" />.</exception>
     public Task InstallServiceAsync(WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
         // Install response compression middleware services.
-        builder.Services.AddResponseCompression(options =>
+        builder.Services.AddResponseCompression(static options =>
         {
             options.EnableForHttps = true;
             options.Providers.Add<BrotliCompressionProvider>();
@@ -74,15 +67,11 @@ public sealed class ResponseCompressionInstaller : IServiceInstaller
         });
 
         // Configure compression providers
-        builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
-        {
-            options.Level = CompressionLevel.Fastest;
-        });
+        builder.Services.Configure<BrotliCompressionProviderOptions>(static options =>
+            options.Level = CompressionLevel.Fastest);
 
-        builder.Services.Configure<GzipCompressionProviderOptions>(options =>
-        {
-            options.Level = CompressionLevel.SmallestSize;
-        });
+        builder.Services.Configure<GzipCompressionProviderOptions>(static options =>
+            options.Level = CompressionLevel.SmallestSize);
         return Task.CompletedTask;
     }
 }

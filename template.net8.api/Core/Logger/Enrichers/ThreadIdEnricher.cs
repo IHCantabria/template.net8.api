@@ -1,10 +1,12 @@
-﻿using Serilog.Core;
+﻿using System.Diagnostics.CodeAnalysis;
+using Serilog.Core;
 using Serilog.Events;
-using template.net8.api.Core.Attributes;
 
 namespace template.net8.api.Core.Logger.Enrichers;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal sealed class ThreadIdEnricher : ILogEventEnricher
 {
     /// <summary>
@@ -14,31 +16,29 @@ internal sealed class ThreadIdEnricher : ILogEventEnricher
     private LogEventProperty? _lastValue;
 
     /// <summary>
-    ///     Enriches the log event with Activity information.
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="logEvent"></param>
-    /// <param name="propertyFactory"></param>
     /// <exception cref="ArgumentNullException">
-    ///     When
-    ///     <paramref>
-    ///         <name>property</name>
-    ///     </paramref>
-    ///     is <code>null</code>
+    ///     <paramref name="logEvent" /> is <see langword="null" />.
+    ///     <paramref name="propertyFactory" /> is <see langword="null" />.
     /// </exception>
-    /// <exception cref="ArgumentException">
-    ///     When
-    ///     <paramref>
-    ///         <name>name</name>
-    ///     </paramref>
-    ///     is empty or only contains whitespace
-    /// </exception>
+    [SuppressMessage(
+        "ReSharper",
+        "ExceptionNotDocumentedOptional",
+        Justification =
+            "Potential exceptions originate from underlying implementation details and are not part of the method contract.")]
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
     {
+        ArgumentNullException.ThrowIfNull(logEvent);
+        ArgumentNullException.ThrowIfNull(propertyFactory);
+
         var threadId = Environment.CurrentManagedThreadId;
         var last = _lastValue;
-        if (last is null || (int)((ScalarValue)last.Value).Value! != threadId)
+        if (last?.Value is not ScalarValue { Value: int currentThreadId } ||
+            currentThreadId != threadId)
             // no need to synchronize threads on write - just some of them will win
-            _lastValue = last = new LogEventProperty("request.thread.id", new ScalarValue(threadId));
+            _lastValue = last =
+                new LogEventProperty("request.thread.id", new ScalarValue(threadId));
 
         logEvent.AddPropertyIfAbsent(last);
     }

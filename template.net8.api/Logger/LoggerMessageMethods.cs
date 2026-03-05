@@ -1,81 +1,117 @@
-﻿using template.net8.api.Core.Attributes;
+﻿namespace template.net8.api.Logger;
 
-namespace template.net8.api.Logger;
-
-//Add in this class dedicated methods to log specific events in the business logic if needed.
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static partial class LoggerMessageMethods
 {
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Debug,
         Message = LoggerMessageDefinitions.ControllerInjected)]
     internal static partial void LogControllerBaseInjected(this ILogger logger, string controllerType);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Debug,
         Message = LoggerMessageDefinitions.ServiceInjected)]
     internal static partial void LogServiceBaseInjected(this ILogger logger, string serviceType);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Debug,
         Message = LoggerMessageDefinitions.RepositoryInjected)]
     internal static partial void LogRepositoryBaseInjected(this ILogger logger, string repositoryType);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Debug,
         Message = LoggerMessageDefinitions.WebClientInjected)]
     internal static partial void LogWebClientBaseInjected(this ILogger logger, string webClientType);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Error, Message = LoggerMessageDefinitions.ExceptionServer)]
     internal static partial void LogExceptionServer(this ILogger logger, Exception ex);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Information,
         Message = LoggerMessageDefinitions.ActionRequestReceived)]
     internal static partial void LogActionRequestReceived(this ILogger logger, string? methodName, string? requestPath);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Information,
         Message = LoggerMessageDefinitions.ActionRequestResponsed)]
     internal static partial void
         LogActionRequestResponsedSuccess(this ILogger logger, string? methodName, string? requestPath);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Error,
         Message = LoggerMessageDefinitions.ActionRequestResponsedError)]
     internal static partial void
         LogActionRequestResponsedError(this ILogger logger, string? methodName, string? requestPath,
             string? statusCode);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Information,
         Message = LoggerMessageDefinitions.HandlingRequest)]
     internal static partial void LogHandlingRequest(this ILogger logger, string requestType);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Information,
         Message = LoggerMessageDefinitions.HandledRequestSuccess)]
     internal static partial void LogHandledRequestSuccess(this ILogger logger, string requestType, string time);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Warning, Message = LoggerMessageDefinitions.HandledRequestEmpty)]
     internal static partial void LogHandledRequestIsEmpty(this ILogger logger, string requestType, string time);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Warning, Message = LoggerMessageDefinitions.HandledRequestError)]
     internal static partial void LogHandledRequestError(this ILogger logger, string requestType, string time);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Warning, Message = LoggerMessageDefinitions.ExceptionClient)]
     internal static partial void LogExceptionClient(this ILogger logger, Exception ex);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandlingPostProcess)]
     internal static partial void
         LogHandlingPostProcess(this ILogger logger, string postProcessType, string requestType);
 
-    [CoreLibrary]
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
     [LoggerMessage(Level = LogLevel.Information, Message = LoggerMessageDefinitions.HandledPostProcess)]
     internal static partial void LogHandledPostProcess(this ILogger logger, string postProcessType, string requestType,
         string time);
+
+    /// <summary>
+    ///     ADD DOCUMENTATION
+    /// </summary>
+    [LoggerMessage(Level = LogLevel.Error, Message = LoggerMessageDefinitions.StatusDbFail)]
+    internal static partial void LogStatusDbFail(this ILogger logger, Exception ex);
 }

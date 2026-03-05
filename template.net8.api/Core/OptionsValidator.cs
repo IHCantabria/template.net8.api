@@ -1,18 +1,18 @@
 ﻿using Microsoft.IdentityModel.Protocols.Configuration;
-using template.net8.api.Core.Attributes;
 using template.net8.api.Core.OpenTelemetry.Options;
 using template.net8.api.Settings.Options;
 
 namespace template.net8.api.Core;
 
-[CoreLibrary]
+/// <summary>
+///     ADD DOCUMENTATION
+/// </summary>
 internal static class OptionsValidator
 {
     /// <summary>
-    ///     Validate Jwt Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
+    /// <exception cref="InvalidConfigurationException">The Jwt configuration in the appsettings file is incorrect</exception>
     internal static void ValidateJwtOptions(JwtOptions? config)
     {
         var optionsValidator = new JwtOptionsValidator();
@@ -26,10 +26,9 @@ internal static class OptionsValidator
     }
 
     /// <summary>
-    ///     Validate Cors Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
+    /// <exception cref="InvalidConfigurationException">The Cors configuration in the appsettings file is incorrect</exception>
     internal static void ValidateCorsOptions(CorsOptions? config)
     {
         var optionsValidator = new CorsOptionsValidator();
@@ -43,10 +42,9 @@ internal static class OptionsValidator
     }
 
     /// <summary>
-    ///     Validate OpenTelemetry Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
+    /// <exception cref="InvalidConfigurationException">The OpenTelemetry configuration in the appsettings file is incorrect</exception>
     internal static void ValidateOpenTelemetryOptions(OpenTelemetryOptions? config)
     {
         var optionsValidator = new OpenTelemetryOptionsValidator();
@@ -60,16 +58,15 @@ internal static class OptionsValidator
     }
 
     /// <summary>
-    ///     Validate Poject Db Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
-    internal static void ValidateProjectDbOptions(ProjectDbOptions? config)
+    /// <exception cref="InvalidConfigurationException">Condition.</exception>
+    internal static void ValidateAppDbOptions(AppDbOptions? config)
     {
-        var optionsValidator = new ProjectDbOptionsValidator();
+        var optionsValidator = new AppDbOptionsValidator();
         if (config is null)
             throw new InvalidConfigurationException(
-                "The Project Db configuration in the appsettings file is incorrect");
+                "The App Db configuration in the appsettings file is incorrect");
 
         var validation = optionsValidator.Validate(null, config);
         if (validation.Failed)
@@ -77,10 +74,9 @@ internal static class OptionsValidator
     }
 
     /// <summary>
-    ///     Validate Api Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
+    /// <exception cref="InvalidConfigurationException">The Api configuration in the appsettings file is incorrect</exception>
     internal static void ValidateApiOptions(ApiOptions? config)
     {
         var optionsValidator = new ApiOptionsValidator();
@@ -94,10 +90,9 @@ internal static class OptionsValidator
     }
 
     /// <summary>
-    ///     Validate Swagger Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
+    /// <exception cref="InvalidConfigurationException">The Swagger configuration in the appsettings file is incorrect</exception>
     internal static void ValidateSwaggerOptions(SwaggerOptions? config)
     {
         var optionsValidator = new SwaggerOptionsValidator();
@@ -111,10 +106,9 @@ internal static class OptionsValidator
     }
 
     /// <summary>
-    ///     Validate Swagger Security Options
+    ///     ADD DOCUMENTATION
     /// </summary>
-    /// <param name="config"></param>
-    /// <exception cref="InvalidConfigurationException"></exception>
+    /// <exception cref="InvalidConfigurationException">The Swagger Security configuration in the appsettings file is incorrect</exception>
     internal static void ValidateSwaggerSecurityOptions(SwaggerSecurityOptions? config)
     {
         var optionsValidator = new SwaggerSecurityOptionsValidator();
