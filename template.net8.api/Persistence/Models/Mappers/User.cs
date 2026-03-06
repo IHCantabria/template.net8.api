@@ -118,9 +118,9 @@ internal static class UserProjections
             RoleName = p.Role != null ? p.Role.Name : null,
             Username = p.Username,
             RoleClaims = p.Role != null
-                ? p.Role.Claims.Select<Claim, ClaimDto>(static c => new ClaimDto(c.Id, c.Name))
-                : new List<ClaimDto>().AsReadOnly(),
-            UserClaims = p.Claims.Select<Claim, ClaimDto>(static c => new ClaimDto(c.Id, c.Name))
+                ? p.Role.Claims.Select(static c => new ClaimDto(c.Id, c.Name))
+                : Enumerable.Empty<ClaimDto>(),
+            UserClaims = p.Claims.Select(static c => new ClaimDto(c.Id, c.Name))
         });
 
     /// <summary>
